@@ -1,0 +1,64 @@
+﻿2019-03-27 17:00:11,019 [1] INFO  ModelBase - 开始启动
+2019-03-27 17:00:12,789 [1] INFO  ModelBase - ServerConfig Done, Count:18
+2019-03-27 17:00:13,458 [1] INFO  ModelBase - 启动成功
+2019-03-27 17:18:11,462 [1] INFO  ModelBase - 开始启动
+2019-03-27 17:18:35,170 [1] INFO  ModelBase - 开始启动
+2019-03-27 17:19:41,691 [1] INFO  ModelBase - 开始启动
+2019-03-27 17:19:57,256 [1] INFO  ModelBase - 开始启动
+2019-03-27 17:19:57,775 [1] INFO  ModelBase - ServerConfig Done, Count:18
+2019-03-27 17:19:58,075 [1] INFO  ModelBase - 启动成功
+2019-03-27 17:22:12,995 [22] INFO  ModelBase - Socket Ip:192.168.1.42, Port：60000 ReConnect
+2019-03-27 17:25:11,714 [17] INFO  ModelBase - Socket Ip:192.168.1.15, Port：60000 ReConnect
+2019-03-27 17:25:17,488 [17] INFO  ModelBase - Socket Ip:192.168.1.16, Port：60000 ReConnect
+2019-03-27 17:25:17,489 [17] INFO  ModelBase - Socket Ip:192.168.1.40, Port：60000 ReConnect
+2019-03-27 17:25:17,489 [17] INFO  ModelBase - Socket Ip:192.168.1.41, Port：60000 ReConnect
+2019-03-27 17:25:17,489 [17] INFO  ModelBase - Socket Ip:192.168.1.42, Port：60000 ReConnect
+2019-03-27 17:25:17,490 [17] INFO  ModelBase - Socket Ip:192.168.1.44, Port：60000 ReConnect
+2019-03-27 17:25:17,490 [17] INFO  ModelBase - Socket Ip:192.168.1.45, Port：60000 ReConnect
+2019-03-27 17:25:17,490 [17] INFO  ModelBase - Socket Ip:192.168.1.46, Port：60000 ReConnect
+2019-03-27 17:25:17,491 [17] INFO  ModelBase - Socket Ip:192.168.1.47, Port：60000 ReConnect
+2019-03-27 17:25:17,491 [17] INFO  ModelBase - Socket Ip:192.168.1.48, Port：60000 ReConnect
+2019-03-27 17:25:17,491 [17] INFO  ModelBase - Socket Ip:192.168.1.49, Port：60000 ReConnect
+2019-03-27 17:25:17,491 [17] INFO  ModelBase - Socket Ip:192.168.1.50, Port：60000 ReConnect
+2019-03-27 17:25:17,491 [17] INFO  ModelBase - Socket Ip:192.168.1.51, Port：60000 ReConnect
+2019-03-27 17:25:17,492 [17] INFO  ModelBase - Socket Ip:192.168.1.54, Port：60000 ReConnect
+2019-03-27 17:25:17,492 [17] INFO  ModelBase - Socket Ip:192.168.1.56, Port：60000 ReConnect
+2019-03-27 17:25:17,492 [17] INFO  ModelBase - Socket Ip:192.168.1.59, Port：60000 ReConnect
+2019-03-27 17:25:17,492 [17] INFO  ModelBase - Socket Ip:192.168.1.60, Port：60000 ReConnect
+2019-03-27 17:25:17,492 [17] INFO  ModelBase - Socket Ip:192.168.1.61, Port：60000 ReConnect
+2019-03-27 17:25:21,728 [21] INFO  ModelBase - Socket Ip:192.168.1.15, Port：60000 ReConnect
+2019-03-27 17:25:21,728 [21] INFO  ModelBase - Socket Ip:192.168.1.16, Port：60000 ReConnect
+2019-03-27 17:25:21,728 [21] INFO  ModelBase - Socket Ip:192.168.1.40, Port：60000 ReConnect
+2019-03-27 17:25:21,729 [21] INFO  ModelBase - Socket Ip:192.168.1.41, Port：60000 ReConnect
+2019-03-27 17:25:21,729 [21] INFO  ModelBase - Socket Ip:192.168.1.42, Port：60000 ReConnect
+2019-03-27 17:25:21,729 [21] INFO  ModelBase - Socket Ip:192.168.1.44, Port：60000 ReConnect
+2019-03-27 17:25:21,730 [21] INFO  ModelBase - Socket Ip:192.168.1.45, Port：60000 ReConnect
+2019-03-27 17:25:21,730 [21] INFO  ModelBase - Socket Ip:192.168.1.46, Port：60000 ReConnect
+2019-03-27 17:25:21,730 [21] INFO  ModelBase - Socket Ip:192.168.1.47, Port：60000 ReConnect
+2019-03-27 17:25:21,731 [21] INFO  ModelBase - Socket Ip:192.168.1.48, Port：60000 ReConnect
+2019-03-27 17:25:21,731 [21] INFO  ModelBase - Socket Ip:192.168.1.49, Port：60000 ReConnect
+2019-03-27 17:25:21,732 [21] INFO  ModelBase - Socket Ip:192.168.1.50, Port：60000 ReConnect
+2019-03-27 17:25:21,732 [21] INFO  ModelBase - Socket Ip:192.168.1.51, Port：60000 ReConnect
+2019-03-27 17:25:21,733 [21] INFO  ModelBase - Socket Ip:192.168.1.54, Port：60000 ReConnect
+2019-03-27 17:25:21,733 [21] INFO  ModelBase - Socket Ip:192.168.1.56, Port：60000 ReConnect
+2019-03-27 17:25:21,734 [21] INFO  ModelBase - Socket Ip:192.168.1.59, Port：60000 ReConnect
+2019-03-27 17:25:21,734 [21] INFO  ModelBase - Socket Ip:192.168.1.60, Port：60000 ReConnect
+2019-03-27 17:25:21,735 [21] INFO  ModelBase - Socket Ip:192.168.1.61, Port：60000 ReConnect
+2019-03-27 17:25:31,725 [21] INFO  ModelBase - Socket Ip:192.168.1.15, Port：60000 ReConnect
+2019-03-27 17:25:31,725 [21] INFO  ModelBase - Socket Ip:192.168.1.16, Port：60000 ReConnect
+2019-03-27 17:25:31,725 [21] INFO  ModelBase - Socket Ip:192.168.1.40, Port：60000 ReConnect
+2019-03-27 17:25:31,726 [21] INFO  ModelBase - Socket Ip:192.168.1.41, Port：60000 ReConnect
+2019-03-27 17:25:31,726 [21] INFO  ModelBase - Socket Ip:192.168.1.42, Port：60000 ReConnect
+2019-03-27 17:25:31,726 [21] INFO  ModelBase - Socket Ip:192.168.1.44, Port：60000 ReConnect
+2019-03-27 17:25:31,727 [21] INFO  ModelBase - Socket Ip:192.168.1.45, Port：60000 ReConnect
+2019-03-27 17:25:31,727 [21] INFO  ModelBase - Socket Ip:192.168.1.46, Port：60000 ReConnect
+2019-03-27 17:25:31,727 [21] INFO  ModelBase - Socket Ip:192.168.1.47, Port：60000 ReConnect
+2019-03-27 17:25:31,727 [21] INFO  ModelBase - Socket Ip:192.168.1.48, Port：60000 ReConnect
+2019-03-27 17:25:31,727 [21] INFO  ModelBase - Socket Ip:192.168.1.49, Port：60000 ReConnect
+2019-03-27 17:25:31,728 [21] INFO  ModelBase - Socket Ip:192.168.1.50, Port：60000 ReConnect
+2019-03-27 17:25:31,728 [21] INFO  ModelBase - Socket Ip:192.168.1.51, Port：60000 ReConnect
+2019-03-27 17:25:31,728 [21] INFO  ModelBase - Socket Ip:192.168.1.54, Port：60000 ReConnect
+2019-03-27 17:25:31,728 [21] INFO  ModelBase - Socket Ip:192.168.1.56, Port：60000 ReConnect
+2019-03-27 17:25:31,728 [21] INFO  ModelBase - Socket Ip:192.168.1.59, Port：60000 ReConnect
+2019-03-27 17:25:31,729 [21] INFO  ModelBase - Socket Ip:192.168.1.60, Port：60000 ReConnect
+2019-03-27 17:25:31,729 [21] INFO  ModelBase - Socket Ip:192.168.1.61, Port：60000 ReConnect

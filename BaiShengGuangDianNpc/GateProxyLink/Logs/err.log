@@ -1,0 +1,50 @@
+﻿2019-03-27 12:14:26,427 [9] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:14:26,427 [8] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:15:05,807 [13] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:15:05,807 [11] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:15:44,169 [9] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:15:44,169 [8] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:16:12,818 [9] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:16:12,819 [12] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:27:09,622 [14] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:27:09,622 [8] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:27:20,850 [8] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:27:20,851 [9] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:43:51,061 [8] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 12:43:51,061 [9] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (502) Bad Gateway.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDianNpc\ModelBase\Base\Utils\HttpClient.cs:line 535
+2019-03-27 15:18:42,277 [8] ERROR ModelBase - ServerManager AddClient Fail, Clients: 9,192.168.1.47:60000, Add: 9,192.168.1.47:60000
+2019-03-27 15:18:42,277 [15] ERROR ModelBase - ServerManager AddClient Fail, Clients: 3,192.168.1.40:60000, Add: 3,192.168.1.40:60000
+2019-03-27 15:18:42,277 [8] ERROR ModelBase - ServerManager AddClient Fail, Clients: 10,192.168.1.48:60000, Add: 10,192.168.1.48:60000
+2019-03-27 15:18:42,277 [15] ERROR ModelBase - ServerManager AddClient Fail, Clients: 4,192.168.1.41:60000, Add: 4,192.168.1.41:60000
+2019-03-27 15:18:42,277 [15] ERROR ModelBase - ServerManager AddClient Fail, Clients: 5,192.168.1.42:60000, Add: 5,192.168.1.42:60000
+2019-03-27 15:18:42,277 [15] ERROR ModelBase - ServerManager AddClient Fail, Clients: 6,192.168.1.44:60000, Add: 6,192.168.1.44:60000
+2019-03-27 15:18:42,277 [15] ERROR ModelBase - ServerManager AddClient Fail, Clients: 7,192.168.1.45:60000, Add: 7,192.168.1.45:60000
+2019-03-27 15:18:42,277 [15] ERROR ModelBase - ServerManager AddClient Fail, Clients: 8,192.168.1.46:60000, Add: 8,192.168.1.46:60000
