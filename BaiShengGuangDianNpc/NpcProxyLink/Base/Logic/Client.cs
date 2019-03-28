@@ -1,4 +1,5 @@
-﻿using ModelBase.Models.Device;
+﻿using System;
+using ModelBase.Models.Device;
 
 namespace NpcProxyLink.Base.Logic
 {
@@ -11,6 +12,7 @@ namespace NpcProxyLink.Base.Logic
         public DeviceInfo DeviceInfo;
 
         public SocketInfo Socket;
+        public DateTime LastSendTime;
 
         public void Init()
         {

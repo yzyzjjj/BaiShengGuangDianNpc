@@ -6,6 +6,7 @@ using ServiceStack;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,8 @@ namespace NpcProxyLink.Base.Logic
     {
         // deviceId, client
         private static ConcurrentDictionary<int, Client> _clients = new ConcurrentDictionary<int, Client>();
-        private static ConcurrentDictionary<int, CancellationTokenSource> _frequency = new ConcurrentDictionary<int, CancellationTokenSource>();
+        private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, 10);
+
         private static Timer _checkTimer = new Timer(CheckClientState, null, 5000, 10000);
         private static bool _isInit;
         public void LoadConfig()
@@ -37,7 +39,6 @@ namespace NpcProxyLink.Base.Logic
                 }
             }
 
-            CheckFrequency();
             _isInit = true;
         }
 
@@ -56,62 +57,24 @@ namespace NpcProxyLink.Base.Logic
         }
 
         /// <summary>
-        /// 检查是否开启监控
+        /// 监控
         /// </summary>
-        private void CheckFrequency()
+        private static void FrequencyMonitoring(object state)
         {
-            if (!_clients.Any())
+            if (!_isInit)
             {
                 return;
             }
 
-            var clientGroups = _clients.Values
-                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && !x.DeviceInfo.Instruction.IsNullOrEmpty())
-                .GroupBy(y => y.DeviceInfo.Frequency);
-            foreach (var clients in clientGroups)
-            {
-                StartMonitoring(clients.Key);
-            }
-        }
+            var comTime = DateTime.Now;
+            var clients = _clients.Values
+                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && !x.DeviceInfo.Instruction.IsNullOrEmpty() && x.LastSendTime <= comTime);
 
-        /// <summary>
-        /// 开启监控
-        /// </summary>
-        /// <param name="frequency"></param>
-        private void StartMonitoring(int frequency)
-        {
-            if (frequency <= 0 || _frequency.ContainsKey(frequency))
+            Parallel.ForEach(clients, client =>
             {
-                return;
-            }
-
-            var cancellationTokenSource = new CancellationTokenSource();
-            _frequency.TryAdd(frequency, cancellationTokenSource);
-            Task.Run(() =>
-            {
-                Log.Debug("StartMonitoring start: " + frequency);
-                while (_clients.Any())
-                {
-                    var clients = _clients.Values.Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency == frequency);
-                    if (!clients.Any())
-                    {
-                        break;
-                    }
-
-                    Parallel.ForEach(clients, client =>
-                    {
-                        client.Socket.SendMessage(client.DeviceInfo.Instruction);
-                    });
-                    //foreach (var client in clients)
-                    //{
-                    //    client.Socket.SendMessage(client.DeviceInfo.Instruction);
-                    //}
-                    Thread.Sleep(frequency);
-                }
-                Log.Debug("StartMonitoring close: " + frequency);
-                _frequency.Remove(frequency, out cancellationTokenSource);
-                cancellationTokenSource.Cancel();
-            }, cancellationTokenSource.Token);
+                client.LastSendTime = DateTime.Now.AddMilliseconds(client.DeviceInfo.Frequency);
+                client.Socket.SendMessage(client.DeviceInfo.Instruction);
+            });
         }
 
         #region device 
@@ -140,10 +103,10 @@ namespace NpcProxyLink.Base.Logic
             }
 
             client.Init();
-            if (deviceInfo.Monitoring)
-            {
-                StartMonitoring(deviceInfo.Frequency);
-            }
+            //if (deviceInfo.Monitoring)
+            //{
+            //    StartMonitoring(deviceInfo.Frequency);
+            //}
 
             return true;
         }
@@ -305,11 +268,6 @@ namespace NpcProxyLink.Base.Logic
                 client.DeviceInfo.Monitoring = deviceInfo.Monitoring;
                 client.DeviceInfo.Frequency = deviceInfo.Frequency;
                 client.DeviceInfo.Instruction = deviceInfo.Instruction;
-                if (deviceInfo.Monitoring)
-                {
-                    StartMonitoring(deviceInfo.Frequency);
-                }
-
                 return Error.Success;
             }
             return Error.DeviceNotExist;

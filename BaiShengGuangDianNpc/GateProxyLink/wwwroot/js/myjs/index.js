@@ -50,7 +50,11 @@ function reload() {
         load()
     });
 }
-
+function reloadServer() {
+    $.get("/gate/server/reloadlist", function (res) {
+        load()
+    });
+}
 function showDevice(deviceId, serverId, ip, port, monitoring, frequency, instruction, storage) {
     $("#deviceId").html(deviceId);
     $("#serverId").html(serverId);

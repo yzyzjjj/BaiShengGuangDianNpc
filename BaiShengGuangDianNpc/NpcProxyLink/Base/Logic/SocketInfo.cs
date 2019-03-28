@@ -2,7 +2,6 @@
 using ModelBase.Base.ServerConfig.Enum;
 using ServiceStack;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -16,6 +15,7 @@ namespace NpcProxyLink.Base.Logic
         public int Port;
         public bool Storage;
         public SocketState State;
+
         private readonly SocketAsyncEventArgs _args = new SocketAsyncEventArgs();
 
         ///<summary>
@@ -146,53 +146,20 @@ namespace NpcProxyLink.Base.Logic
             State = SocketState.Close;
         }
 
-        /// <summary>
-        /// 保存数据
-        /// </summary>
-        /// <param name="receivedBytes"></param>
-        /// <param name="receiveTime"></param>
-        public void SaveDate(byte[] receivedBytes, DateTime receiveTime)
-        {
-            //逐字节变为16进制字符，以英文逗号隔开
-            if (receivedBytes.Length > 0)
-            {
-                var data = "";
-                for (int i = 0; i < receivedBytes.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        data += Convert.ToString(receivedBytes[i], 16);
-                    }
-                    else
-                    {
-                        data += "," + Convert.ToString(receivedBytes[i], 16);
-                    }
-                }
-                Server.ServerConfig.DataStoragDb
-                    .Execute(
-                        "INSERT INTO `npc_monitoring_data` (`Ip`, `Port`, `Time`, `Data`) VALUES (@Ip, @Port, @receiveTime, @data);",
-                        new
-                        {
-                            Ip,
-                            Port,
-                            receiveTime,
-                            data
-                        });
-            }
-
-        }
-
-        public void SaveDate(string data, DateTime receiveTime)
+        public void SaveDate(string data, DateTime sendTime, DateTime receiveTime, bool userSend = false)
         {
             Server.ServerConfig.DataStoragDb
                 .Execute(
-                    "INSERT INTO `npc_monitoring_data` (`Ip`, `Port`, `Time`, `Data`) VALUES (@Ip, @Port, @receiveTime, @data);",
+                    "INSERT INTO `npc_monitoring_data` (`Ip`, `Port`, `SendTime`, `ReceiveTime`, `DealTime`, `Data`, `UserSend`) VALUES (@Ip, @Port, @sendTime, @receiveTime, @dealTime, @data, @UserSend);",
                     new
                     {
                         Ip,
                         Port,
+                        sendTime,
                         receiveTime,
-                        data
+                        dealTime = (receiveTime - sendTime).TotalMilliseconds,
+                        data,
+                        userSend
                     });
 
         }
@@ -210,14 +177,29 @@ namespace NpcProxyLink.Base.Logic
             {
                 if (State == SocketState.Connected)
                 {
+                    var sendTime = DateTime.Now;
                     _socket.Send(messageBytes);
                     _receiveData = new byte[ReceiveBufferSize];
                     _socket.Receive(_receiveData);
+                    var receiveTime = DateTime.Now;
                     if (Storage)
                     {
                         Task.Run(() =>
                         {
-                            SaveDate(_receiveData, DateTime.Now);
+                            var data = "";
+                            for (int i = 0; i < _receiveData.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    data += Convert.ToString(_receiveData[i], 16);
+                                }
+                                else
+                                {
+                                    data += "," + Convert.ToString(_receiveData[i], 16);
+                                }
+                            }
+
+                            SaveDate(data, sendTime, receiveTime);
                         });
                     }
                     return Error.Success;
@@ -265,6 +247,7 @@ namespace NpcProxyLink.Base.Logic
             {
                 if (State == SocketState.Connected)
                 {
+                    var sendTime = DateTime.Now;
                     _socket.Send(messageBytes);
                     _receiveData = new byte[ReceiveBufferSize];
                     _socket.Receive(_receiveData);
@@ -283,12 +266,13 @@ namespace NpcProxyLink.Base.Logic
                             }
                         }
                     }
+                    var receiveTime = DateTime.Now;
 
                     if (Storage)
                     {
                         Task.Run(() =>
                         {
-                            SaveDate(data, DateTime.Now);
+                            SaveDate(data, sendTime, receiveTime, true);
                         });
                     }
                     return data;

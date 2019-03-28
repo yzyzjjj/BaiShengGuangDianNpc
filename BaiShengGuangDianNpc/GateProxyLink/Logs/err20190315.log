@@ -1,6 +1,0 @@
-﻿2019-03-15 15:43:24,409 [9] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10001/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
-   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
-   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDian\ModelBase\Base\Utils\HttpClient.cs:line 494
-2019-03-15 15:43:24,409 [8] ERROR ModelBase - 请求服务器异常 GetAsync:http://localhost:10002/npc/device/list,详情:System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
-   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
-   at ModelBase.Base.Utils.HttpClient.ResponseCallback(IAsyncResult asynchronousResult) in F:\NPC\私人\王辉\BaiShengGuangDian\ModelBase\Base\Utils\HttpClient.cs:line 494
