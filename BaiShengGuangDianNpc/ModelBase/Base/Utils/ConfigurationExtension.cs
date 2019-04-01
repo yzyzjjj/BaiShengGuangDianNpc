@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace ModelBase.Base.Utils
 {
-    public static class ConfigurationHelper
+    public static class ConfigurationExtension
     {
         public static T GetAppSettings<T>(this IConfiguration configuration, string name) where T : IComparable
         {

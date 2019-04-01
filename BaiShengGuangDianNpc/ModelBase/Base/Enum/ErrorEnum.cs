@@ -24,6 +24,11 @@ namespace ModelBase.Base.ServerConfig.Enum
         /// </summary>
         [Description("数据解析失败")]
         AnalysisFail,
+        /// <summary>
+        /// 参数错误
+        /// </summary>
+        [Description("参数错误")]
+        ParamError,
         #region 设备相关 1000 - 1999
         /// <summary>
         /// 设备不存在
@@ -289,7 +294,39 @@ namespace ModelBase.Base.ServerConfig.Enum
         /// </summary>
         [Description("密码错误")]
         PasswordError = 3002,
+        /// <summary>
+        /// 页面不存在
+        /// </summary>
+        [Description("页面不存在")]
+        PageNotExist = 3003,
+        /// <summary>
+        /// Api不存在
+        /// </summary>
+        [Description("Api不存在")]
+        ApiNotExist = 3004,
+        /// <summary>
+        /// 没有权限
+        /// </summary>
+        [Description("没有权限")]
+        NoAuth = 3005,
+        /// <summary>
+        /// 上级不存在
+        /// </summary>
+        [Description("上级不存在")]
+        ParentNotExist = 3006,
+        /// <summary>
+        /// 组织结构不存在
+        /// </summary>
+        [Description("组织结构不存在")]
+        OrganizationUnitNotExist = 3007,
+        /// <summary>
+        /// 角色不存在
+        /// </summary>
+        [Description("角色不存在")]
+        RoleNotExist = 3008,
 
         #endregion
+
+
     }
 }

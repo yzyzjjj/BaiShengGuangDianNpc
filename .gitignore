@@ -245,7 +245,7 @@ _Pvt_Extensions
 # JetBrains Rider
 .idea/
 *.sln.iml
-BaiShengGuangDianNpc/NpcProxyLink/obj/
+BaiShengGuangDianWeb/BaiShengGuangDianWeb/obj/
 logs/*.log
 
 tmp/

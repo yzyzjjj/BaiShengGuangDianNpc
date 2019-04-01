@@ -13,6 +13,39 @@ namespace ModelBase.Base.HttpServer
         {
 
         }
+        public HttpServer(string verb)
+        {
+
+        }
+
+        //public static void GetAsync(string url, Dictionary<string, string> data = null, GetCallBack callBack = null)
+        //{
+        //    var dts = new ArrayOfString();
+        //    if (data != null)
+        //    {
+        //        dts.AddRange(data.Select(dt => string.Format("{0}={1}", dt.Key, dt.Value)));
+        //    }
+
+        //    if (dts.Count > 0)
+        //    {
+        //        url += "?" + dts.Join("&");
+        //    }
+        //    var httpClient = new HttpClient(url) { Verb = HttpVerb.GET };
+        //    httpClient.AsyncGetString((ss, e) =>
+        //    {
+        //        if (e == null)
+        //        {
+        //            Log.DebugFormat("GetAsync return:{0}", e == null ? ss : e.Message);
+        //            callBack?.Invoke(ss, e);
+        //        }
+        //        else
+        //        {
+        //            Log.ErrorFormat("请求服务器异常 GetAsync:{0},详情:{1}", url, e);
+        //        }
+        //    });
+        //}
+
+
 
         public static string Get(string url, Dictionary<string, string> data = null)
         {
@@ -145,5 +178,7 @@ namespace ModelBase.Base.HttpServer
                 }
             });
         }
+
+
     }
 }
