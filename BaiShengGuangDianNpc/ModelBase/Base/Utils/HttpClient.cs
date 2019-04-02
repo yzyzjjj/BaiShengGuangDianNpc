@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceStack;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using ServiceStack;
 
 namespace ModelBase.Base.Utils
 {
@@ -19,6 +19,10 @@ namespace ModelBase.Base.Utils
         public const string ContentType_Json = "application/json;charset=utf-8";
         #region Properties
 
+        /// <summary>
+        /// 身份信息
+        /// </summary>
+        public string IdentityInformation { get; set; }
         /// <summary>
         /// 是否自动在不同的请求间保留Cookie, Referer
         /// </summary>
@@ -92,8 +96,9 @@ namespace ModelBase.Base.Utils
         /// 构造新的HttpClient实例
         /// </summary>
         /// <param name="url">要获取的资源的地址</param>
-        public HttpClient(string url)
-            : this(url, null)
+        /// <param name="identityInformation"></param>
+        public HttpClient(string url, string identityInformation = "")
+            : this(url, null, identityInformation)
         {
         }
 
@@ -102,8 +107,9 @@ namespace ModelBase.Base.Utils
         /// </summary>
         /// <param name="url">要获取的资源的地址</param>
         /// <param name="context">Cookie及Referer</param>
-        public HttpClient(string url, HttpClientContext context)
-            : this(url, context, false)
+        /// <param name="identityInformation"></param>
+        public HttpClient(string url, HttpClientContext context, string identityInformation)
+            : this(url, context, false, identityInformation)
         {
         }
 
@@ -113,7 +119,8 @@ namespace ModelBase.Base.Utils
         /// <param name="url">要获取的资源的地址</param>
         /// <param name="context">Cookie及Referer</param>
         /// <param name="keepContext">是否自动在不同的请求间保留Cookie, Referer</param>
-        public HttpClient(string url, HttpClientContext context, bool keepContext)
+        /// <param name="identityInformation"></param>
+        public HttpClient(string url, HttpClientContext context, bool keepContext, string identityInformation)
         {
             Url = url;
             Context = context;
@@ -126,6 +133,7 @@ namespace ModelBase.Base.Utils
             QueryingData = new Dictionary<string, string>();
             DefaultLanguage = "zh-CN";
             DefaultEncoding = Encoding.UTF8;
+            IdentityInformation = identityInformation;
 
             if (Context == null)
             {
@@ -171,6 +179,11 @@ namespace ModelBase.Base.Utils
             req.AllowAutoRedirect = false;
             req.CookieContainer = new CookieContainer();
             req.Headers.Add("Accept-Language", DefaultLanguage);
+            if (!IdentityInformation.IsNullOrEmpty())
+            {
+                req.Headers.Add("IdentityInformation", IdentityInformation);
+            }
+
             req.Accept = Accept;
             req.UserAgent = UserAgent;
             req.KeepAlive = false;
@@ -196,10 +209,9 @@ namespace ModelBase.Base.Utils
                 Verb = HttpVerb.POST;
             }
 
-            if (Verb == HttpVerb.POST)
+            if (Verb != HttpVerb.GET)
             {
-                req.Method = "POST";
-
+                req.Method = Verb.ToString();
                 MemoryStream memoryStream = new MemoryStream();
                 StreamWriter writer = new StreamWriter(memoryStream);
 
@@ -209,8 +221,10 @@ namespace ModelBase.Base.Utils
                 {
                     req.ContentType = ContentType_Form;
                 }
-                if(!RawData.IsNullOrEmpty())
+                if (!RawData.IsNullOrEmpty())
+                {
                     req.ContentType = ContentType_Json;
+                }
 
                 if (req.ContentType == ContentType_Form)
                 {
@@ -227,7 +241,7 @@ namespace ModelBase.Base.Utils
                     writer.Write(sb.ToString());
                 }
                 else
-                {  
+                {
                     //raw   ContentType_Json
                     writer.Write(RawData);
                 }
@@ -599,6 +613,8 @@ namespace ModelBase.Base.Utils
         Default,
         GET,
         POST,
+        PUT,
+        DELETE,
         HEAD,
     }
 

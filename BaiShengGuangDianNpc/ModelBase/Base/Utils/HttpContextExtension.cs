@@ -34,5 +34,20 @@ namespace ModelBase.Base.Utils
             }
             return ip;
         }
+
+        /// <summary>
+        /// 获取请求身份信息
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string GetIdentityInformation(this HttpRequest request)
+        {
+            var identityInformation = request.Headers["IdentityInformation"].FirstOrDefault();
+            if (string.IsNullOrEmpty(identityInformation))
+            {
+                identityInformation = GetIp(request);
+            }
+            return identityInformation;
+        }
     }
 }

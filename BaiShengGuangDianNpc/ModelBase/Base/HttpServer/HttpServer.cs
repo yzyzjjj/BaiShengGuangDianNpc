@@ -1,5 +1,6 @@
 ﻿using ModelBase.Base.Logger;
 using ModelBase.Base.Utils;
+using Newtonsoft.Json.Linq;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace ModelBase.Base.HttpServer
 
         }
 
-        public static string Result(string url, string verb, Dictionary<string, string> data)
+        public static string Result(string account, string url, string verb, Dictionary<string, string> data = null)
         {
             try
             {
@@ -24,10 +25,13 @@ namespace ModelBase.Base.HttpServer
                     return "fail";
                 }
 
-                var httpClient = new HttpClient(url) { Verb = httpVerb };
-                foreach (var dt in data)
+                var httpClient = new HttpClient(url, account) { Verb = httpVerb };
+                if (data != null)
                 {
-                    httpClient.PostingData.Add(dt.Key, dt.Value);
+                    foreach (var dt in data)
+                    {
+                        httpClient.PostingData.Add(dt.Key, dt.Value);
+                    }
                 }
 
                 var result = httpClient.GetString();
@@ -36,11 +40,11 @@ namespace ModelBase.Base.HttpServer
             }
             catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e);
+                Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
                 return "fail";
             }
         }
-        public static string Result(string url, string verb, string rawData)
+        public static string Result(string account, string url, string verb, string rawData = "")
         {
             try
             {
@@ -50,7 +54,17 @@ namespace ModelBase.Base.HttpServer
                     return "fail";
                 }
 
-                var httpClient = new HttpClient(url) { Verb = httpVerb };
+                if (!rawData.IsNullOrEmpty())
+                {
+                    var requestBody = JObject.Parse(rawData);
+                    if (requestBody.GetValue("id") != null)
+                    {
+                        url += "/" + requestBody["id"];
+                        requestBody.Remove("id");
+                        rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                    }
+                }
+                var httpClient = new HttpClient(url, account) { Verb = httpVerb };
                 httpClient.RawData = rawData;
                 var result = httpClient.GetString();
 
@@ -58,20 +72,20 @@ namespace ModelBase.Base.HttpServer
             }
             catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e);
+                Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
                 return "fail";
             }
         }
 
         public delegate void ResultCallBack(string result, Exception e);
-        public static void ResultAsync(string url, string verb, Dictionary<string, string> data = null, PostCallBack callBack = null)
+        public static void ResultAsync(string account, string url, string verb, Dictionary<string, string> data = null, PostCallBack callBack = null)
         {
             if (!EnumHelper.TryParseStr(verb, out HttpVerb httpVerb))
             {
                 Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 callBack?.Invoke("", new Exception("Verb Error:" + verb));
             }
-            var httpClient = new HttpClient(url) { Verb = httpVerb };
+            var httpClient = new HttpClient(url, account) { Verb = httpVerb };
             if (data != null)
             {
                 foreach (var dt in data)
@@ -89,11 +103,11 @@ namespace ModelBase.Base.HttpServer
                 }
                 else
                 {
-                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e);
+                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
                 }
             });
         }
-        public static void ResultAsync(string url, string verb, string rawData = "", PostCallBack callBack = null)
+        public static void ResultAsync(string account, string url, string verb, string rawData = "", PostCallBack callBack = null)
         {
             if (!EnumHelper.TryParseStr(verb, out HttpVerb httpVerb))
             {
@@ -101,7 +115,7 @@ namespace ModelBase.Base.HttpServer
                 callBack?.Invoke("", new Exception("Verb Error:" + verb));
             }
 
-            var httpClient = new HttpClient(url) { Verb = httpVerb, RawData = rawData };
+            var httpClient = new HttpClient(url, account) { Verb = httpVerb, RawData = rawData };
             httpClient.AsyncGetString((ss, e) =>
             {
                 if (e == null)
@@ -111,7 +125,7 @@ namespace ModelBase.Base.HttpServer
                 }
                 else
                 {
-                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e);
+                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
                 }
             });
         }

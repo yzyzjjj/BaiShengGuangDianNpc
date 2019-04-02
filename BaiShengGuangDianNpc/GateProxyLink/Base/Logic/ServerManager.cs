@@ -336,7 +336,7 @@ namespace GateProxyLink.Base.Logic
                 }
             }
 
-
+            return res;
             //根据serverId分组
             foreach (var deviceGroup in devicesList.GroupBy(x => x.ServerId))
             {
