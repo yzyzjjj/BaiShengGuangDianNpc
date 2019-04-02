@@ -32,15 +32,15 @@ function load() {
                 "iDisplayLength": 20, //默认显示的记录数  
                 "columns": [
                     { "data": null, "title": "操作", "render": op },
-                    { "data": "deviceId", "title": "设备ID" },
-                    { "data": "state", "title": "状态" },
-                    { "data": "serverId", "title": "NpcServerId" },
-                    { "data": "ip", "title": "ip" },
-                    { "data": "port", "title": "端口" },
-                    { "data": "monitoring", "title": "是否监控" },
-                    { "data": "frequency", "title": "监控频率" },
-                    { "data": "storage", "title": "是否存储" },
-                    { "data": "instruction", "title": "指令" },   
+                    { "data": "DeviceId", "title": "设备ID" },
+                    { "data": "State", "title": "状态" },
+                    { "data": "ServerId", "title": "NpcServerId" },
+                    { "data": "Ip", "title": "ip" },
+                    { "data": "Port", "title": "端口" },
+                    { "data": "Monitoring", "title": "是否监控" },
+                    { "data": "Frequency", "title": "监控频率" },
+                    { "data": "Storage", "title": "是否存储" },
+                    { "data": "Instruction", "title": "指令" },   
                 ],
             });
     });

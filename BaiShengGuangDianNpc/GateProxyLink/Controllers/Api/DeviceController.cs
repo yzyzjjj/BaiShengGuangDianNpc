@@ -21,10 +21,22 @@ namespace GateProxyLink.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet("list")]
-        public DataResult GetDevices()
+        public DeviceResult GetDevices()
         {
-            var result = new DataResult();
+            var result = new DeviceResult();
             result.datas.AddRange(ServerConfig.ServerManager.GetDevices());
+            return result;
+        }
+
+        /// <summary>
+        /// 获取设备列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("single")]
+        public DeviceResult GetDevice(int id)
+        {
+            var result = new DeviceResult();
+            result.datas.Add(ServerConfig.ServerManager.GetDevice(id));
             return result;
         }
 

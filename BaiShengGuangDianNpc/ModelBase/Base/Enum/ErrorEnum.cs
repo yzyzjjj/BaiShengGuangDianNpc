@@ -207,14 +207,14 @@ namespace ModelBase.Base.ServerConfig.Enum
         [Description("检验员已存在")]
         SurveyorIsExist = 1032,
         /// <summary>
-        /// 输入输出变量不存在
+        /// 变量不存在
         /// </summary>
-        [Description("输入输出变量不存在")]
+        [Description("变量不存在")]
         DataNameDictionaryNotExist = 1033,
         /// <summary>
-        /// 输入输出变量已存在
+        /// 变量已存在
         /// </summary>
-        [Description("输入输出变量已存在")]
+        [Description("变量已存在")]
         DataNameDictionaryIsExist = 1034,
         /// <summary>
         /// 工艺数据不存在
@@ -276,6 +276,26 @@ namespace ModelBase.Base.ServerConfig.Enum
         /// </summary>
         [Description("维修记录已存在")]
         RepairRecordIsExist = 1046,
+        /// <summary>
+        /// 变量类型不存在
+        /// </summary>
+        [Description("变量类型不存在")]
+        VariableTypeNotExist = 1047,
+        /// <summary>
+        /// 变量类型已存在
+        /// </summary>
+        [Description("变量类型已存在")]
+        VariableTypeIsExist = 1048,
+        /// <summary>
+        /// 脚本版本不存在
+        /// </summary>
+        [Description("脚本版本不存在")]
+        ScriptVersionNotExist = 1049,
+        /// <summary>
+        /// 脚本版本已存在
+        /// </summary>
+        [Description("脚本版本已存在")]
+        ScriptVersionIsExist = 1050,
         #endregion
 
         #region 管理后台  3000 - 3999

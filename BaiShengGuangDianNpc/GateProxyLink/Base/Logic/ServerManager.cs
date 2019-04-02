@@ -168,7 +168,10 @@ namespace GateProxyLink.Base.Logic
         {
             return _clients.Values.OrderBy(x => x.DeviceId);
         }
-
+        public DeviceInfo GetDevice(int id)
+        {
+            return _clients.Values.FirstOrDefault(x => x.DeviceId == id);
+        }
         /// <summary>
         /// 添加新设备  DeviceInfo必须都有
         /// </summary>
@@ -336,7 +339,6 @@ namespace GateProxyLink.Base.Logic
                 }
             }
 
-            return res;
             //根据serverId分组
             foreach (var deviceGroup in devicesList.GroupBy(x => x.ServerId))
             {

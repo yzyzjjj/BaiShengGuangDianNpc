@@ -21,6 +21,7 @@ namespace ModelBase.Base.UrlMappings
             { "batchSetFrequency", "/npc/device/batchsetfrequency"},
 
             { "deviceListGate", "/gate/device/list"},
+            { "deviceSingleGate", "/gate/device/single"},
             { "addDeviceGate", "/gate/device/add"},
             { "batchAddDeviceGate", "/gate/device/batchadd"},
             { "delDeviceGate", "/gate/device/delete"},

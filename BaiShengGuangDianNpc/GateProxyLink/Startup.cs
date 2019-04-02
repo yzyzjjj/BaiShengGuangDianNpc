@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModelBase.Base.Filter;
 using ModelBase.Base.Logger;
+using Newtonsoft.Json.Serialization;
 
 namespace GateProxyLink
 {
@@ -33,8 +34,12 @@ namespace GateProxyLink
                 .AddJsonOptions(
                     options =>
                     {
+                        //忽略循环引用
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                        //options.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.MicrosoftDateFormat;
+                        //不使用驼峰样式的key
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                        //设置时间格式
+                        options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
                     }
                 );
 
