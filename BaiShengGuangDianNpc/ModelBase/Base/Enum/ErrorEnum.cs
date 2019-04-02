@@ -324,6 +324,11 @@ namespace ModelBase.Base.ServerConfig.Enum
         /// </summary>
         [Description("角色不存在")]
         RoleNotExist = 3008,
+        /// <summary>
+        /// API配置错误
+        /// </summary>
+        [Description("API配置错误")]
+        ApiHostError = 3009,
 
         #endregion
 

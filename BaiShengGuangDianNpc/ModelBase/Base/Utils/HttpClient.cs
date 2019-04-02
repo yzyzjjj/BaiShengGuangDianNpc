@@ -596,6 +596,7 @@ namespace ModelBase.Base.Utils
 
     public enum HttpVerb
     {
+        Default,
         GET,
         POST,
         HEAD,
@@ -603,6 +604,7 @@ namespace ModelBase.Base.Utils
 
     public enum FileExistsAction
     {
+        Default,
         Overwrite,
         Append,
         Cancel,
