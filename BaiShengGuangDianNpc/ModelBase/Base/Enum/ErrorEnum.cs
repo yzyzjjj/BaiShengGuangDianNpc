@@ -349,6 +349,11 @@ namespace ModelBase.Base.ServerConfig.Enum
         /// </summary>
         [Description("API配置错误")]
         ApiHostError = 3009,
+        /// <summary>
+        /// 系统角色无法操作
+        /// </summary>
+        [Description("系统角色无法操作")]
+        RoleNotOperate = 3010,
 
         #endregion
 
