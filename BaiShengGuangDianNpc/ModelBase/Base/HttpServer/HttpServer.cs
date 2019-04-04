@@ -56,12 +56,19 @@ namespace ModelBase.Base.HttpServer
 
                 if (!rawData.IsNullOrEmpty())
                 {
-                    var requestBody = JObject.Parse(rawData);
-                    if (requestBody.GetValue("id") != null)
+                    try
                     {
-                        url += "/" + requestBody["id"];
-                        requestBody.Remove("id");
-                        rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                        var requestBody = JObject.Parse(rawData);
+                        if (requestBody.GetValue("id") != null)
+                        {
+                            url += "/" + requestBody["id"];
+                            requestBody.Remove("id");
+                            rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
                     }
                 }
                 var httpClient = new HttpClient(url, account) { Verb = httpVerb };
