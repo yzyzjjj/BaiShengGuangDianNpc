@@ -8,4 +8,13 @@ namespace ModelBase.Models.Result
     {
         public List<DeviceInfo> datas = new List<DeviceInfo>();
     }
+
+    public class DeviceUpdateResult : Result
+    {
+        public List<object> deviceModels = new List<object>();
+        public List<object> firmwareLibraries = new List<object>();
+        public List<object> hardwareLibraries = new List<object>();
+        public List<object> processLibraries = new List<object>();
+        public List<object> sites = new List<object>();
+    }
 }
