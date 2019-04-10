@@ -14,7 +14,8 @@ namespace ModelBase.Models.Result
         public List<object> deviceModels = new List<object>();
         public List<object> firmwareLibraries = new List<object>();
         public List<object> hardwareLibraries = new List<object>();
-        public List<object> processLibraries = new List<object>();
+        public List<object> applicationLibraries = new List<object>();
+        public List<object> scriptVersions = new List<object>();
         public List<object> sites = new List<object>();
     }
 }

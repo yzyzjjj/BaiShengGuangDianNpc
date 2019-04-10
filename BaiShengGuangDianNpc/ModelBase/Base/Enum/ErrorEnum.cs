@@ -101,15 +101,15 @@ namespace ModelBase.Base.ServerConfig.Enum
         [Description("硬件版本已存在")]
         HardwareLibraryIsExist = 1011,
         /// <summary>
-        /// 流程脚本版本不存在
+        /// 应用层版本不存在
         /// </summary>
-        [Description("流程脚本版本不存在")]
-        ProcessLibraryNotExist = 1012,
+        [Description("应用层版本不存在")]
+        ApplicationLibraryNotExist = 1012,
         /// <summary>
-        /// 流程脚本版本已存在
+        /// 应用层版本已存在
         /// </summary>
-        [Description("流程脚本版本已存在")]
-        ProcessLibraryIsExist = 1013,
+        [Description("应用层版本已存在")]
+        ApplicationLibraryIsExist = 1013,
         /// <summary>
         /// 场地不存在
         /// </summary>
@@ -289,12 +289,12 @@ namespace ModelBase.Base.ServerConfig.Enum
         /// <summary>
         /// 脚本版本不存在
         /// </summary>
-        [Description("脚本版本不存在")]
+        [Description("流程脚本版本不存在")]
         ScriptVersionNotExist = 1049,
         /// <summary>
         /// 脚本版本已存在
         /// </summary>
-        [Description("脚本版本已存在")]
+        [Description("流程脚本版本已存在")]
         ScriptVersionIsExist = 1050,
         #endregion
 
