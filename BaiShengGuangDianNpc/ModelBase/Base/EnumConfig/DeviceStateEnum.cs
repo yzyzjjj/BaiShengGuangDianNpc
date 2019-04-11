@@ -13,19 +13,6 @@
         /// <summary>
         /// 加工中
         /// </summary>
-        Processing,
-        /// <summary>
-        /// 已报修
-        /// </summary>
-        Applicant,
-        /// <summary>
-        /// 已确认
-        /// </summary>
-        Confirmed,
-        /// <summary>
-        /// 维修中
-        /// </summary>
-        Repair,
-
+        Processing
     }
 }
