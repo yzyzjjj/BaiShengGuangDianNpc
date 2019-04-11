@@ -390,6 +390,13 @@ namespace GateProxyLink.Base.Logic
                 res.AddRange(notExistList.Select(device => new Tuple<int, string>(device.DeviceId, string.Empty)));
             }
 
+            if (devicesList.Any())
+            {
+                foreach (var device in devicesList)
+                {
+                    device.ServerId = _clients[device.DeviceId].ServerId;
+                }
+            }
             //根据serverId分组
             foreach (var deviceGroup in devicesList.GroupBy(x => x.ServerId))
             {

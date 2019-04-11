@@ -1,20 +1,20 @@
 ﻿var op = function (data, type, row) {
     var html = '<button type="button" class="btn btn-primary" data-toggle="modal"  onclick="showDevice(\'' +
-        row.deviceId +
+        row.DeviceId +
         '\',\'' +
-        row.serverId +
+        row.ServerId +
         '\',\'' +
-        row.ip +
+        row.Ip +
         '\',\'' +
-        row.port +
+        row.Port +
         '\',\'' +
-        row.monitoring +
+        row.Monitoring +
         '\',\'' +
-        row.frequency +
+        row.Frequency +
         '\',\'' +
-        row.instruction +
+        row.Instruction +
         '\',\'' +
-        row.storage +
+        row.Storage +
         '\')">操作</button>';
     return html;
 }
@@ -123,7 +123,8 @@ function btnSend() {
         {
             deviceInfo: JSON.stringify(data)
         }, function (res) {
-            $("#text").append(res.messages[0].item2)
+            $("#text").empty();
+            $("#text").append(res.messages[0].Item2)
         })
 
 }
