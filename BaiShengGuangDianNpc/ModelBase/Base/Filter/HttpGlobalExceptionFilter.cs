@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Logger;
-using ModelBase.Base.ServerConfig.Enum;
 using ModelBase.Models.Result;
 
 namespace ModelBase.Base.Filter

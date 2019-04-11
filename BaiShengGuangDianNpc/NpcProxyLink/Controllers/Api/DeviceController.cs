@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelBase.Base.Logger;
-using ModelBase.Base.ServerConfig.Enum;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
 using NpcProxyLink.Base.Server;
 using System;
 using System.Collections.Generic;
+using ModelBase.Base.EnumConfig;
 
 namespace NpcProxyLink.Controllers.Api
 {

@@ -1,13 +1,13 @@
 ﻿using GateProxyLink.Base.Logic;
 using GateProxyLink.Base.Server;
 using Microsoft.AspNetCore.Mvc;
-using ModelBase.Base.ServerConfig.Enum;
 using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using ModelBase.Base.EnumConfig;
 
 namespace GateProxyLink.Controllers.Api
 {

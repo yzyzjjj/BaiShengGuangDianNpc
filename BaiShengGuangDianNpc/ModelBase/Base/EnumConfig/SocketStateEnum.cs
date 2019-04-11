@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ModelBase.Base.ServerConfig.Enum
+﻿namespace ModelBase.Base.EnumConfig
 {
     public enum SocketState
     {

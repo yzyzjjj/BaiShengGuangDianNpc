@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using ModelBase.Base.ServerConfig.Enum;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;

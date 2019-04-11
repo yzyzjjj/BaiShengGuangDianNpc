@@ -2,7 +2,6 @@
 using ModelBase.Base.HttpServer;
 using ModelBase.Base.Logger;
 using ModelBase.Base.Logic;
-using ModelBase.Base.ServerConfig.Enum;
 using ModelBase.Base.UrlMappings;
 using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
@@ -14,6 +13,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ModelBase.Base.EnumConfig;
 
 namespace GateProxyLink.Base.Logic
 {

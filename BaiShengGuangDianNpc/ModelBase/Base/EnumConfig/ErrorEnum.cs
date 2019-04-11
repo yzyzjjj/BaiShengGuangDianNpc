@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ModelBase.Base.ServerConfig.Enum
+namespace ModelBase.Base.EnumConfig
 {
     public enum Error
     {
@@ -296,6 +296,26 @@ namespace ModelBase.Base.ServerConfig.Enum
         /// </summary>
         [Description("流程脚本版本已存在")]
         ScriptVersionIsExist = 1050,
+        /// <summary>
+        /// 常用变量类型不存在
+        /// </summary>
+        [Description("常用变量类型不存在")]
+        UsuallyDictionaryTypeNotExist = 1051,
+        /// <summary>
+        /// 常用变量类型已存在
+        /// </summary>
+        [Description("常用变量类型已存在")]
+        UsuallyDictionaryTypeIsExist = 1052,
+        /// <summary>
+        /// 常用变量类型不存在
+        /// </summary>
+        [Description("常用变量不存在")]
+        UsuallyDictionaryNotExist = 1053,
+        /// <summary>
+        /// 常用变量类型已存在
+        /// </summary>
+        [Description("常用变量已存在")]
+        UsuallyDictionaryIsExist = 1054,
         #endregion
 
         #region 管理后台  3000 - 3999

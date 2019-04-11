@@ -1,7 +1,7 @@
 ﻿using GateProxyLink.Base.Logic;
 using GateProxyLink.Base.Server;
 using Microsoft.AspNetCore.Mvc;
-using ModelBase.Base.ServerConfig.Enum;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Utils;
 using ModelBase.Models.Result;
 using Newtonsoft.Json;

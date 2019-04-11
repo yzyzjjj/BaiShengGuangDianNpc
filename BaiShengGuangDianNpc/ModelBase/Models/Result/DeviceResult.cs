@@ -11,6 +11,7 @@ namespace ModelBase.Models.Result
 
     public class DeviceUpdateResult : Result
     {
+        public List<object> deviceCategories = new List<object>();
         public List<object> deviceModels = new List<object>();
         public List<object> firmwareLibraries = new List<object>();
         public List<object> hardwareLibraries = new List<object>();

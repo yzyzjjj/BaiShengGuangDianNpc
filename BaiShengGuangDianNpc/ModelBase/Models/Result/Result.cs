@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using ModelBase.Base.ServerConfig.Enum;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Utils;
 
 namespace ModelBase.Models.Result

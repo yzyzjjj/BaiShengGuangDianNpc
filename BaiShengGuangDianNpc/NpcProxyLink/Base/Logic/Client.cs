@@ -16,7 +16,7 @@ namespace NpcProxyLink.Base.Logic
 
         public void Init()
         {
-            Socket = new SocketInfo(DeviceInfo.Ip, DeviceInfo.Port, DeviceInfo.Storage);
+            Socket = new SocketInfo(DeviceInfo);
         }
 
         public void Dispose()

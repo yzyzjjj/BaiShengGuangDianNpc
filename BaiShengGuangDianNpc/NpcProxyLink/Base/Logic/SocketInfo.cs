@@ -1,7 +1,11 @@
-﻿using ModelBase.Base.Logger;
-using ModelBase.Base.ServerConfig.Enum;
+﻿using ModelBase.Base.EnumConfig;
+using ModelBase.Base.Logger;
+using ModelBase.Base.Utils;
+using ModelBase.Models.Device;
+using NpcProxyLink.Base.Helper;
 using ServiceStack;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,6 +19,9 @@ namespace NpcProxyLink.Base.Logic
         public int Port;
         public bool Storage;
         public SocketState State;
+        public DeviceState DeviceState;
+        public string HeartPacket;
+        public int DictionaryId;
 
         private readonly SocketAsyncEventArgs _args = new SocketAsyncEventArgs();
 
@@ -29,11 +36,12 @@ namespace NpcProxyLink.Base.Logic
         private byte[] _receiveData;
 
         private Socket _socket;
-        public SocketInfo(string ip, int port, bool storage = false)
+        public SocketInfo(DeviceInfo deviceInfo)
         {
-            Ip = ip;
-            Port = port;
-            Storage = storage;
+            Ip = deviceInfo.Ip;
+            Port = deviceInfo.Port;
+            Storage = deviceInfo.Storage;
+            UpdateInfo(deviceInfo);
             if (IPAddress.TryParse(Ip, out var ipAddress))
             {
                 _args.RemoteEndPoint = new IPEndPoint(ipAddress, Port);
@@ -46,6 +54,14 @@ namespace NpcProxyLink.Base.Logic
             {
                 State = SocketState.Fail;
             }
+        }
+
+        public void UpdateInfo(DeviceInfo deviceInfo)
+        {
+            var sv = ScriptVersionHelper.Get(deviceInfo.ScriptId);
+            HeartPacket = sv?.HeartPacket ?? "";
+            var ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 1);
+            DictionaryId = ud?.DictionaryId ?? 2;
         }
 
         private void ConnectCompleted(object sender, SocketAsyncEventArgs arg)
@@ -105,7 +121,8 @@ namespace NpcProxyLink.Base.Logic
 
         public bool Heart()
         {
-            var instruction = "0xF3,0x02,0x2C,0x01,0xFF,0x00,0xFF,0x00,0x67,0x12";
+
+            var instruction = HeartPacket.IsNullOrEmpty() ? "0xF3,0x02,0x2C,0x01,0xFF,0x00,0xFF,0x00,0x67,0x12" : HeartPacket;
             try
             {
                 //以英文逗号分割字符串，并去掉空字符
@@ -117,7 +134,21 @@ namespace NpcProxyLink.Base.Logic
                     _socket.Send(sendData);
                     _receiveData = new byte[ReceiveBufferSize];
                     _socket.Receive(_receiveData);
-                    return _receiveData.Length > 0;
+                    var result = _receiveData.Length > 0;
+                    if (result)
+                    {
+                        var data = _receiveData.Select(t => Convert.ToString(t, 16)).ToArray();
+                        var start = 1 + 1 + 4 + 4 + (4 * (DictionaryId - 1));
+                        var str = "";
+                        for (var i = 0; i < 4; i++)
+                        {
+                            str += data[i + start];
+                        }
+                        str = str.Reverse();
+                        var v = Convert.ToInt32(str, 16);
+                        DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
+                    }
+                    return result;
                 }
                 catch (Exception)
                 {
@@ -186,19 +217,7 @@ namespace NpcProxyLink.Base.Logic
                     {
                         Task.Run(() =>
                         {
-                            var data = "";
-                            for (int i = 0; i < _receiveData.Length; i++)
-                            {
-                                if (i == 0)
-                                {
-                                    data += Convert.ToString(_receiveData[i], 16);
-                                }
-                                else
-                                {
-                                    data += "," + Convert.ToString(_receiveData[i], 16);
-                                }
-                            }
-
+                            var data = _receiveData.Select(t => Convert.ToString(t, 16)).Join(",");
                             SaveDate(data, sendTime, receiveTime);
                         });
                     }
@@ -254,17 +273,7 @@ namespace NpcProxyLink.Base.Logic
                     //逐字节变为16进制字符，以英文逗号隔开
                     if (_receiveData.Length > 0)
                     {
-                        for (int i = 0; i < _receiveData.Length; i++)
-                        {
-                            if (i == 0)
-                            {
-                                data += Convert.ToString(_receiveData[i], 16);
-                            }
-                            else
-                            {
-                                data += "," + Convert.ToString(_receiveData[i], 16);
-                            }
-                        }
+                        data = _receiveData.Select(t => Convert.ToString(t, 16)).Join(",");
                     }
                     var receiveTime = DateTime.Now;
 

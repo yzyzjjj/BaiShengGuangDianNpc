@@ -245,5 +245,15 @@ namespace ModelBase.Base.Utils
             }
             return newRandom.ToString();
         }
+
+        /// <summary>
+        /// 字符串翻转
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string Reverse(this string text)
+        {
+            return new string(text.ToCharArray().Reverse().ToArray());
+        }
     }
 }

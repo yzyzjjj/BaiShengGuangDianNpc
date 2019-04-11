@@ -1,4 +1,4 @@
-﻿using ModelBase.Base.ServerConfig.Enum;
+﻿using ModelBase.Base.EnumConfig;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -21,6 +21,10 @@ namespace ModelBase.Models.Device
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public SocketState State { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public DeviceState DeviceState { get; set; }
+        [JsonIgnore]
+        public int ScriptId { get; set; }
     }
 
 }

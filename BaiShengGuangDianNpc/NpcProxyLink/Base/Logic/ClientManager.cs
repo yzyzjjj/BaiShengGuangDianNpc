@@ -1,6 +1,5 @@
 ﻿using ModelBase.Base.Logger;
 using ModelBase.Base.Logic;
-using ModelBase.Base.ServerConfig.Enum;
 using ModelBase.Models.Device;
 using ServiceStack;
 using System;
@@ -10,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ModelBase.Base.EnumConfig;
 
 namespace NpcProxyLink.Base.Logic
 {
@@ -25,7 +25,7 @@ namespace NpcProxyLink.Base.Logic
         {
             _clients.Clear();
             var deviceInfos = Server.ServerConfig.DeviceDb.
-                Query<DeviceInfo>("SELECT a.Ip, a.`Port`, b.* FROM `device_library` a JOIN `npc_proxy_link` b ON " +
+                Query<DeviceInfo>("SELECT a.Ip, a.`Port`, a.ScriptId, b.* FROM `device_library` a JOIN `npc_proxy_link` b ON " +
                                   "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
                                   {
                                       Server.ServerConfig.ServerId
@@ -42,6 +42,24 @@ namespace NpcProxyLink.Base.Logic
             _isInit = true;
         }
 
+        public void UpdateConfig()
+        {
+            var deviceInfos = Server.ServerConfig.DeviceDb.
+                Query<DeviceInfo>("SELECT b.DeviceId, a.ScriptId FROM `device_library` a JOIN `npc_proxy_link` b ON " +
+                                  "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
+                {
+                    Server.ServerConfig.ServerId
+                });
+            foreach (var deviceInfo in deviceInfos)
+            {
+                var deviceId = deviceInfo.DeviceId;
+                if (_clients.ContainsKey(deviceId))
+                {
+                    _clients[deviceId].Socket.UpdateInfo(deviceInfo);
+                }
+            }
+        }
+
         private static void CheckClientState(object obj)
         {
             if (!_isInit)
@@ -53,6 +71,7 @@ namespace NpcProxyLink.Base.Logic
                 var c = client.Value;
                 c.Socket.CheckState();
                 c.DeviceInfo.State = c.Socket.State;
+                c.DeviceInfo.DeviceState = c.Socket.DeviceState;
             }
         }
 

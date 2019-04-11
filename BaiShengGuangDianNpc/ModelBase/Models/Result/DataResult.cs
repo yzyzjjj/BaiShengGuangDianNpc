@@ -1,5 +1,4 @@
-﻿using ModelBase.Base.ServerConfig.Enum;
-using ModelBase.Base.Utils;
+﻿using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
 using Newtonsoft.Json;
 using System.Collections.Generic;
