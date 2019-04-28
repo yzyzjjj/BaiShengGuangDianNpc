@@ -1,4 +1,5 @@
-﻿using ModelBase.Base.EnumConfig;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Logger;
 using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
@@ -134,10 +135,14 @@ namespace NpcProxyLink.Base.Logic
                     _socket.Send(sendData);
                     _receiveData = new byte[ReceiveBufferSize];
                     _socket.Receive(_receiveData);
-                    var result = _receiveData.Length > 0;
+                    var result = _receiveData.Any(x => x != 0);
                     if (result)
                     {
-                        var data = _receiveData.Select(t => Convert.ToString(t, 16)).ToArray();
+                        var rData = _receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
+                        var val = rData.First(x => x != "0");
+                        var index = rData.IndexOf(val);
+                        var lData = rData.Skip(index);
+                        var data = lData.Reverse().ToArray();
                         var start = 1 + 1 + 4 + 4 + (4 * (DictionaryId - 1));
                         var str = "";
                         for (var i = 0; i < 4; i++)
@@ -217,7 +222,11 @@ namespace NpcProxyLink.Base.Logic
                     {
                         Task.Run(() =>
                         {
-                            var data = _receiveData.Select(t => Convert.ToString(t, 16)).Join(",");
+                            var rData = _receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
+                            var val = rData.First(x => x != "0");
+                            var index = rData.IndexOf(val);
+                            var lData = rData.Skip(index);
+                            var data = lData.Reverse().Join(",");
                             SaveDate(data, sendTime, receiveTime);
                         });
                     }
@@ -271,9 +280,13 @@ namespace NpcProxyLink.Base.Logic
                     _receiveData = new byte[ReceiveBufferSize];
                     _socket.Receive(_receiveData);
                     //逐字节变为16进制字符，以英文逗号隔开
-                    if (_receiveData.Length > 0)
+                    if (_receiveData.Any(x => x > 0))
                     {
-                        data = _receiveData.Select(t => Convert.ToString(t, 16)).Join(",");
+                        var rData = _receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
+                        var val = rData.First(x => x != "0");
+                        var index = rData.IndexOf(val);
+                        var lData = rData.Skip(index);
+                        data = lData.Reverse().Join(",");
                     }
                     var receiveTime = DateTime.Now;
 

@@ -140,12 +140,12 @@ namespace ModelBase.Base.EnumConfig
         /// 流程卡不存在
         /// </summary>
         [Description("流程卡不存在")]
-        FlowcardLibraryNotExist = 1019,
+        FlowCardLibraryNotExist = 1019,
         /// <summary>
         /// 流程卡已存在
         /// </summary>
         [Description("流程卡已存在")]
-        FlowcardLibraryIsExist = 1020,
+        FlowCardLibraryIsExist = 1020,
         /// <summary>
         /// 工序不存在
         /// </summary>
@@ -316,6 +316,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("常用变量已存在")]
         UsuallyDictionaryIsExist = 1054,
+        /// <summary>
+        /// 变量地址重复
+        /// </summary>
+        [Description("变量地址重复")]
+        PointerAddressIsExist = 1055,
         #endregion
 
         #region 管理后台  3000 - 3999
