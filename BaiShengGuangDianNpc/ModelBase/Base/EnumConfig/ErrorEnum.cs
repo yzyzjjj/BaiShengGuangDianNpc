@@ -321,6 +321,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("变量地址重复")]
         PointerAddressIsExist = 1055,
+        /// <summary>
+        /// 同一产品型号和同一机台号不能添加到不同的工艺编号中
+        /// </summary>
+        [Description("同一产品型号和同一机台号不能添加到不同的工艺编号中")]
+        ProcessManagementAddError = 1056,
         #endregion
 
         #region 管理后台  3000 - 3999
