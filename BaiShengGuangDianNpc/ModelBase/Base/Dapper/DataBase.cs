@@ -21,13 +21,6 @@ namespace ModelBase.Base.Dapper
                 return con.Query<T>(sql, param);
             }
         }
-        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null)
-        {
-            using (var con = new MySqlConnection(_connectionString))
-            {
-                return await con.QueryAsync<T>(sql, param);
-            }
-        }
 
         public int Execute(string sql, object param = null)
         {
