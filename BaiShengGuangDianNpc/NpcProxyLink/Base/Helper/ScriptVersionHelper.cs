@@ -16,7 +16,7 @@ namespace NpcProxyLink.Base.Helper
 
         public static void LoadConfig()
         {
-            Datas = ServerConfig.DeviceDb.Query<ScriptVersion>("SELECT * FROM `script_version`;");
+            Datas = ServerConfig.ApiDb.Query<ScriptVersion>("SELECT * FROM `script_version`;");
         }
 
         /// <summary>

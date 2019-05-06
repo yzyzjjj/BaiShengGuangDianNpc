@@ -10,12 +10,12 @@ namespace GateProxyLink.Base.Server
 {
     public class ServerConfig
     {
-        public static DataBase Db;
+        public static DataBase ApiDb;
         public static ServerManager ServerManager;
         public static int ServerId;
         public static void Init(IConfiguration configuration)
         {
-            Db = new DataBase(configuration.GetConnectionString("DeviceDb"));
+            ApiDb = new DataBase(configuration.GetConnectionString("ApiDb"));
             ServerId = configuration.GetAppSettings<int>("ServerId");
 
 

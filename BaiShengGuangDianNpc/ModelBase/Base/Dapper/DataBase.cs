@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using Dapper;
 using MySql.Data.MySqlClient;
 
@@ -18,6 +19,13 @@ namespace ModelBase.Base.Dapper
             using (var con = new MySqlConnection(_connectionString))
             {
                 return con.Query<T>(sql, param);
+            }
+        }
+        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null)
+        {
+            using (var con = new MySqlConnection(_connectionString))
+            {
+                return await con.QueryAsync<T>(sql, param);
             }
         }
 

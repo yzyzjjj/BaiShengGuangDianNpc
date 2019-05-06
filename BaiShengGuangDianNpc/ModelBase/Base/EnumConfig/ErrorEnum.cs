@@ -326,6 +326,16 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("同一产品型号和同一机台号不能添加到不同的工艺编号中")]
         ProcessManagementAddError = 1056,
+        /// <summary>
+        /// 设备工序已存在
+        /// </summary>
+        [Description("设备工序已存在")]
+        DeviceProcessStepIsExist = 1057,
+        /// <summary>
+        /// 设备工序不存在
+        /// </summary>
+        [Description("设备工序不存在")]
+        DeviceProcessStepNotExist = 1058,
         #endregion
 
         #region 管理后台  3000 - 3999
@@ -384,6 +394,21 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("系统角色无法操作")]
         RoleNotOperate = 3010,
+        /// <summary>
+        /// 系统账号无法操作
+        /// </summary>
+        [Description("系统账号无法操作")]
+        AccountNotOperate = 3011,
+        /// <summary>
+        /// 非法操作
+        /// </summary>
+        [Description("非法操作")]
+        OperateNotSafe = 3013,
+        /// <summary>
+        /// 成员已存在
+        /// </summary>
+        [Description("成员已存在")]
+        MemberIsExist = 3014,
 
         #endregion
 

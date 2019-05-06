@@ -36,7 +36,7 @@ namespace GateProxyLink.Base.Logic
         /// </summary>
         public void LoadServer()
         {
-            _serversUrl = Server.ServerConfig.Db.
+            _serversUrl = Server.ServerConfig.ApiDb.
                 Query<ServerInfo>("SELECT * FROM `npc_proxy_link_server`;", new
                 {
                     Server.ServerConfig.ServerId
@@ -188,7 +188,7 @@ namespace GateProxyLink.Base.Logic
                     info.ServerId = Sid;
                 }
 
-                ServerConfig.Db.Execute("UPDATE npc_proxy_link SET `ServerId` = @ServerId WHERE `DeviceId` = @DeviceId;", dealList);
+                ServerConfig.ApiDb.Execute("UPDATE npc_proxy_link SET `ServerId` = @ServerId WHERE `DeviceId` = @DeviceId;", dealList);
 
                 res.AddRange(HttpResponseErr(dealList, "batchAddDevice", "AddClient", true));
             }

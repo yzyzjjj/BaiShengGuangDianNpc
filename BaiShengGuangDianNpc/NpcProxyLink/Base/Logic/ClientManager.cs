@@ -24,7 +24,7 @@ namespace NpcProxyLink.Base.Logic
         public void LoadConfig()
         {
             _clients.Clear();
-            var deviceInfos = Server.ServerConfig.DeviceDb.
+            var deviceInfos = Server.ServerConfig.ApiDb.
                 Query<DeviceInfo>("SELECT a.Ip, a.`Port`, a.ScriptId, b.* FROM `device_library` a JOIN `npc_proxy_link` b ON " +
                                   "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
                                   {
@@ -44,7 +44,7 @@ namespace NpcProxyLink.Base.Logic
 
         public void UpdateConfig()
         {
-            var deviceInfos = Server.ServerConfig.DeviceDb.
+            var deviceInfos = Server.ServerConfig.ApiDb.
                 Query<DeviceInfo>("SELECT b.DeviceId, a.ScriptId FROM `device_library` a JOIN `npc_proxy_link` b ON " +
                                   "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
                 {
