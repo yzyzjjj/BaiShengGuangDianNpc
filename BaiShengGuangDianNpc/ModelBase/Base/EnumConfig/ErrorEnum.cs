@@ -336,6 +336,16 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("设备工序不存在")]
         DeviceProcessStepNotExist = 1058,
+        /// <summary>
+        /// 车间已存在
+        /// </summary>
+        [Description("车间已存在")]
+        WorkshopIsExist = 1059,
+        /// <summary>
+        /// 车间不存在
+        /// </summary>
+        [Description("车间不存在")]
+        WorkshopNotExist = 1060,
         #endregion
 
         #region 管理后台  3000 - 3999
