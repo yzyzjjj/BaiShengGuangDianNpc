@@ -419,6 +419,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("成员已存在")]
         MemberIsExist = 3014,
+        /// <summary>
+        /// 姓名重复
+        /// </summary>
+        [Description("姓名重复")]
+        NameIsExist = 3015,
 
         #endregion
 
