@@ -184,7 +184,7 @@ namespace NpcProxyLink.Base.Logic
 
         public void SaveDate(string data, DateTime sendTime, DateTime receiveTime, bool userSend = false)
         {
-            Server.ServerConfig.DataStoragDb
+            Server.ServerConfig.DataStorageDb
                 .Execute(
                     "INSERT INTO `npc_monitoring_data` (`Ip`, `Port`, `SendTime`, `ReceiveTime`, `DealTime`, `Data`, `UserSend`) VALUES (@Ip, @Port, @sendTime, @receiveTime, @dealTime, @data, @UserSend);",
                     new
