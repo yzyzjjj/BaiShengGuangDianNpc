@@ -121,7 +121,23 @@ namespace ModelBase.Base.HttpServer
                 Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 callBack?.Invoke("", new Exception("Verb Error:" + verb));
             }
-
+            if (!rawData.IsNullOrEmpty())
+            {
+                try
+                {
+                    var requestBody = JObject.Parse(rawData);
+                    if (requestBody.GetValue("id") != null)
+                    {
+                        url += "/" + requestBody["id"];
+                        requestBody.Remove("id");
+                        rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                    }
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
             var httpClient = new HttpClient(url, account) { Verb = httpVerb, RawData = rawData };
             httpClient.AsyncGetString((ss, e) =>
             {
