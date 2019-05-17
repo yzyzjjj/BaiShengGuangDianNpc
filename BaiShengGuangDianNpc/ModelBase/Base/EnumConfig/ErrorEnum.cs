@@ -257,14 +257,14 @@ namespace ModelBase.Base.EnumConfig
         [Description("故障设备已存在")]
         FaultDeviceIsExist = 1042,
         /// <summary>
-        /// 常见故障解决方案不存在
+        /// 常见故障不存在
         /// </summary>
-        [Description("常见故障解决方案不存在")]
+        [Description("常见故障不存在")]
         UsuallyFaultNotExist = 1043,
         /// <summary>
-        /// 常见故障解决方案已存在
+        /// 常见故障已存在
         /// </summary>
-        [Description("常见故障解决方案已存在")]
+        [Description("常见故障已存在")]
         UsuallyFaultIsExist = 1044,
         /// <summary>
         /// 维修记录不存在
@@ -424,6 +424,16 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("姓名重复")]
         NameIsExist = 3015,
+        /// <summary>
+        /// 部门已存在
+        /// </summary>
+        [Description("部门已存在")]
+        OrganizationUnitIsExist = 3016,
+        /// <summary>
+        /// 角色已存在
+        /// </summary>
+        [Description("角色已存在")]
+        RoleIsExist = 3017,
 
         #endregion
 
