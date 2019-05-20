@@ -23,6 +23,8 @@ namespace NpcProxyLink.Base.Logic
         public DeviceState DeviceState;
         public string HeartPacket;
         public int DictionaryId;
+        private int _tryTime = 0;
+        private bool initFlag = false;
 
         private readonly SocketAsyncEventArgs _args = new SocketAsyncEventArgs();
 
@@ -107,20 +109,79 @@ namespace NpcProxyLink.Base.Logic
             {
                 return;
             }
+
+
+
+
+
+
+
             if (Heart())
             {
                 State = SocketState.Connected;
                 return;
             }
 
-            Log.InfoFormat("Socket Ip:{0}, Port：{1} ReConnect", Ip, Port);
+            _tryTime++;
+            if (_tryTime == 5)
+            {
+                Log.InfoFormat("Socket Ip:{0}, Port：{1} ReConnect", Ip, Port);
+                _tryTime = 0;
+            }
+
 
             Disconnect();
             State = SocketState.Connecting;
             ConnectAsync();
         }
 
-        public bool Heart()
+        private bool UpgradeState()
+        {
+
+            var instruction = HeartPacket.IsNullOrEmpty() ? "0xF3,0x02,0x2C,0x01,0xFF,0x00,0xFF,0x00,0x67,0x12" : HeartPacket;
+            try
+            {
+                //以英文逗号分割字符串，并去掉空字符
+                var chars = instruction.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                //逐个字符变为16进制字节数据
+                var sendData = chars.Select(x => Convert.ToByte(x, 16)).ToArray();
+                try
+                {
+                    _socket.Send(sendData);
+                    _receiveData = new byte[ReceiveBufferSize];
+                    _socket.Receive(_receiveData);
+                    var result = _receiveData.Any(x => x != 0);
+                    if (result)
+                    {
+                        var rData = _receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
+                        var val = rData.First(x => x != "0");
+                        var index = rData.IndexOf(val);
+                        var lData = rData.Skip(index);
+                        var data = lData.Reverse().ToArray();
+                        var start = 1 + 1 + 4 + 4 + (4 * (DictionaryId - 1));
+                        var str = "";
+                        for (var i = 0; i < 4; i++)
+                        {
+                            str += data[i + start];
+                        }
+                        str = str.Reverse();
+                        var v = Convert.ToInt32(str, 16);
+                        DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
+                    }
+                    return result;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private bool Heart()
         {
 
             var instruction = HeartPacket.IsNullOrEmpty() ? "0xF3,0x02,0x2C,0x01,0xFF,0x00,0xFF,0x00,0x67,0x12" : HeartPacket;

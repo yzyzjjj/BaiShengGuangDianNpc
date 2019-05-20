@@ -206,6 +206,10 @@ namespace ModelBase.Base.Utils
         {
             return date.ToString("yyyy/MM/dd");
         }
+        public static string ToStrFile(this DateTime date)
+        {
+            return date.ToString("yyMMdd_HHmmss");
+        }
 
     }
 }

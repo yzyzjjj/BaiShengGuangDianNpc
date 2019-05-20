@@ -434,6 +434,16 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("角色已存在")]
         RoleIsExist = 3017,
+        /// <summary>
+        /// 文件类型不符
+        /// </summary>
+        [Description("文件类型不符")]
+        FileExtError = 3018,
+        /// <summary>
+        /// 只支持单个文件上传
+        /// </summary>
+        [Description("只支持单个文件上传")]
+        FileSingle = 3019,
 
         #endregion
 

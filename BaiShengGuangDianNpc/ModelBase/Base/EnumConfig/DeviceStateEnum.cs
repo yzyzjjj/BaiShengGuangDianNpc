@@ -13,6 +13,14 @@
         /// <summary>
         /// 加工中
         /// </summary>
-        Processing
+        Processing,
+        /// <summary>
+        /// 升级状态1 引导层
+        /// </summary>
+        Upgrade1,
+        /// <summary>
+        /// 升级状态2 
+        /// </summary>
+        Upgrade2,
     }
 }

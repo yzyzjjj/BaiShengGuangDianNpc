@@ -19,7 +19,7 @@ namespace NpcProxyLink.Base.Logic
         private static ConcurrentDictionary<int, Client> _clients = new ConcurrentDictionary<int, Client>();
         private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, 10);
 
-        private static Timer _checkTimer = new Timer(CheckClientState, null, 5000, 10000);
+        private static Timer _checkTimer = new Timer(CheckClientState, null, 5000, 2000);
         private static bool _isInit;
         public void LoadConfig()
         {

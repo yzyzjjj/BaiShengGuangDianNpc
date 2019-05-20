@@ -22,7 +22,7 @@ namespace GateProxyLink.Base.Logic
         // deviceId, client
         private static ConcurrentDictionary<int, DeviceInfo> _clients = new ConcurrentDictionary<int, DeviceInfo>();
         private static Dictionary<int, ServerInfo> _serversUrl = new Dictionary<int, ServerInfo>();
-        private static Timer _checkTimer = new Timer(CheckClientState, null, 10000, 5000);
+        private static Timer _checkTimer = new Timer(CheckClientState, null, 10000, 2000);
         private static bool _isInit;
         public void LoadConfig()
         {
