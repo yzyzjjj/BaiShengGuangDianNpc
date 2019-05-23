@@ -16,7 +16,7 @@ namespace NpcProxyLink.Base.Helper
 
         public static void LoadConfig()
         {
-            Datas = ServerConfig.ApiDb.Query<UsuallyDictionary>("SELECT * FROM `usually_dictionary`;");
+            Datas = ServerConfig.ApiDb.Query<UsuallyDictionary>("SELECT * FROM `usually_dictionary` WHERE MarkedDelete = 0;");
         }
 
         /// <summary>

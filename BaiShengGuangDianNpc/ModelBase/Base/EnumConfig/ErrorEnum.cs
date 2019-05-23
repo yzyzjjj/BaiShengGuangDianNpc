@@ -277,14 +277,14 @@ namespace ModelBase.Base.EnumConfig
         [Description("维修记录已存在")]
         RepairRecordIsExist = 1046,
         /// <summary>
-        /// 变量类型不存在
+        /// 数据类型不存在
         /// </summary>
-        [Description("变量类型不存在")]
+        [Description("数据类型不存在")]
         VariableTypeNotExist = 1047,
         /// <summary>
-        /// 变量类型已存在
+        /// 数据类型已存在
         /// </summary>
-        [Description("变量类型已存在")]
+        [Description("数据类型已存在")]
         VariableTypeIsExist = 1048,
         /// <summary>
         /// 脚本版本不存在
@@ -317,9 +317,9 @@ namespace ModelBase.Base.EnumConfig
         [Description("常用变量已存在")]
         UsuallyDictionaryIsExist = 1054,
         /// <summary>
-        /// 变量地址重复
+        /// 数据地址重复
         /// </summary>
-        [Description("变量地址重复")]
+        [Description("数据地址重复")]
         PointerAddressIsExist = 1055,
         /// <summary>
         /// 同一产品型号和同一机台号不能添加到不同的工艺编号中
