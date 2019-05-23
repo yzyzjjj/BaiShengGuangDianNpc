@@ -1,4 +1,5 @@
 ﻿using GateProxyLink.Base.Server;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.HttpServer;
 using ModelBase.Base.Logger;
 using ModelBase.Base.Logic;
@@ -13,7 +14,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using ModelBase.Base.EnumConfig;
 
 namespace GateProxyLink.Base.Logic
 {
@@ -153,8 +153,9 @@ namespace GateProxyLink.Base.Logic
         /// <returns></returns>
         private static int GetAddServer()
         {
-            var servers = _clients.Values.GroupBy(x => x.ServerId).ToDictionary(y => y.Key, y => y.Count()).OrderBy(z => z.Value);
-            return servers.Any() ? servers.First().Key : 1;
+            var servers = _clients.Values.GroupBy(x => x.ServerId).ToDictionary(y => y.Key, y => y.Count());
+            var serversCount = _serversUrl.ToDictionary(x => x.Key, x => servers.ContainsKey(x.Key) ? servers[x.Key] : 0).OrderBy(x => x.Value);
+            return serversCount.Any() ? serversCount.First().Key : 1;
         }
 
         #endregion
