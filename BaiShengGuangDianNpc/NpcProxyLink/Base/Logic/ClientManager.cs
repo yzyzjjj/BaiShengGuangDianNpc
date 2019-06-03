@@ -32,10 +32,13 @@ namespace NpcProxyLink.Base.Logic
                                   });
             foreach (var deviceInfo in deviceInfos)
             {
-                if (!AddClient(deviceInfo))
+                if (deviceInfo.Ip== "192.168.1.16")
                 {
-                    Log.ErrorFormat("ClientManager AddClient Fail,{0},{1}:{2}",
-                        deviceInfo.DeviceId, deviceInfo.Ip, deviceInfo.Port);
+                    if (!AddClient(deviceInfo))
+                    {
+                        Log.ErrorFormat("ClientManager AddClient Fail,{0},{1}:{2}",
+                            deviceInfo.DeviceId, deviceInfo.Ip, deviceInfo.Port);
+                    }
                 }
             }
 
@@ -72,6 +75,9 @@ namespace NpcProxyLink.Base.Logic
                 c.Socket.CheckState();
                 c.DeviceInfo.State = c.Socket.State;
                 c.DeviceInfo.DeviceState = c.Socket.DeviceState;
+                c.DeviceInfo.ProcessTime = c.Socket.ProcessTime;
+                c.DeviceInfo.LeftTime = c.Socket.LeftTime;
+                c.DeviceInfo.FlowCard = c.Socket.FlowCard;
             }
         }
 

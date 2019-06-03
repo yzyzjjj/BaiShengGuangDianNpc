@@ -4,6 +4,7 @@ using ModelBase.Base.Logger;
 using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
 using NpcProxyLink.Base.Helper;
+using NpcProxyLink.Base.Server;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using static System.String;
 
 namespace NpcProxyLink.Base.Logic
 {
@@ -21,10 +23,55 @@ namespace NpcProxyLink.Base.Logic
         public bool Storage;
         public SocketState State;
         public DeviceState DeviceState;
+        /// <summary>
+        /// 当前加工流程卡号
+        /// </summary>
+        public string FlowCard { get; set; } = Empty;
+        /// <summary>
+        /// 加工时间
+        /// </summary>
+        public string ProcessTime { get; set; } = Empty;
+        /// <summary>
+        /// 剩余加工时间
+        /// </summary>
+        public string LeftTime { get; set; } = Empty;
+
         public string HeartPacket;
-        public int DictionaryId;
-        private int _tryTime = 0;
         private bool initFlag = false;
+        /// <summary>
+        /// 运行状态
+        /// </summary>
+        public int StateDictionaryId;
+        /// <summary>
+        /// 加工时间
+        /// </summary>
+        public int ProcessTimeDictionaryId;
+        /// <summary>
+        /// 剩余加工时间
+        /// </summary>
+        public int LeftTimeDictionaryId;
+        /// <summary>
+        /// 当前加工流程卡号
+        /// </summary>
+        public int FlowCardDictionaryId;
+
+
+        /// <summary>
+        /// 尝试连接次数
+        /// </summary>
+        private int _tryTime = 0;
+        /// <summary>
+        /// socket事件次数
+        /// </summary>
+        private int _connectSuccessError = 0;
+        /// <summary>
+        /// socket异步连接次数
+        /// </summary>
+        private int _connectAsyncError = 0;
+        /// <summary>
+        /// 尝试连接
+        /// </summary>
+        private bool isTrying = false;
 
         private readonly SocketAsyncEventArgs _args = new SocketAsyncEventArgs();
 
@@ -51,6 +98,7 @@ namespace NpcProxyLink.Base.Logic
                 _args.UserToken = _socket;
                 _args.Completed += ConnectCompleted;
                 State = SocketState.Connecting;
+                isTrying = true;
                 ConnectAsync();
             }
             else
@@ -64,7 +112,13 @@ namespace NpcProxyLink.Base.Logic
             var sv = ScriptVersionHelper.Get(deviceInfo.ScriptId);
             HeartPacket = sv?.HeartPacket ?? "";
             var ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 1);
-            DictionaryId = ud?.DictionaryId ?? 2;
+            StateDictionaryId = ud?.DictionaryId ?? 2;
+            ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 3);
+            ProcessTimeDictionaryId = ud?.DictionaryId ?? 286;
+            ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 4);
+            LeftTimeDictionaryId = ud?.DictionaryId ?? 285;
+            ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 6);
+            FlowCardDictionaryId = ud?.DictionaryId ?? 291;
         }
 
         private void ConnectCompleted(object sender, SocketAsyncEventArgs arg)
@@ -75,9 +129,19 @@ namespace NpcProxyLink.Base.Logic
             }
             else
             {
-                Log.ErrorFormat("Socket Ip:{0}, Port：{1} ConnectSuccess ERROR, ErrMsg:{2}", Ip, Port, arg.SocketError);
+                if (_connectSuccessError == 0)
+                {
+                    Log.ErrorFormat("Socket Ip:{0}, Port：{1} ConnectSuccess ERROR, ErrMsg:{2}", Ip, Port, arg.SocketError);
+                }
+                _connectSuccessError++;
+                if (_connectSuccessError == 5)
+                {
+                    _connectSuccessError = 0;
+                }
                 State = SocketState.Fail;
             }
+
+            isTrying = false;
         }
 
         /// <summary>
@@ -97,7 +161,16 @@ namespace NpcProxyLink.Base.Logic
             }
             catch (Exception e)
             {
-                Log.ErrorFormat("Socket Ip:{0}, Port：{1} ConnectAsync ERROR, ErrMsg:{2}", Ip, Port, e.Message);
+                if (_connectAsyncError == 0)
+                {
+                    Log.ErrorFormat("Socket Ip:{0}, Port：{1} ConnectAsync ERROR, ErrMsg:{2}", Ip, Port, e.Message);
+                }
+                _connectAsyncError++;
+                if (_connectAsyncError == 5)
+                {
+                    _connectAsyncError = 0;
+                }
+
                 State = SocketState.Fail;
             }
         }
@@ -115,14 +188,20 @@ namespace NpcProxyLink.Base.Logic
                 return;
             }
 
+            if (isTrying)
+            {
+                return;
+            }
+            if (_tryTime == 0)
+            {
+                Log.InfoFormat("Socket Ip:{0}, Port：{1} ReConnect", Ip, Port);
+            }
             _tryTime++;
             if (_tryTime == 5)
             {
-                Log.InfoFormat("Socket Ip:{0}, Port：{1} ReConnect", Ip, Port);
                 _tryTime = 0;
             }
-
-
+            isTrying = true;
             Disconnect();
             State = SocketState.Connecting;
             ConnectAsync();
@@ -151,7 +230,7 @@ namespace NpcProxyLink.Base.Logic
                         var index = rData.IndexOf(val);
                         var lData = rData.Skip(index);
                         var data = lData.Reverse().ToArray();
-                        var start = 1 + 1 + 4 + 4 + (4 * (DictionaryId - 1));
+                        var start = 1 + 1 + 4 + 4 + (4 * (StateDictionaryId - 1));
                         var str = "";
                         for (var i = 0; i < 4; i++)
                         {
@@ -176,7 +255,6 @@ namespace NpcProxyLink.Base.Logic
 
         private bool Heart()
         {
-
             var instruction = HeartPacket.IsNullOrEmpty() ? "0xF3,0x02,0x2C,0x01,0xFF,0x00,0xFF,0x00,0x67,0x12" : HeartPacket;
             try
             {
@@ -192,20 +270,71 @@ namespace NpcProxyLink.Base.Logic
                     var result = _receiveData.Any(x => x != 0);
                     if (result)
                     {
-                        var rData = _receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
-                        var val = rData.First(x => x != "0");
-                        var index = rData.IndexOf(val);
-                        var lData = rData.Skip(index);
-                        var data = lData.Reverse().ToArray();
-                        var start = 1 + 1 + 4 + 4 + (4 * (DictionaryId - 1));
-                        var str = "";
-                        for (var i = 0; i < 4; i++)
+                        Task.Run(() =>
                         {
-                            str += data[i + start];
-                        }
-                        str = str.Reverse();
-                        var v = Convert.ToInt32(str, 16);
-                        DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
+                            var rData = _receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
+                            var val = rData.First(x => x != "0");
+                            var index = rData.IndexOf(val);
+                            var lData = rData.Skip(index);
+                            var data = lData.Reverse().ToArray();
+                            var start = 1 + 1 + 4 + 4 + (4 * (StateDictionaryId - 1));
+                            var str = "";
+                            if (data.Length >= start + 4)
+                            {
+                                for (var i = 0; i < 4; i++)
+                                {
+                                    str += data[i + start];
+                                }
+                                str = str.Reverse();
+                                var v = Convert.ToInt32(str, 16);
+                                DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
+                            }
+
+                            start = 1 + 1 + 4 + 4 + (4 * (ProcessTimeDictionaryId - 1));
+                            if (data.Length >= start + 4)
+                            {
+                                str = "";
+                                for (var i = 0; i < 4; i++)
+                                {
+                                    str += data[i + start];
+                                }
+                                str = str.Reverse();
+                                ProcessTime = Convert.ToInt32(str, 16).ToString();
+                            }
+
+                            start = 1 + 1 + 4 + 4 + (4 * (LeftTimeDictionaryId - 1));
+                            if (data.Length >= start + 4)
+                            {
+                                str = "";
+                                for (var i = 0; i < 4; i++)
+                                {
+                                    str += data[i + start];
+                                }
+                                str = str.Reverse();
+                                LeftTime = Convert.ToInt32(str, 16).ToString();
+                            }
+
+                            start = 1 + 1 + 4 + 4 + (4 * (FlowCardDictionaryId - 1));
+                            if (data.Length >= start + 4)
+                            {
+                                str = "";
+                                for (var i = 0; i < 4; i++)
+                                {
+                                    str += data[i + start];
+                                }
+                                str = str.Reverse();
+                                var fid = Convert.ToInt32(str, 16);
+
+                                var flowCardName =
+                                    ServerConfig.ApiDb.Query<string>("SELECT FlowCardName FROM `flowcard_library` WHERE Id = @Id;", new { Id = fid }).FirstOrDefault();
+
+                                if (flowCardName != null)
+                                {
+                                    FlowCard = flowCardName;
+                                }
+                            }
+
+                        });
                     }
                     return result;
                 }
@@ -319,7 +448,7 @@ namespace NpcProxyLink.Base.Logic
 
         public string SendMessageBack(byte[] messageBytes)
         {
-            var data = string.Empty;
+            var data = Empty;
             if (!messageBytes.Any())
             {
                 return data;

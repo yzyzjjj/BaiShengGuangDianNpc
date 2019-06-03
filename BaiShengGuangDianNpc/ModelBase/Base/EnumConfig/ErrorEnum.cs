@@ -160,12 +160,12 @@ namespace ModelBase.Base.EnumConfig
         /// 计划号(产品型号)不存在
         /// </summary>
         [Description("计划号(产品型号)不存在")]
-        ProductionProcessLibraryNotExist = 1023,
+        ProductionLibraryNotExist = 1023,
         /// <summary>
         /// 计划号(产品型号)已存在
         /// </summary>
         [Description("计划号(产品型号)已存在")]
-        ProductionProcessLibraryIsExist = 1024,
+        ProductionLibraryIsExist = 1024,
         /// <summary>
         /// 原料批号不存在
         /// </summary>
@@ -346,6 +346,16 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("车间不存在")]
         WorkshopNotExist = 1060,
+        /// <summary>
+        /// 设备状态异常不能设置工艺数据
+        /// </summary>
+        [Description("设备状态异常不能设置工艺数据")]
+        DeviceStateErrorNotSet = 1061,
+        /// <summary>
+        /// 加工中设备不能设置工艺数据
+        /// </summary>
+        [Description("加工中设备不能设置工艺数据")]
+        ProcessingNotSet = 1062,
         #endregion
 
         #region 管理后台  3000 - 3999

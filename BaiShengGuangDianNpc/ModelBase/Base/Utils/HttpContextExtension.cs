@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Linq;
+using System.Web;
 
 namespace ModelBase.Base.Utils
 {
@@ -43,6 +44,7 @@ namespace ModelBase.Base.Utils
         public static string GetIdentityInformation(this HttpRequest request)
         {
             var identityInformation = request.Headers["IdentityInformation"].FirstOrDefault();
+            identityInformation = HttpUtility.UrlDecode(identityInformation);
             if (string.IsNullOrEmpty(identityInformation))
             {
                 identityInformation = GetIp(request);

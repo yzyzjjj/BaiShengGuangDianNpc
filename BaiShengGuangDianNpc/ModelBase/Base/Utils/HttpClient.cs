@@ -181,7 +181,7 @@ namespace ModelBase.Base.Utils
             req.Headers.Add("Accept-Language", DefaultLanguage);
             if (!IdentityInformation.IsNullOrEmpty())
             {
-                req.Headers.Add("IdentityInformation", IdentityInformation);
+                req.Headers.Add("IdentityInformation", HttpUtility.UrlEncode(IdentityInformation));
             }
 
             req.Accept = Accept;

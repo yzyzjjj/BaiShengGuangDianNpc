@@ -25,6 +25,18 @@ namespace ModelBase.Models.Device
         public DeviceState DeviceState { get; set; }
         [JsonIgnore]
         public int ScriptId { get; set; }
+        /// <summary>
+        /// 当前加工流程卡号
+        /// </summary>
+        public string FlowCard { get; set; }
+        /// <summary>
+        /// 加工时间
+        /// </summary>
+        public string ProcessTime { get; set; }
+        /// <summary>
+        /// 剩余加工时间
+        /// </summary>
+        public string LeftTime { get; set; }
     }
 
 }
