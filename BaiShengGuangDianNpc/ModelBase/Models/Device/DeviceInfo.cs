@@ -28,15 +28,15 @@ namespace ModelBase.Models.Device
         /// <summary>
         /// 当前加工流程卡号
         /// </summary>
-        public string FlowCard { get; set; }
+        public string FlowCard { get; set; } = string.Empty;
         /// <summary>
         /// 加工时间
         /// </summary>
-        public string ProcessTime { get; set; }
+        public string ProcessTime { get; set; } = string.Empty;
         /// <summary>
         /// 剩余加工时间
         /// </summary>
-        public string LeftTime { get; set; }
+        public string LeftTime { get; set; } = string.Empty;
     }
 
 }

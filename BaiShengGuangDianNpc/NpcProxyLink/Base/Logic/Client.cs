@@ -9,14 +9,14 @@ namespace NpcProxyLink.Base.Logic
         /// <summary>
         /// 客户端信息
         /// </summary>
-        public DeviceInfo DeviceInfo;
+        public DeviceInfo DeviceInfo => Socket.DeviceInfo;
 
         public SocketInfo Socket;
         public DateTime LastSendTime;
 
-        public void Init()
+        public void Init(DeviceInfo deviceInfo)
         {
-            Socket = new SocketInfo(DeviceInfo);
+            Socket = new SocketInfo(deviceInfo);
         }
 
         public void Dispose()

@@ -1,15 +1,14 @@
-﻿using ModelBase.Base.Logger;
+﻿using ModelBase.Base.EnumConfig;
+using ModelBase.Base.Logger;
 using ModelBase.Base.Logic;
 using ModelBase.Models.Device;
 using ServiceStack;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ModelBase.Base.EnumConfig;
 
 namespace NpcProxyLink.Base.Logic
 {
@@ -17,7 +16,7 @@ namespace NpcProxyLink.Base.Logic
     {
         // deviceId, client
         private static ConcurrentDictionary<int, Client> _clients = new ConcurrentDictionary<int, Client>();
-        private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, 10);
+        private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, 5);
 
         private static Timer _checkTimer = new Timer(CheckClientState, null, 5000, 2000);
         private static bool _isInit;
@@ -32,7 +31,7 @@ namespace NpcProxyLink.Base.Logic
                                   });
             foreach (var deviceInfo in deviceInfos)
             {
-                if (deviceInfo.Ip== "192.168.1.16")
+                //if (deviceInfo.Ip== "192.168.1.16")
                 {
                     if (!AddClient(deviceInfo))
                     {
@@ -50,9 +49,9 @@ namespace NpcProxyLink.Base.Logic
             var deviceInfos = Server.ServerConfig.ApiDb.
                 Query<DeviceInfo>("SELECT b.DeviceId, a.ScriptId FROM `device_library` a JOIN `npc_proxy_link` b ON " +
                                   "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
-                {
-                    Server.ServerConfig.ServerId
-                });
+                                  {
+                                      Server.ServerConfig.ServerId
+                                  });
             foreach (var deviceInfo in deviceInfos)
             {
                 var deviceId = deviceInfo.DeviceId;
@@ -73,11 +72,6 @@ namespace NpcProxyLink.Base.Logic
             {
                 var c = client.Value;
                 c.Socket.CheckState();
-                c.DeviceInfo.State = c.Socket.State;
-                c.DeviceInfo.DeviceState = c.Socket.DeviceState;
-                c.DeviceInfo.ProcessTime = c.Socket.ProcessTime;
-                c.DeviceInfo.LeftTime = c.Socket.LeftTime;
-                c.DeviceInfo.FlowCard = c.Socket.FlowCard;
             }
         }
 
@@ -93,12 +87,23 @@ namespace NpcProxyLink.Base.Logic
 
             var comTime = DateTime.Now;
             var clients = _clients.Values
-                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && !x.DeviceInfo.Instruction.IsNullOrEmpty() && x.LastSendTime <= comTime);
+                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && x.LastSendTime <= comTime);
 
             Parallel.ForEach(clients, client =>
             {
-                client.LastSendTime = DateTime.Now.AddMilliseconds(client.DeviceInfo.Frequency);
-                client.Socket.SendMessage(client.DeviceInfo.Instruction);
+                if (client.DeviceInfo.Instruction.IsNullOrEmpty())
+                {
+                    client.DeviceInfo.Instruction = client.Socket.HeartPacket;
+                }
+
+                //Log.Error(client.DeviceInfo.Ip + " Try Monitoring");
+                if (!client.Socket.Monitoring)
+                {
+                    //Log.Error(client.DeviceInfo.Ip + " Monitoring");
+                    client.LastSendTime = DateTime.Now.AddMilliseconds(client.DeviceInfo.Frequency);
+                    client.Socket.SendMessage(client.DeviceInfo.Instruction);
+                    //Log.Error(client.DeviceInfo.Ip + " Monitoring success");
+                }
             });
         }
 
@@ -118,16 +123,13 @@ namespace NpcProxyLink.Base.Logic
         /// <returns></returns>
         public bool AddClient(DeviceInfo deviceInfo)
         {
-            var client = new Client
-            {
-                DeviceInfo = deviceInfo
-            };
+            var client = new Client();
             if (!_clients.TryAdd(deviceInfo.DeviceId, client))
             {
                 return false;
             }
+            client.Init(deviceInfo);
 
-            client.Init();
             //if (deviceInfo.Monitoring)
             //{
             //    StartMonitoring(deviceInfo.Frequency);
@@ -251,10 +253,9 @@ namespace NpcProxyLink.Base.Logic
         /// <returns></returns>
         public Error SetStorage(DeviceInfo deviceInfo)
         {
-            if (_clients.TryGetValue(deviceInfo.DeviceId, out Client client))
+            if (_clients.TryGetValue(deviceInfo.DeviceId, out var client))
             {
                 client.DeviceInfo.Storage = deviceInfo.Storage;
-                client.Socket.Storage = deviceInfo.Storage;
                 return Error.Success;
             }
             return Error.DeviceNotExist;

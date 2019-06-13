@@ -6,15 +6,18 @@
 
 <button id="btnReload" type="button" class="btn btn-default right" onclick="reload()">加载</button>
 <button id="btnReloadServer" type="button" class="btn btn-default right" onclick="reloadServer()">加载服务器</button>
-<table id="deviceTable" class="table table-bordered table-hover">
-    <thead>
-    </thead>
-    <tbody></tbody>
-</table>
-<textarea id="text" class="form-control">
-
+<table id="deviceTable" class="table table-bordered table-hover"></table>
+<textarea id="ins" class="form-control" disabled="disabled">
 </textarea>
-
+<textarea id="text" class="form-control">
+</textarea>
+<button type="button" class="btn btn-default" onclick="btnAnalysis()">解析</button>
+<textarea id="d1" class="form-control">
+</textarea>
+<textarea id="d2" class="form-control">
+</textarea>
+<textarea id="d3" class="form-control">
+</textarea>
 <!-- 模态框（Modal）详细信息 -->
 <div class="modal fade" id="detailInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

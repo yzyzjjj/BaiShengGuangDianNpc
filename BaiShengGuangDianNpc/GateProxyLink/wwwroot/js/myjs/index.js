@@ -41,7 +41,7 @@ function load() {
                     { "data": "Monitoring", "title": "是否监控" },
                     { "data": "Frequency", "title": "监控频率" },
                     { "data": "Storage", "title": "是否存储" },
-                    { "data": "Instruction", "title": "指令" },   
+                    { "data": "Instruction", "title": "指令" },
                 ],
             });
     });
@@ -119,12 +119,52 @@ function btnSend() {
         instruction: $("#instruction").val(),
         storage: $("#storage").val(),
     }
+    $("#ins").html($("#instruction").val());
     $.post("/gate/device/sendback",
         {
             deviceInfo: JSON.stringify(data)
         }, function (res) {
             $("#text").empty();
             $("#text").append(res.messages[0].Item2)
+        })
+}
+
+function btnAnalysis() {
+    $.post("/gate/device/analysis",
+        {
+            ins: $("#ins").text(),
+            msg: $("#text").text()
+        }, function (res) {
+            var i = 0;
+            $("#d1").empty();
+            for (var n in res.datas[0]) {
+                $("#d1").append(n + " : " + res.datas[0][n] + "       ");
+                i++;
+                if (i == 10) {
+                    $("#d1").append("\n");
+                    i = 0;
+                }
+            }
+            i = 0;
+            $("#d2").empty();
+            for (var n in res.datas[1]) {
+                $("#d2").append(n + " : " + res.datas[1][n] + "       ");
+                i++;
+                if (i == 10) {
+                    $("#d1").append("\n");
+                    i = 0;
+                }
+            }
+            i = 0;
+            $("#d3").empty();
+            for (var n in res.datas[2]) {
+                $("#d3").append(n + " : " + res.datas[2][n] + "       ");
+                i++;
+                if (i == 10) {
+                    $("#d1").append("\n");
+                    i = 0;
+                }
+            }
         })
 
 }

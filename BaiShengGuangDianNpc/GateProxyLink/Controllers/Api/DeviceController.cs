@@ -1,13 +1,15 @@
-﻿using GateProxyLink.Base.Logic;
+﻿using System;
+using GateProxyLink.Base.Control;
+using GateProxyLink.Base.Logic;
 using GateProxyLink.Base.Server;
 using Microsoft.AspNetCore.Mvc;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using ModelBase.Base.EnumConfig;
 
 namespace GateProxyLink.Controllers.Api
 {
@@ -250,5 +252,37 @@ namespace GateProxyLink.Controllers.Api
             result.datas.AddRange(ServerConfig.ServerManager.SetFrequency(devicesList));
             return result;
         }
+
+        /// <summary>
+        /// 解析数据
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <returns></returns>
+        [HttpPost("analysis")]
+        public DataResult Analysis()
+        {
+            var param = Request.GetRequestParams();
+            var insStr = param.GetValue("ins");
+            var msgStr = param.GetValue("msg");
+            //0xF3,0x02,0x2C,0x01,0xFF,0x00,0xFF,0x00,0x67,0x12
+            var result = new DataResult();
+            if(insStr.Length==0)
+                return result;
+            insStr = insStr.ToLower();
+            if (insStr.Contains("0x"))
+                insStr = insStr.Replace("0x", "");
+            var insList = insStr.Split(",");
+            var val = Convert.ToInt32(insList[3] + insList[2], 16);
+            var ins = Convert.ToInt32(insList[5] + insList[4], 16);
+            var outs = Convert.ToInt32(insList[7] + insList[6], 16);
+
+            var msg = new DeviceInfoMessagePacket(val, ins, outs);
+            var t = msg.Deserialize(msgStr);
+            result.datas.Add(t.vals);
+            result.datas.Add(t.ins);
+            result.datas.Add(t.outs);
+            return result;
+        }
+
     }
 }

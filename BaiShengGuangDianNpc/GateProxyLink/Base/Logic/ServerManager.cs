@@ -336,7 +336,10 @@ namespace GateProxyLink.Base.Logic
                 {
                     device.Monitoring = dealList.First(x => x.DeviceId == device.DeviceId).Monitoring;
                     device.Frequency = dealList.First(x => x.DeviceId == device.DeviceId).Frequency;
-                    device.Instruction = dealList.First(x => x.DeviceId == device.DeviceId).Instruction;
+                    if (!dealList.First(x => x.DeviceId == device.DeviceId).Instruction.IsNullOrEmpty())
+                    {
+                        device.Instruction = dealList.First(x => x.DeviceId == device.DeviceId).Instruction;
+                    }
                 }
             }
 
@@ -367,6 +370,7 @@ namespace GateProxyLink.Base.Logic
                     var result = JsonConvert.DeserializeObject<DataErrResult>(resp);
                     res.AddRange(result.datas);
                     LoadClient(serverInfo);
+                    ServerConfig.ApiDb.Execute("UPDATE npc_proxy_link SET `Storage` = @Storage , `Monitoring` = @Monitoring, `Frequency` = @Frequency, `Instruction` = @Instruction WHERE `DeviceId` = @DeviceId;", devicesList);
                 }
                 catch (Exception e)
                 {
