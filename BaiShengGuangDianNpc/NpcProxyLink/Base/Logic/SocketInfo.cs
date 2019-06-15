@@ -7,7 +7,6 @@ using NpcProxyLink.Base.Helper;
 using NpcProxyLink.Base.Server;
 using ServiceStack;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -21,23 +20,9 @@ namespace NpcProxyLink.Base.Logic
     {
         public DeviceInfo DeviceInfo;
 
-        //public SocketState State;
-        //public DeviceState DeviceState;
-        private int _maxLogCount = 5;
+        private int _maxLogCount = 20;
 
         private bool _sending = false;
-        ///// <summary>
-        ///// 当前加工流程卡号
-        ///// </summary>
-        //public string FlowCard { get; set; } = Empty;
-        ///// <summary>
-        ///// 加工时间
-        ///// </summary>
-        //public string ProcessTime { get; set; } = Empty;
-        ///// <summary>
-        ///// 剩余加工时间
-        ///// </summary>
-        //public string LeftTime { get; set; } = Empty;
 
         public string HeartPacket;
         /// <summary>
@@ -85,15 +70,11 @@ namespace NpcProxyLink.Base.Logic
 
         private readonly SocketAsyncEventArgs _args = new SocketAsyncEventArgs();
 
+        //private SocketMsgManager _socketMsgManager = new SocketMsgManager();
         ///<summary>
         ///接受数据缓存长度
         ///</summary>
         private const int ReceiveBufferSize = 4 * 1024;
-
-        /// <summary>
-        /// 接收数据数组
-        /// </summary>
-        private byte[] _receiveData;
 
         private Socket _socket;
         public SocketInfo(DeviceInfo deviceInfo)
@@ -203,6 +184,7 @@ namespace NpcProxyLink.Base.Logic
                 return;
             }
 
+            DeviceInfo.State = SocketState.Fail;
             if (_isTrying)
             {
                 return;
@@ -237,7 +219,7 @@ namespace NpcProxyLink.Base.Logic
                 //逐个字符变为16进制字节数据
                 var sendData = chars.Select(x => Convert.ToByte(x, 16)).ToArray();
                 _socket.Send(sendData);
-                _receiveData = new byte[ReceiveBufferSize];
+                var _receiveData = new byte[ReceiveBufferSize];
                 _socket.Receive(_receiveData);
                 var result = _receiveData.Any(x => x != 0);
                 if (result)
@@ -274,24 +256,51 @@ namespace NpcProxyLink.Base.Logic
                 //以英文逗号分割字符串，并去掉空字符
                 var chars = instruction.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 //逐个字符变为16进制字节数据
-                var sendData = chars.Select(x => Convert.ToByte(x, 16)).ToArray();
-                if (!_sending)
+                var messageBytes = chars.Select(x => Convert.ToByte(x, 16)).ToArray();
+                while (true)
                 {
-                    _sending = true;
-                    _socket.Send(sendData);
-                    _receiveData = new byte[ReceiveBufferSize];
-                    _socket.Receive(_receiveData);
-                    var result = _receiveData.Any(x => x != 0);
-                    if (result)
+                    if (!_sending)
                     {
-                        Task.Run(() => { UpdateInfo(_receiveData); });
-                    }
+                        _sending = true;
+                        var socketMessage = new SocketMessage
+                        {
+                            SendTime = DateTime.Now,
+                        };
+                        _socket.Send(messageBytes);
+                        var tryReceive = 0;
+                        while (true)
+                        {
+                            var len = _socket.Available;
+                            if (len > 0)
+                            {
+                                //Log.DebugFormat("something:{0},{1}", tryReceive, len);
+                                var receiveData = new byte[len];
+                                _socket.Receive(receiveData);
+                                socketMessage.DataList.AddRange(receiveData);
+                                if (socketMessage.IsAll())
+                                {
+                                    //Log.DebugFormat("something Done:{0}", socketMessage.DataList.Count);
+                                    break;
+                                }
+                            }
 
-                    //Log.Error("Heart success");
-                    _sending = false;
-                    return result;
+                            if (tryReceive++ == 100)
+                            {
+                                break;
+                            }
+                            Thread.Sleep(1);
+                        }
+
+                        socketMessage.ReceiveTime = DateTime.Now;
+                        if (socketMessage.DataList.Count > 0)
+                        {
+                            Task.Run(() => { UpdateStateInfo(socketMessage); });
+                        }
+                        _sending = false;
+                        //Log.Error("Heart success");
+                        return socketMessage.DataList.Count > 0;
+                    }
                 }
-                return true;
             }
             catch (Exception)
             {
@@ -300,18 +309,9 @@ namespace NpcProxyLink.Base.Logic
             }
         }
 
-        private void UpdateInfo(IEnumerable<byte> receiveData)
+        private void UpdateStateInfo(SocketMessage socketMessage)
         {
-            var rData = receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
-            var val = rData.FirstOrDefault(x => x != "0");
-            if (val == null)
-            {
-                return;
-            }
-
-            var index = rData.IndexOf(val);
-            var lData = rData.Skip(index);
-            var data = lData.Reverse().ToArray();
+            var data = socketMessage.DataStrList.ToArray();
             var start = 1 + 1 + 4 + 4 + (4 * (_stateDictionaryId - 1));
             var str = "";
             if (data.Length >= start + 4)
@@ -386,20 +386,22 @@ namespace NpcProxyLink.Base.Logic
             DeviceInfo.State = SocketState.Close;
         }
 
-        private void SaveDate(string data, DateTime sendTime, DateTime receiveTime, bool userSend = false)
+        private void SaveDate(SocketMessage socketMessage)
         {
             ServerConfig.DataStorageDb
                 .Execute(
-                    "INSERT INTO `npc_monitoring_data` (`Ip`, `Port`, `SendTime`, `ReceiveTime`, `DealTime`, `Data`, `UserSend`, `ScriptId`) VALUES (@Ip, @Port, @sendTime, @receiveTime, @dealTime, @data, @UserSend, @ScriptId);",
+                    "INSERT INTO npc_monitoring_data (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`) " +
+                    "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId);",
                     new
                     {
+                        socketMessage.SendTime,
+                        socketMessage.ReceiveTime,
+                        socketMessage.DealTime,
+                        DeviceInfo.DeviceId,
                         DeviceInfo.Ip,
                         DeviceInfo.Port,
-                        sendTime,
-                        receiveTime,
-                        dealTime = (receiveTime - sendTime).TotalMilliseconds,
-                        data,
-                        userSend,
+                        socketMessage.Data,
+                        socketMessage.UserSend,
                         DeviceInfo.ScriptId
                     });
         }
@@ -419,62 +421,53 @@ namespace NpcProxyLink.Base.Logic
                 {
                     if (!_sending)
                     {
+                        var socketMessage = new SocketMessage
+                        {
+                            SendTime = DateTime.Now,
+                        };
                         _sending = true;
                         Monitoring = true;
-                        var sendTime = DateTime.Now;
                         _socket.Send(messageBytes);
-
                         var tryReceive = 0;
                         while (true)
                         {
-                            tryReceive++;
-                            if (tryReceive == 100)
+                            var len = _socket.Available;
+                            if (len > 0)
                             {
-                                break;
-                            }
-
-                            //Log.Debug("thing：" + tryReceive);
-                            if (_socket.Available > 0)
-                            {
-                                _receiveData = new byte[ReceiveBufferSize];
-                                var l = _socket.Receive(_receiveData);
-                                //Log.Debug("something：" + _socket.Available + "," + l);
-                                if (l > 0)
+                                Log.DebugFormat("something:{0},{1}", tryReceive, len);
+                                var receiveData = new byte[len];
+                                _socket.Receive(receiveData);
+                                socketMessage.DataList.AddRange(receiveData);
+                                if (socketMessage.IsAll())
                                 {
-                                    var copyData = new byte[l];
-                                    Array.Copy(_receiveData, copyData, l);
-                                    var receiveTime = DateTime.Now;
-                                    if (DeviceInfo.Storage)
-                                    {
-                                        Task.Run(() =>
-                                        {
-                                            var rData = copyData.Select(t => Convert.ToString(t, 16)).Reverse();
-                                            var val = rData.FirstOrDefault(x => x != "0");
-
-                                            if (val == null)
-                                            {
-                                                Log.DebugFormat("Ip:{0}, Length:{1}", DeviceInfo.Ip, l);
-                                                Monitoring = false;
-                                                return;
-                                            }
-
-                                            var index = rData.IndexOf(val);
-                                            var lData = rData.Skip(index);
-                                            var data = lData.Reverse().Join(",");
-                                            SaveDate(data, sendTime, receiveTime);
-                                            if (_hearting)
-                                            {
-                                                UpdateInfo(copyData);
-                                                _hearting = false;
-                                            }
-                                        });
-                                    }
+                                    Log.DebugFormat("something Done:{0}", socketMessage.DataList.Count);
                                     break;
                                 }
                             }
-                            Thread.Sleep(2);
+                            if (tryReceive++ == 100)
+                            {
+                                break;
+                            }
+                            Thread.Sleep(1);
                         }
 
+                        if (socketMessage.DataList.Count > 0)
+                        {
+                            socketMessage.ReceiveTime = DateTime.Now;
+                            if (DeviceInfo.Storage)
+                            {
+                                Task.Run(() =>
+                                {
+                                    SaveDate(socketMessage);
+
+                                    if (_hearting)
+                                    {
+                                        UpdateStateInfo(socketMessage);
+                                        _hearting = false;
+                                    }
+                                });
+                            }
+                        }
                         _sending = false;
                         Monitoring = false;
                     }
@@ -521,41 +514,67 @@ namespace NpcProxyLink.Base.Logic
                 return data;
             }
 
+            var backSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+            {
+                //响应超时设置
+                SendTimeout = 500,
+                ReceiveTimeout = 500,
+            };
             try
             {
-                if (DeviceInfo.State == SocketState.Connected)
+                backSocket.Connect(DeviceInfo.Ip, DeviceInfo.Port);
+                var socketMessage = new SocketMessage
                 {
-                    var sendTime = DateTime.Now;
-                    _socket.Send(messageBytes);
-                    _receiveData = new byte[ReceiveBufferSize];
-                    _socket.Receive(_receiveData);
-                    //逐字节变为16进制字符，以英文逗号隔开
-                    if (_receiveData.Any(x => x > 0))
+                    SendTime = DateTime.Now,
+                    UserSend = true
+                };
+                _socket.Send(messageBytes);
+                var tryReceive = 0;
+                while (true)
+                {
+                    var len = _socket.Available;
+                    if (len > 0)
                     {
-                        var rData = _receiveData.Select(t => Convert.ToString(t, 16)).Reverse();
-                        var val = rData.First(x => x != "0");
-                        var index = rData.IndexOf(val);
-                        var lData = rData.Skip(index);
-                        data = lData.Reverse().Join(",");
+                        //Log.DebugFormat("something:{0},{1}", tryReceive, len);
+                        var receiveData = new byte[len];
+                        _socket.Receive(receiveData);
+                        socketMessage.DataList.AddRange(receiveData);
+                        if (socketMessage.IsAll())
+                        {
+                            //Log.DebugFormat("something Done:{0}", socketMessage.DataList.Count);
+                            break;
+                        }
                     }
-                    var receiveTime = DateTime.Now;
+                    if (tryReceive++ == 100)
+                    {
+                        break;
+                    }
 
+                    Thread.Sleep(1);
+                }
+                backSocket.Shutdown(SocketShutdown.Both);
+                backSocket.Close();
+
+                if (socketMessage.DataList.Count > 0)
+                {
+                    socketMessage.ReceiveTime = DateTime.Now;
                     if (DeviceInfo.Storage)
                     {
                         Task.Run(() =>
                         {
-                            SaveDate(data, sendTime, receiveTime, true);
+                            SaveDate(socketMessage);
                         });
                     }
-                    return data;
                 }
-                return "Socket Close";
+
+                return socketMessage.Data;
             }
             catch (Exception e)
             {
                 Log.ErrorFormat("Socket Ip:{0}, Port：{1} SendMessage ERROR, ErrMsg：{2}, StackTrace：{3}", DeviceInfo.Ip, DeviceInfo.Port, e.Message, e.StackTrace);
-                return e.Message;
+                return "发送错误," + e.Message;
             }
+
         }
 
         public string SendMessageBack(string messageStr)

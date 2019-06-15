@@ -50,6 +50,7 @@ namespace GateProxyLink.Base.Logic
             foreach (var server in _serversUrl)
             {
                 server.Value.Normal = false;
+
                 LoadClient(server.Value);
             }
         }
@@ -61,6 +62,14 @@ namespace GateProxyLink.Base.Logic
         /// <returns></returns>
         public static void LoadClient(ServerInfo serverInfo)
         {
+            var clients = _clients.Where(x => x.Value.ServerId == serverInfo.ServerId);
+            if (clients.Any())
+            {
+                foreach (var client in clients)
+                {
+                    _clients.Remove(client.Key, out _);
+                }
+            }
             var url = serverInfo.Url + UrlMappings.Urls["deviceList"];
             //向NpcProxyLink请求数据
             HttpServer.GetAsync(url, null, (resp, exp) =>
@@ -74,12 +83,6 @@ namespace GateProxyLink.Base.Logic
                 try
                 {
                     var result = JsonConvert.DeserializeObject<DeviceResult>(resp);
-                    var clients = _clients.Where(x => x.Value.ServerId == serverInfo.ServerId);
-                    foreach (var client in clients)
-                    {
-                        _clients.Remove(client.Key, out _);
-                    }
-
                     var devicesList = result.datas;
                     if (!devicesList.Any())
                     {

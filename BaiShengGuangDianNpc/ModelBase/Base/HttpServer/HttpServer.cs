@@ -38,9 +38,9 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
+                Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 return "fail";
             }
         }
@@ -77,9 +77,9 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
+                Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 return "fail";
             }
         }
@@ -105,12 +105,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    Log.DebugFormat("PostAsync return:{0}", ss);
+                    //Log.DebugFormat("PostAsync return:{0}", ss);
                     callBack?.Invoke(ss, null);
                 }
                 else
                 {
-                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
+                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 }
             });
         }
@@ -143,12 +143,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    Log.DebugFormat("PostAsync return:{0}", ss);
+                    //Log.DebugFormat("PostAsync return:{0}", ss);
                     callBack?.Invoke(ss, null);
                 }
                 else
                 {
-                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1},详情:{2}", url, verb, e.Message);
+                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 }
             });
         }
@@ -162,7 +162,7 @@ namespace ModelBase.Base.HttpServer
                 var dts = new ArrayOfString();
                 if (data != null)
                 {
-                    dts.AddRange(data.Select(dt => string.Format("{0}={1}", dt.Key, dt.Value)));
+                    dts.AddRange(data.Select(dt => $"{dt.Key}={dt.Value}"));
                 }
 
                 if (dts.Count > 0)
@@ -174,9 +174,9 @@ namespace ModelBase.Base.HttpServer
                 return result;
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.ErrorFormat("请求服务器异常 Get:{0},详情:{1}", url, e);
+                Log.ErrorFormat("请求服务器异常 Get:{0}", url);
                 return "fail";
             }
         }
@@ -186,7 +186,7 @@ namespace ModelBase.Base.HttpServer
             var dts = new ArrayOfString();
             if (data != null)
             {
-                dts.AddRange(data.Select(dt => string.Format("{0}={1}", dt.Key, dt.Value)));
+                dts.AddRange(data.Select(dt => $"{dt.Key}={dt.Value}"));
             }
 
             if (dts.Count > 0)
@@ -198,12 +198,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    Log.DebugFormat("GetAsync return:{0}", e == null ? ss : e.Message);
-                    callBack?.Invoke(ss, e);
+                    //Log.DebugFormat("GetAsync return:{0}", ss);
+                    callBack?.Invoke(ss, null);
                 }
                 else
                 {
-                    Log.ErrorFormat("请求服务器异常 GetAsync:{0},详情:{1}", url, e);
+                    Log.ErrorFormat("请求服务器异常 GetAsync:{0}", url);
                 }
             });
         }
@@ -221,9 +221,9 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.ErrorFormat("请求服务器异常 Post:{0},详情:{1}", url, e);
+                Log.ErrorFormat("请求服务器异常 Post:{0}", url);
                 return "fail";
             }
         }
@@ -237,9 +237,9 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.ErrorFormat("请求服务器异常 Post:{0},详情:{1}", url, e);
+                Log.ErrorFormat("请求服务器异常 Post:{0}", url);
                 return "fail";
             }
         }
@@ -256,12 +256,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    Log.DebugFormat("PostAsync return:{0}", e == null ? ss : e.Message);
-                    callBack?.Invoke(ss, e);
+                    //Log.DebugFormat("PostAsync return:{0}", ss);
+                    callBack?.Invoke(ss, null);
                 }
                 else
                 {
-                    Log.ErrorFormat("请求服务器异常 PostAsync:{0},详情:{1}", url, e);
+                    Log.ErrorFormat("请求服务器异常 PostAsync:{0}", url);
                 }
             });
         }
@@ -273,12 +273,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    Log.DebugFormat("PostAsync return:{0}", e == null ? ss : e.Message);
-                    callBack?.Invoke(ss, e);
+                    //Log.DebugFormat("PostAsync return:{0}", ss);
+                    callBack?.Invoke(ss, null);
                 }
                 else
                 {
-                    Log.ErrorFormat("请求服务器异常 PostAsync:{0},详情:{1}", url, e);
+                    Log.ErrorFormat("请求服务器异常 PostAsync:{0}", url);
                 }
             });
         }
