@@ -13,7 +13,7 @@ namespace NpcProxyLink.Base.Logic
         public int DealTime => (int)(ReceiveTime - SendTime).TotalMilliseconds;
         public bool UserSend { get; set; }
         public List<byte> DataList { get; set; } = new List<byte>();
-        public IEnumerable<string> DataStrList=> DataList.Select(t => Convert.ToString((byte) t, 16));
+        public IEnumerable<string> DataStrList=> DataList.Select(t => Convert.ToString(t, 16));
         public string Data => DataStrList.Join(",");
 
         public bool IsAll()

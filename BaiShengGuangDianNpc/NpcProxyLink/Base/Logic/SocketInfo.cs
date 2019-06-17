@@ -50,7 +50,7 @@ namespace NpcProxyLink.Base.Logic
         /// <summary>
         /// socket事件次数
         /// </summary>
-        private int _connectSuccessError = 0;
+        private int _connectCompletedError = 0;
         /// <summary>
         /// socket异步连接次数
         /// </summary>
@@ -111,50 +111,27 @@ namespace NpcProxyLink.Base.Logic
             _flowCardDictionaryId = ud?.DictionaryId ?? 291;
         }
 
-        private void ConnectCompleted(object sender, SocketAsyncEventArgs arg)
-        {
-            if (arg.SocketError == SocketError.Success)
-            {
-                DeviceInfo.State = SocketState.Connected;
-                //Log.Info("connect success");
-            }
-            else
-            {
-                if (_connectSuccessError == 0)
-                {
-                    Log.ErrorFormat("Socket Ip:{0}, Port：{1} ConnectSuccess ERROR, ErrMsg:{2}", DeviceInfo.Ip, DeviceInfo.Port, arg.SocketError);
-                }
-                _connectSuccessError++;
-                if (_connectSuccessError == _maxLogCount)
-                {
-                    _connectSuccessError = 0;
-                }
-                DeviceInfo.State = SocketState.Fail;
-            }
-
-            _isTrying = false;
-        }
-
         /// <summary>
         /// 异步Connect
         /// </summary>
         private void ConnectAsync()
         {
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-            {
-                //响应超时设置
-                ReceiveTimeout = 1000,
-                //Blocking = false
-            };
             try
             {
+                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                {
+                    //响应超时设置
+                    ReceiveTimeout = 1000,
+                    NoDelay = true,
+                    //Blocking = false,
+                };
                 _socket.ConnectAsync(_args);
             }
             catch (Exception e)
             {
                 if (_connectAsyncError == 0)
                 {
-                    Log.ErrorFormat("Socket Ip:{0}, Port：{1} ConnectAsync ERROR, ErrMsg:{2}, StackTrace：{3}", DeviceInfo.Ip, DeviceInfo.Port, e.Message, e.StackTrace);
+                    Log.ErrorFormat("Ip:{0}, Port：{1} ConnectAsync ERROR, ErrMsg:{2}, StackTrace：{3}", DeviceInfo.Ip, DeviceInfo.Port, e.Message, e.StackTrace);
                 }
                 _connectAsyncError++;
                 if (_connectAsyncError == _maxLogCount)
@@ -164,6 +141,30 @@ namespace NpcProxyLink.Base.Logic
 
                 DeviceInfo.State = SocketState.Fail;
             }
+        }
+
+        private void ConnectCompleted(object sender, SocketAsyncEventArgs arg)
+        {
+            if (arg.SocketError == SocketError.Success)
+            {
+                DeviceInfo.State = SocketState.Connected;
+                //Log.Info("connect success");
+            }
+            else
+            {
+                if (_connectCompletedError == 0)
+                {
+                    Log.ErrorFormat("Ip:{0}, Port：{1} ConnectCompleted ERROR, ErrMsg:{2}", DeviceInfo.Ip, DeviceInfo.Port, arg.SocketError);
+                }
+                _connectCompletedError++;
+                if (_connectCompletedError == _maxLogCount)
+                {
+                    _connectCompletedError = 0;
+                }
+                DeviceInfo.State = SocketState.Fail;
+            }
+
+            _isTrying = false;
         }
 
         public void CheckState()
@@ -178,7 +179,7 @@ namespace NpcProxyLink.Base.Logic
                 return;
             }
 
-            if (Heart())
+            if (DeviceInfo.State == SocketState.Connected && Heart())
             {
                 DeviceInfo.State = SocketState.Connected;
                 return;
@@ -191,7 +192,7 @@ namespace NpcProxyLink.Base.Logic
             }
             if (_tryTime == 0)
             {
-                Log.InfoFormat("Socket Ip:{0}, Port：{1} ReConnect", DeviceInfo.Ip, DeviceInfo.Port);
+                Log.InfoFormat("Ip:{0}, Port：{1} ReConnect", DeviceInfo.Ip, DeviceInfo.Port);
             }
             _tryTime++;
             if (_tryTime == _maxLogCount)
@@ -270,22 +271,31 @@ namespace NpcProxyLink.Base.Logic
                         var tryReceive = 0;
                         while (true)
                         {
+                            tryReceive++;
                             var len = _socket.Available;
                             if (len > 0)
                             {
-                                //Log.DebugFormat("something:{0},{1}", tryReceive, len);
+                                //Log.DebugFormat("Receive:{0},{1}", tryReceive, len);
                                 var receiveData = new byte[len];
                                 _socket.Receive(receiveData);
+                                if (socketMessage.DataList.Count == 0)
+                                {
+                                    if (receiveData[0] != 243)
+                                    {
+                                        continue;
+                                    }
+                                }
                                 socketMessage.DataList.AddRange(receiveData);
                                 if (socketMessage.IsAll())
                                 {
-                                    //Log.DebugFormat("something Done:{0}", socketMessage.DataList.Count);
+                                    //Log.DebugFormat("Receive Done-----------:{0},{1}", socketMessage.DataList.Count, _socket.Available);
                                     break;
                                 }
                             }
-
-                            if (tryReceive++ == 100)
+                            if (tryReceive == 5000)
                             {
+                                //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
+                                DeviceInfo.State = SocketState.Fail;
                                 break;
                             }
                             Thread.Sleep(1);
@@ -300,11 +310,14 @@ namespace NpcProxyLink.Base.Logic
                         //Log.Error("Heart success");
                         return socketMessage.DataList.Count > 0;
                     }
+
+                    Thread.Sleep(1000);
                 }
             }
             catch (Exception)
             {
                 _sending = false;
+                DeviceInfo.State = SocketState.Fail;
                 return false;
             }
         }
@@ -431,42 +444,49 @@ namespace NpcProxyLink.Base.Logic
                         var tryReceive = 0;
                         while (true)
                         {
+                            tryReceive++;
                             var len = _socket.Available;
                             if (len > 0)
                             {
-                                Log.DebugFormat("something:{0},{1}", tryReceive, len);
+                                //Log.DebugFormat("Receive:{0},{1}", tryReceive, len);
                                 var receiveData = new byte[len];
                                 _socket.Receive(receiveData);
+                                if (socketMessage.DataList.Count == 0)
+                                {
+                                    if (receiveData[0] != 243)
+                                    {
+                                        continue;
+                                    }
+                                }
                                 socketMessage.DataList.AddRange(receiveData);
                                 if (socketMessage.IsAll())
                                 {
-                                    Log.DebugFormat("something Done:{0}", socketMessage.DataList.Count);
+                                    //Log.DebugFormat("Receive Done-----------:{0},{1}", socketMessage.DataList.Count, _socket.Available);
                                     break;
                                 }
                             }
-                            if (tryReceive++ == 100)
+                            if (tryReceive == 5000)
                             {
+                                //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
+                                DeviceInfo.State = SocketState.Fail;
                                 break;
                             }
                             Thread.Sleep(1);
                         }
 
-                        if (socketMessage.DataList.Count > 0)
+                        if (DeviceInfo.Storage)
                         {
                             socketMessage.ReceiveTime = DateTime.Now;
-                            if (DeviceInfo.Storage)
+                            Task.Run(() =>
                             {
-                                Task.Run(() =>
-                                {
-                                    SaveDate(socketMessage);
+                                SaveDate(socketMessage);
+                            });
+                        }
 
-                                    if (_hearting)
-                                    {
-                                        UpdateStateInfo(socketMessage);
-                                        _hearting = false;
-                                    }
-                                });
-                            }
+                        if (_hearting)
+                        {
+                            UpdateStateInfo(socketMessage);
+                            _hearting = false;
                         }
                         _sending = false;
                         Monitoring = false;
@@ -476,9 +496,10 @@ namespace NpcProxyLink.Base.Logic
             }
             catch (Exception e)
             {
-                Log.ErrorFormat("Socket Ip:{0}, Port：{1} SendMessage ERROR, ErrMsg：{2}, StackTrace：{3}", DeviceInfo.Ip, DeviceInfo.Port, e.Message, e.StackTrace);
+                Log.ErrorFormat("Ip:{0}, Port：{1} SendMessage ERROR, ErrMsg：{2}, StackTrace：{3}", DeviceInfo.Ip, DeviceInfo.Port, e.Message, e.StackTrace);
                 _sending = false;
                 Monitoring = false;
+                DeviceInfo.State = SocketState.Fail;
                 return Error.Fail;
             }
             return Error.DeviceException;
@@ -501,7 +522,7 @@ namespace NpcProxyLink.Base.Logic
             }
             catch (Exception)
             {
-                Log.ErrorFormat("Socket Ip:{0}, Port：{1} SendMessage InstructionError ERROR, Instruction：{2}", DeviceInfo.Ip, DeviceInfo.Port, messageStr);
+                Log.ErrorFormat("Ip:{0}, Port：{1} SendMessage InstructionError ERROR, Instruction：{2}", DeviceInfo.Ip, DeviceInfo.Port, messageStr);
                 return Error.InstructionError;
             }
         }
@@ -532,46 +553,48 @@ namespace NpcProxyLink.Base.Logic
                 var tryReceive = 0;
                 while (true)
                 {
+                    tryReceive++;
                     var len = _socket.Available;
                     if (len > 0)
                     {
-                        //Log.DebugFormat("something:{0},{1}", tryReceive, len);
                         var receiveData = new byte[len];
                         _socket.Receive(receiveData);
+                        if (socketMessage.DataList.Count == 0)
+                        {
+                            if (receiveData[0] != 243)
+                            {
+                                continue;
+                            }
+                        }
                         socketMessage.DataList.AddRange(receiveData);
                         if (socketMessage.IsAll())
                         {
-                            //Log.DebugFormat("something Done:{0}", socketMessage.DataList.Count);
                             break;
                         }
                     }
-                    if (tryReceive++ == 100)
+                    if (tryReceive == 5000)
                     {
                         break;
                     }
-
                     Thread.Sleep(1);
                 }
                 backSocket.Shutdown(SocketShutdown.Both);
                 backSocket.Close();
 
-                if (socketMessage.DataList.Count > 0)
+                if (DeviceInfo.Storage)
                 {
                     socketMessage.ReceiveTime = DateTime.Now;
-                    if (DeviceInfo.Storage)
+                    Task.Run(() =>
                     {
-                        Task.Run(() =>
-                        {
-                            SaveDate(socketMessage);
-                        });
-                    }
+                        SaveDate(socketMessage);
+                    });
                 }
 
                 return socketMessage.Data;
             }
             catch (Exception e)
             {
-                Log.ErrorFormat("Socket Ip:{0}, Port：{1} SendMessage ERROR, ErrMsg：{2}, StackTrace：{3}", DeviceInfo.Ip, DeviceInfo.Port, e.Message, e.StackTrace);
+                Log.ErrorFormat("Ip:{0}, Port：{1} SendMessage ERROR, ErrMsg：{2}, StackTrace：{3}", DeviceInfo.Ip, DeviceInfo.Port, e.Message, e.StackTrace);
                 return "发送错误," + e.Message;
             }
 
@@ -595,7 +618,7 @@ namespace NpcProxyLink.Base.Logic
             }
             catch (Exception)
             {
-                Log.ErrorFormat("Socket Ip:{0}, Port：{1} SendMessage InstructionError ERROR, Instruction：{2}", DeviceInfo.Ip, DeviceInfo.Port, messageStr);
+                Log.ErrorFormat("Ip:{0}, Port：{1} SendMessage InstructionError ERROR, Instruction：{2}", DeviceInfo.Ip, DeviceInfo.Port, messageStr);
                 return data;
             }
         }
