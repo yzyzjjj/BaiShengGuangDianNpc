@@ -335,53 +335,34 @@ namespace NpcProxyLink.Base.Logic
 
         private void UpdateStateInfo(SocketMessage socketMessage)
         {
-            var data = socketMessage.DataStrList.ToArray();
-            var start = 1 + 1 + 4 + 4 + (4 * (_stateDictionaryId - 1));
-            var str = "";
+            var data = socketMessage.DataStrList.Skip(10).ToArray();
+
+            var start = (_stateDictionaryId - 1) * 4;
             if (data.Length >= start + 4)
             {
-                for (var i = 0; i < 4; i++)
-                {
-                    str += data[i + start];
-                }
-                str = str.Reverse();
+                var str = data.Skip(start).Take(4).Reverse().Join("");
                 var v = Convert.ToInt32(str, 16);
                 DeviceInfo.DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
             }
 
-            start = 1 + 1 + 4 + 4 + (4 * (_processTimeDictionaryId - 1));
+            start = (_processTimeDictionaryId - 1) * 4;
             if (data.Length >= start + 4)
             {
-                str = "";
-                for (var i = 0; i < 4; i++)
-                {
-                    str += data[i + start];
-                }
-                str = str.Reverse();
+                var str = data.Skip(start).Take(4).Reverse().Join("");
                 DeviceInfo.ProcessTime = Convert.ToInt32(str, 16).ToString();
             }
 
-            start = 1 + 1 + 4 + 4 + (4 * (_leftTimeDictionaryId - 1));
+            start = (_leftTimeDictionaryId - 1) * 4;
             if (data.Length >= start + 4)
             {
-                str = "";
-                for (var i = 0; i < 4; i++)
-                {
-                    str += data[i + start];
-                }
-                str = str.Reverse();
+                var str = data.Skip(start).Take(4).Reverse().Join("");
                 DeviceInfo.LeftTime = Convert.ToInt32(str, 16).ToString();
             }
 
-            start = 1 + 1 + 4 + 4 + (4 * (_flowCardDictionaryId - 1));
+            start = (_flowCardDictionaryId - 1) * 4;
             if (data.Length >= start + 4)
             {
-                str = "";
-                for (var i = 0; i < 4; i++)
-                {
-                    str += data[i + start];
-                }
-                str = str.Reverse();
+                var str = data.Skip(start).Take(4).Reverse().Join("");
                 var fid = Convert.ToInt32(str, 16);
 
                 var flowCardName =

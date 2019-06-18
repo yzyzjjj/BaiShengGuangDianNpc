@@ -1,5 +1,4 @@
-﻿using System;
-using GateProxyLink.Base.Control;
+﻿using GateProxyLink.Base.Control;
 using GateProxyLink.Base.Logic;
 using GateProxyLink.Base.Server;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +7,7 @@ using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -266,12 +266,18 @@ namespace GateProxyLink.Controllers.Api
             var msgStr = param.GetValue("msg");
             //0xF3,0x02,0x2C,0x01,0xFF,0x00,0xFF,0x00,0x67,0x12
             var result = new DataResult();
-            if(insStr.Length==0)
+            if (insStr.Length == 0)
+            {
                 return result;
+            }
+
             insStr = insStr.ToLower();
             if (insStr.Contains("0x"))
+            {
                 insStr = insStr.Replace("0x", "");
-            var insList = insStr.Split(",");
+            }
+
+            var insList = insStr.Split(",").Select(x => x.PadLeft(2, '0')).ToArray();
             var val = Convert.ToInt32(insList[3] + insList[2], 16);
             var ins = Convert.ToInt32(insList[5] + insList[4], 16);
             var outs = Convert.ToInt32(insList[7] + insList[6], 16);

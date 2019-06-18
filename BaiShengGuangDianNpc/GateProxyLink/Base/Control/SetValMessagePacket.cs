@@ -76,7 +76,7 @@ namespace GateProxyLink.Base.Control
             var datas = response.Split(",");
             //包头 F3
             //功能码 05
-            if (datas.Length == 0 || datas[0] != "f3" || datas[1] != "5")
+            if (datas.Length == 0 || datas[0] != "f3" || datas[1] != "05")
             {
                 return null;
             }
@@ -84,7 +84,7 @@ namespace GateProxyLink.Base.Control
             //CRC校验   2bytes
             var bCrc = datas.Skip(3);
             var crc = CrcHelper.GetCrc16(datas.Take(datas.Length - 2));
-            return datas[2] == "0" ? 0 : 1;
+            return datas[2] == "00" ? 0 : 1;
         }
     }
 }

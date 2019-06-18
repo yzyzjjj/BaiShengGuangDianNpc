@@ -36,8 +36,8 @@ namespace ModelBase.Base.Utils
 
             var res = new[]
             {
-                Convert.ToString((byte)(crc & 0xff), 16),
-                Convert.ToString((byte)((crc >> 8) & 0xff), 16)
+                Convert.ToString((byte)(crc & 0xff), 16).PadLeft(2,'0'),
+                Convert.ToString((byte)((crc >> 8) & 0xff), 16).PadLeft(2,'0')
             };
             return res;
         }
