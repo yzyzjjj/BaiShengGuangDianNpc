@@ -25,6 +25,9 @@ namespace NpcProxyLink.Base.Logic
         private bool _sending = false;
 
         public string HeartPacket;
+        private int ValNum { get; set; }
+        private int InNum { get; set; }
+        private int OutNum { get; set; }
         public byte[] HeartPacketByte;
         /// <summary>
         /// 运行状态
@@ -104,6 +107,10 @@ namespace NpcProxyLink.Base.Logic
             HeartPacket = sv?.HeartPacket ?? "f3,2,2c,1,ff,0,ff,0,67,12";
             //以英文逗号分割字符串，并去掉空字符,逐个字符变为16进制字节数据
             HeartPacketByte = HeartPacket.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToByte(x, 16)).ToArray();
+            var heartPackets = HeartPacket.Split(",");
+            ValNum = Convert.ToInt32(heartPackets[3] + heartPackets[2], 16);
+            InNum = Convert.ToInt32(heartPackets[5] + heartPackets[4], 16);
+            OutNum = Convert.ToInt32(heartPackets[7] + heartPackets[6], 16);
             var ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 1);
             _stateDictionaryId = ud?.DictionaryId ?? 2;
             ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 3);
@@ -408,8 +415,8 @@ namespace NpcProxyLink.Base.Logic
         {
             ServerConfig.DataStorageDb
                 .Execute(
-                    "INSERT INTO npc_monitoring_data (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`) " +
-                    "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId);",
+                    "INSERT npc_monitoring_data (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
+                    "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);",
                     new
                     {
                         socketMessage.SendTime,
@@ -420,7 +427,10 @@ namespace NpcProxyLink.Base.Logic
                         DeviceInfo.Port,
                         socketMessage.Data,
                         socketMessage.UserSend,
-                        DeviceInfo.ScriptId
+                        DeviceInfo.ScriptId,
+                        ValNum,
+                        InNum,
+                        OutNum
                     });
         }
 
