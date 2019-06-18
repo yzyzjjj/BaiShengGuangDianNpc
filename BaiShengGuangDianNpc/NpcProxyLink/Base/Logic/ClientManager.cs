@@ -2,7 +2,6 @@
 using ModelBase.Base.Logger;
 using ModelBase.Base.Logic;
 using ModelBase.Models.Device;
-using ServiceStack;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -15,9 +14,10 @@ namespace NpcProxyLink.Base.Logic
     public class ClientManager : IManager
     {
         // deviceId, client
+        private static readonly int _period = 50;
+        private static readonly int _wc = 25;
         private static ConcurrentDictionary<int, Client> _clients = new ConcurrentDictionary<int, Client>();
-        private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, 5);
-
+        private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, _period);
         private static Timer _checkTimer = new Timer(CheckClientState, null, 5000, 2000);
         private static bool _isInit;
         public void LoadConfig()
@@ -85,26 +85,28 @@ namespace NpcProxyLink.Base.Logic
                 return;
             }
 
-            var comTime = DateTime.Now;
+            var nowTime = DateTime.Now;
             var clients = _clients.Values
-                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && x.LastSendTime <= comTime);
-
-            Parallel.ForEach(clients, client =>
+                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && x.NextSendTime <= nowTime);
+            if (clients.Any())
             {
-                if (client.DeviceInfo.Instruction.IsNullOrEmpty())
+                Parallel.ForEach(clients, client =>
                 {
-                    client.DeviceInfo.Instruction = client.Socket.HeartPacket;
-                }
+                    //Log.Debug(client.DeviceInfo.Ip + " Monitoring success,当前:" + nowTime.ToString("yyyy-MM-dd HH:mm:ss fff") + ",本次:" + client.NextSendTime.ToString("yyyy-MM-dd HH:mm:ss fff"));
+                    client.NextSendTime = nowTime.AddMilliseconds(client.DeviceInfo.Frequency - _wc);
+                    var resError = client.Socket.SendMessage(client.Socket.HeartPacketByte);
+                    if (resError != Error.Success)
+                    {
+                        //Log.Debug(client.DeviceInfo.Ip + " Monitoring Fail   ,下次:" + client.NextSendTime.ToString("yyyy-MM-dd HH:mm:ss fff"));
+                        client.NextSendTime = client.NextSendTime.AddMilliseconds(-client.DeviceInfo.Frequency + _wc);
+                        return;
+                    }
+                    //Log.Debug(client.DeviceInfo.Ip + " Monitoring success,下次:" + client.NextSendTime.ToString("yyyy-MM-dd HH:mm:ss fff"));
 
-                //Log.Error(client.DeviceInfo.Ip + " Try Monitoring");
-                if (!client.Socket.Monitoring)
-                {
-                    //Log.Error(client.DeviceInfo.Ip + " Monitoring");
-                    client.LastSendTime = DateTime.Now.AddMilliseconds(client.DeviceInfo.Frequency);
-                    client.Socket.SendMessage(client.DeviceInfo.Instruction);
-                    //Log.Error(client.DeviceInfo.Ip + " Monitoring success");
-                }
-            });
+                    //Log.Debug(client.DeviceInfo.Ip + " Monitoring success,发送耗时:" + (DateTime.Now - nowTime).TotalMilliseconds);
+                    //Log.Debug("-------------");
+                });
+            }
         }
 
         #region device 

@@ -12,7 +12,7 @@ namespace NpcProxyLink.Base.Logic
         public DeviceInfo DeviceInfo => Socket.DeviceInfo;
 
         public SocketInfo Socket;
-        public DateTime LastSendTime;
+        public DateTime NextSendTime;
 
         public void Init(DeviceInfo deviceInfo)
         {

@@ -21,10 +21,11 @@ namespace NpcProxyLink.Base.Logic
         public DeviceInfo DeviceInfo;
 
         private int _maxLogCount = 20;
-
+        private int _maxTryReceive = 5000;
         private bool _sending = false;
 
         public string HeartPacket;
+        public byte[] HeartPacketByte;
         /// <summary>
         /// 运行状态
         /// </summary>
@@ -100,7 +101,9 @@ namespace NpcProxyLink.Base.Logic
         public void UpdateInfo(DeviceInfo deviceInfo)
         {
             var sv = ScriptVersionHelper.Get(deviceInfo.ScriptId);
-            HeartPacket = sv?.HeartPacket ?? "";
+            HeartPacket = sv?.HeartPacket ?? "f3,2,2c,1,ff,0,ff,0,67,12";
+            //以英文逗号分割字符串，并去掉空字符,逐个字符变为16进制字节数据
+            HeartPacketByte = HeartPacket.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToByte(x, 16)).ToArray();
             var ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 1);
             _stateDictionaryId = ud?.DictionaryId ?? 2;
             ud = UsuallyDictionaryHelper.Get(deviceInfo.ScriptId, 3);
@@ -179,6 +182,15 @@ namespace NpcProxyLink.Base.Logic
                 return;
             }
 
+            if (DeviceInfo.State == SocketState.Connected)
+            {
+                if (DeviceInfo.Monitoring && DeviceInfo.Frequency <= 2000)
+                {
+                    _hearting = true;
+                    return;
+                }
+            }
+
             if (DeviceInfo.State == SocketState.Connected && Heart())
             {
                 DeviceInfo.State = SocketState.Connected;
@@ -251,68 +263,60 @@ namespace NpcProxyLink.Base.Logic
         private bool Heart()
         {
             //Log.Error("Heart");
-            var instruction = HeartPacket.IsNullOrEmpty() ? "f3,2,2c,1,ff,0,ff,0,67,12" : HeartPacket;
             try
             {
-                //以英文逗号分割字符串，并去掉空字符
-                var chars = instruction.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                //逐个字符变为16进制字节数据
-                var messageBytes = chars.Select(x => Convert.ToByte(x, 16)).ToArray();
-                while (true)
+                if (!_sending)
                 {
-                    if (!_sending)
+                    _sending = true;
+                    var socketMessage = new SocketMessage
                     {
-                        _sending = true;
-                        var socketMessage = new SocketMessage
+                        SendTime = DateTime.Now,
+                    };
+                    _socket.Send(HeartPacketByte);
+                    var tryReceive = 0;
+                    while (true)
+                    {
+                        tryReceive++;
+                        var len = _socket.Available;
+                        if (len > 0)
                         {
-                            SendTime = DateTime.Now,
-                        };
-                        _socket.Send(messageBytes);
-                        var tryReceive = 0;
-                        while (true)
-                        {
-                            tryReceive++;
-                            var len = _socket.Available;
-                            if (len > 0)
+                            //Log.DebugFormat("Receive:{0},{1}", tryReceive, len);
+                            var receiveData = new byte[len];
+                            _socket.Receive(receiveData);
+                            if (socketMessage.DataList.Count == 0)
                             {
-                                //Log.DebugFormat("Receive:{0},{1}", tryReceive, len);
-                                var receiveData = new byte[len];
-                                _socket.Receive(receiveData);
-                                if (socketMessage.DataList.Count == 0)
+                                if (receiveData[0] != 243)
                                 {
-                                    if (receiveData[0] != 243)
-                                    {
-                                        continue;
-                                    }
-                                }
-                                socketMessage.DataList.AddRange(receiveData);
-                                if (socketMessage.IsAll())
-                                {
-                                    //Log.DebugFormat("Receive Done-----------:{0},{1}", socketMessage.DataList.Count, _socket.Available);
-                                    break;
+                                    continue;
                                 }
                             }
-                            if (tryReceive == 5000)
+                            socketMessage.DataList.AddRange(receiveData);
+                            if (socketMessage.IsAll())
                             {
-                                //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
-                                DeviceInfo.State = SocketState.Fail;
+                                //Log.DebugFormat("Receive Done-----------:{0},{1}", socketMessage.DataList.Count, _socket.Available);
                                 break;
                             }
-                            Thread.Sleep(1);
                         }
-
-                        socketMessage.ReceiveTime = DateTime.Now;
-                        if (socketMessage.DataList.Count > 0)
+                        if (tryReceive == _maxTryReceive)
                         {
-                            Task.Run(() => { UpdateStateInfo(socketMessage); });
+                            //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
+                            DeviceInfo.State = SocketState.Fail;
+                            break;
                         }
-                        _sending = false;
-                        //Log.Error("Heart success");
-                        return socketMessage.DataList.Count > 0;
+                        Thread.Sleep(1);
                     }
 
-                    Thread.Sleep(1000);
+                    //socketMessage.ReceiveTime = DateTime.Now;
+                    if (socketMessage.DataList.Count > 0)
+                    {
+                        Task.Run(() => { UpdateStateInfo(socketMessage); });
+                    }
+                    _sending = false;
+                    //Log.Error("Heart success");
+                    return socketMessage.DataList.Count > 0;
                 }
+
+                return true;
             }
             catch (Exception)
             {
@@ -392,6 +396,7 @@ namespace NpcProxyLink.Base.Logic
             {
                 if (_socket.Connected)
                 {
+                    _socket.Shutdown(SocketShutdown.Both);
                     _socket.Close();
                 }
                 _socket.Dispose();
@@ -421,7 +426,7 @@ namespace NpcProxyLink.Base.Logic
 
         #region 同步发送消息
 
-        private Error SendMessage(byte[] messageBytes)
+        public Error SendMessage(byte[] messageBytes)
         {
             if (!messageBytes.Any())
             {
@@ -465,7 +470,7 @@ namespace NpcProxyLink.Base.Logic
                                     break;
                                 }
                             }
-                            if (tryReceive == 5000)
+                            if (tryReceive == _maxTryReceive)
                             {
                                 //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
                                 DeviceInfo.State = SocketState.Fail;
@@ -477,21 +482,19 @@ namespace NpcProxyLink.Base.Logic
                         if (DeviceInfo.Storage)
                         {
                             socketMessage.ReceiveTime = DateTime.Now;
-                            Task.Run(() =>
-                            {
-                                SaveDate(socketMessage);
-                            });
+                            Task.Run(() => { SaveDate(socketMessage); });
                         }
 
                         if (_hearting)
                         {
-                            UpdateStateInfo(socketMessage);
+                            Task.Run(() => { UpdateStateInfo(socketMessage); });
                             _hearting = false;
                         }
                         _sending = false;
                         Monitoring = false;
+                        return Error.Success;
                     }
-                    return Error.Success;
+                    return Error.Fail;
                 }
             }
             catch (Exception e)
@@ -514,10 +517,8 @@ namespace NpcProxyLink.Base.Logic
 
             try
             {
-                //以英文逗号分割字符串，并去掉空字符
-                string[] chars = messageStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                //逐个字符变为16进制字节数据
-                var sendData = chars.Select(x => Convert.ToByte(x, 16)).ToArray();
+                //以英文逗号分割字符串，并去掉空字符,逐个字符变为16进制字节数据
+                var sendData = messageStr.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToByte(x, 16)).ToArray();
                 return SendMessage(sendData);
             }
             catch (Exception)
@@ -572,7 +573,7 @@ namespace NpcProxyLink.Base.Logic
                             break;
                         }
                     }
-                    if (tryReceive == 5000)
+                    if (tryReceive == _maxTryReceive)
                     {
                         break;
                     }
@@ -584,10 +585,7 @@ namespace NpcProxyLink.Base.Logic
                 if (DeviceInfo.Storage)
                 {
                     socketMessage.ReceiveTime = DateTime.Now;
-                    Task.Run(() =>
-                    {
-                        SaveDate(socketMessage);
-                    });
+                    Task.Run(() => { SaveDate(socketMessage); });
                 }
 
                 return socketMessage.Data;
@@ -610,10 +608,8 @@ namespace NpcProxyLink.Base.Logic
 
             try
             {
-                //以英文逗号分割字符串，并去掉空字符
-                string[] chars = messageStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                //逐个字符变为16进制字节数据
-                var sendData = chars.Select(x => Convert.ToByte(x, 16)).ToArray();
+                //以英文逗号分割字符串，并去掉空字符,逐个字符变为16进制字节数据
+                var sendData = messageStr.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToByte(x, 16)).ToArray();
                 return SendMessageBack(sendData);
             }
             catch (Exception)
