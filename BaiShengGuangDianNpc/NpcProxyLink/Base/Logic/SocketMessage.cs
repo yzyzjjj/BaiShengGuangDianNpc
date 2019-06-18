@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ModelBase.Base.Utils;
+using ServiceStack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ModelBase.Base.Utils;
-using ServiceStack;
 
 namespace NpcProxyLink.Base.Logic
 {
@@ -13,7 +13,7 @@ namespace NpcProxyLink.Base.Logic
         public int DealTime => (int)(ReceiveTime - SendTime).TotalMilliseconds;
         public bool UserSend { get; set; }
         public List<byte> DataList { get; set; } = new List<byte>();
-        public IEnumerable<string> DataStrList=> DataList.Select(t => Convert.ToString(t, 16));
+        public IEnumerable<string> DataStrList => DataList.Select(t => Convert.ToString(t, 16).PadLeft(2, '0'));
         public string Data => DataStrList.Join(",");
 
         public bool IsAll()
