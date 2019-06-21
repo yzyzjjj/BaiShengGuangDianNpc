@@ -67,7 +67,7 @@ namespace GateProxyLink.Base.Logic
             {
                 foreach (var client in clients)
                 {
-                    _clients.Remove(client.Key, out _);
+                    _clients.TryRemove(client.Key, out _);
                 }
             }
             var url = serverInfo.Url + UrlMappings.Urls["deviceList"];
@@ -98,11 +98,9 @@ namespace GateProxyLink.Base.Logic
                             Log.ErrorFormat("ServerManager AddClient Fail, Clients: {0},{1}:{2}, Add: {0},{1}:{2}",
                                 existDeviceInfo.DeviceId, existDeviceInfo.Ip, existDeviceInfo.Port,
                                 deviceInfo.DeviceId, deviceInfo.Ip, deviceInfo.Port);
+                            _clients.TryRemove(deviceId, out _);
                         }
-                        else
-                        {
-                            _clients.TryAdd(deviceId, deviceInfo);
-                        }
+                        _clients.TryAdd(deviceId, deviceInfo);
                     }
 
                     serverInfo.Normal = true;

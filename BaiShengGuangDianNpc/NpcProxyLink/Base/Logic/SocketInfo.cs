@@ -461,7 +461,7 @@ namespace NpcProxyLink.Base.Logic
                                     break;
                                 }
                             }
-                            if (tryReceive == _maxTryReceive)
+                            if (tryReceive >= _maxTryReceive)
                             {
                                 //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
                                 DeviceInfo.State = SocketState.Fail;
@@ -470,17 +470,21 @@ namespace NpcProxyLink.Base.Logic
                             Thread.Sleep(1);
                         }
 
-                        if (DeviceInfo.Storage)
+                        if (tryReceive < _maxTryReceive)
                         {
-                            socketMessage.ReceiveTime = DateTime.Now;
-                            Task.Run(() => { SaveDate(socketMessage); });
+                            if (DeviceInfo.Storage)
+                            {
+                                socketMessage.ReceiveTime = DateTime.Now;
+                                Task.Run(() => { SaveDate(socketMessage); });
+                            }
+
+                            if (_hearting)
+                            {
+                                Task.Run(() => { UpdateStateInfo(socketMessage); });
+                                _hearting = false;
+                            }
                         }
 
-                        if (_hearting)
-                        {
-                            Task.Run(() => { UpdateStateInfo(socketMessage); });
-                            _hearting = false;
-                        }
                         _sending = false;
                         Monitoring = false;
                         return Error.Success;
@@ -573,13 +577,16 @@ namespace NpcProxyLink.Base.Logic
                 backSocket.Shutdown(SocketShutdown.Both);
                 backSocket.Close();
 
-                if (DeviceInfo.Storage)
+                if (tryReceive < _maxTryReceive)
                 {
-                    socketMessage.ReceiveTime = DateTime.Now;
-                    Task.Run(() => { SaveDate(socketMessage); });
+                    if (DeviceInfo.Storage)
+                    {
+                        socketMessage.ReceiveTime = DateTime.Now;
+                        Task.Run(() => { SaveDate(socketMessage); });
+                    }
+                    return socketMessage.Data;
                 }
-
-                return socketMessage.Data;
+                return "没数据返回";
             }
             catch (Exception e)
             {

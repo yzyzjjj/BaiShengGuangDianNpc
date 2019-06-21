@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ModelBase.Base.Utils
 {
@@ -189,6 +186,42 @@ namespace ModelBase.Base.Utils
         public static DateTime StartOfNextMonth(this DateTime date)
         {
             return date.StartOfMonth().AddMonths(1);
+        }
+        /// <summary>
+        /// 去除 小时
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime NoHour(this DateTime date)
+        {
+            return date.DayBeginTime();
+        }
+        /// <summary>
+        /// 去除分 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime NoMinute(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
+        }
+        /// <summary>
+        /// 去除秒 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime NoSecond(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0);
+        }
+        /// <summary>
+        /// 去除毫秒 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime NoMillisecond(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second);
         }
         public static string ToStr(this DateTime date)
         {
