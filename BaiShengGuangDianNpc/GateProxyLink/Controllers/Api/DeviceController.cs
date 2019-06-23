@@ -284,9 +284,12 @@ namespace GateProxyLink.Controllers.Api
 
             var msg = new DeviceInfoMessagePacket(val, ins, outs);
             var t = msg.Deserialize(msgStr);
-            result.datas.Add(t.vals);
-            result.datas.Add(t.ins);
-            result.datas.Add(t.outs);
+            if (t != null)
+            {
+                result.datas.Add(t.vals);
+                result.datas.Add(t.ins);
+                result.datas.Add(t.outs);
+            }
             return result;
         }
 

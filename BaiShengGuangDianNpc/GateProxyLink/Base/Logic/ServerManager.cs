@@ -24,6 +24,7 @@ namespace GateProxyLink.Base.Logic
         private static Dictionary<int, ServerInfo> _serversUrl = new Dictionary<int, ServerInfo>();
         private static Timer _checkTimer = new Timer(CheckClientState, null, 10000, 2000);
         private static bool _isInit;
+        private static List<int> _doneList = new List<int>();
         public void LoadConfig()
         {
             LoadServer();
@@ -50,8 +51,11 @@ namespace GateProxyLink.Base.Logic
             foreach (var server in _serversUrl)
             {
                 server.Value.Normal = false;
-
-                LoadClient(server.Value);
+                if (!_doneList.Contains(server.Key))
+                {
+                    _doneList.Add(server.Key);
+                    LoadClient(server.Value);
+                }
             }
         }
 
@@ -103,6 +107,7 @@ namespace GateProxyLink.Base.Logic
                         _clients.TryAdd(deviceId, deviceInfo);
                     }
 
+                    _doneList.Remove(serverInfo.ServerId);
                     serverInfo.Normal = true;
                 }
                 catch (Exception e)

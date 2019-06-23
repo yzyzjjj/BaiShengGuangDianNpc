@@ -109,6 +109,7 @@ function btnMonitoring() {
 }
 
 function btnSend() {
+    $("#text").empty();
     var data = {
         deviceId: $("#deviceId").text(),
         serverId: $("#serverId").text(),
@@ -124,7 +125,6 @@ function btnSend() {
         {
             deviceInfo: JSON.stringify(data)
         }, function (res) {
-            $("#text").empty();
             $("#text").append(res.messages[0].Item2)
         })
 }
@@ -135,8 +135,13 @@ function btnAnalysis() {
             ins: $("#ins").text(),
             msg: $("#text").text()
         }, function (res) {
-            var i = 0;
             $("#d1").empty();
+            $("#d2").empty();
+            $("#d3").empty();
+            if (res.datas.length == 0)
+                return;
+
+            var i = 0;
             for (var n in res.datas[0]) {
                 $("#d1").append(n + " : " + res.datas[0][n] + "       ");
                 i++;
@@ -146,7 +151,6 @@ function btnAnalysis() {
                 }
             }
             i = 0;
-            $("#d2").empty();
             for (var n in res.datas[1]) {
                 $("#d2").append(n + " : " + res.datas[1][n] + "       ");
                 i++;
@@ -156,7 +160,6 @@ function btnAnalysis() {
                 }
             }
             i = 0;
-            $("#d3").empty();
             for (var n in res.datas[2]) {
                 $("#d3").append(n + " : " + res.datas[2][n] + "       ");
                 i++;
