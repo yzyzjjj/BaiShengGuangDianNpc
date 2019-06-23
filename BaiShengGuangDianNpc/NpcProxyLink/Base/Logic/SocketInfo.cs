@@ -21,7 +21,7 @@ namespace NpcProxyLink.Base.Logic
         public DeviceInfo DeviceInfo;
 
         private int _maxLogCount = 20;
-        private int _maxTryReceive = 5000;
+        private int _maxTryReceive = 1000;
         private bool _sending = false;
 
         public string HeartPacket;
@@ -304,7 +304,7 @@ namespace NpcProxyLink.Base.Logic
                                 break;
                             }
                         }
-                        if (tryReceive == _maxTryReceive)
+                        if (tryReceive >= _maxTryReceive)
                         {
                             //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
                             DeviceInfo.State = SocketState.Fail;
@@ -312,11 +312,13 @@ namespace NpcProxyLink.Base.Logic
                         }
                         Thread.Sleep(1);
                     }
-
-                    //socketMessage.ReceiveTime = DateTime.Now;
-                    if (socketMessage.DataList.Count > 0)
+                    if (tryReceive < _maxTryReceive)
                     {
-                        Task.Run(() => { UpdateStateInfo(socketMessage); });
+                        //socketMessage.ReceiveTime = DateTime.Now;
+                        if (socketMessage.DataList.Count > 0)
+                        {
+                            Task.Run(() => { UpdateStateInfo(socketMessage); });
+                        }
                     }
                     _sending = false;
                     //Log.Error("Heart success");
@@ -464,7 +466,7 @@ namespace NpcProxyLink.Base.Logic
                             if (tryReceive >= _maxTryReceive)
                             {
                                 //Log.DebugFormat("Receive Error+++++++++++:{0}", socketMessage.DataList.Count);
-                                DeviceInfo.State = SocketState.Fail;
+                                //DeviceInfo.State = SocketState.Fail;
                                 break;
                             }
                             Thread.Sleep(1);
@@ -568,7 +570,7 @@ namespace NpcProxyLink.Base.Logic
                             break;
                         }
                     }
-                    if (tryReceive == _maxTryReceive)
+                    if (tryReceive >= _maxTryReceive)
                     {
                         break;
                     }
