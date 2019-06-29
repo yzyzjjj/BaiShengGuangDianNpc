@@ -58,12 +58,40 @@ namespace ModelBase.Base.HttpServer
                 {
                     try
                     {
-                        var requestBody = JObject.Parse(rawData);
-                        if (requestBody.GetValue("id") != null)
+                        if (httpVerb == HttpVerb.GET)
                         {
-                            url += "/" + requestBody["id"];
-                            requestBody.Remove("id");
-                            rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                            var requestBody = JObject.Parse(rawData);
+                            if (requestBody.Count == 1)
+                            {
+                                if (requestBody.GetValue("id") != null)
+                                {
+                                    url += "/" + requestBody["id"];
+                                    requestBody.Remove("id");
+                                    rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                                }
+                            }
+                            else
+                            {
+                                var dts = new ArrayOfString();
+                                foreach (var variable in requestBody)
+                                {
+                                    dts.Add($"{variable.Key}={variable.Value}");
+                                }
+                                if (dts.Count > 0)
+                                {
+                                    url += "?" + dts.Join("&");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var requestBody = JObject.Parse(rawData);
+                            if (requestBody.GetValue("id") != null)
+                            {
+                                url += "/" + requestBody["id"];
+                                requestBody.Remove("id");
+                                rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                            }
                         }
                     }
                     catch (Exception)
@@ -105,11 +133,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    //Log.DebugFormat("PostAsync return:{0}", ss);
                     callBack?.Invoke(ss, null);
                 }
                 else
                 {
+                    ss = "fail";
+                    callBack?.Invoke(ss, e);
                     Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 }
             });
@@ -143,11 +172,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    //Log.DebugFormat("PostAsync return:{0}", ss);
                     callBack?.Invoke(ss, null);
                 }
                 else
                 {
+                    ss = "fail";
+                    callBack?.Invoke(ss, e);
                     Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
                 }
             });
@@ -198,11 +228,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    //Log.DebugFormat("GetAsync return:{0}", ss);
                     callBack?.Invoke(ss, null);
                 }
                 else
                 {
+                    ss = "fail";
+                    callBack?.Invoke(ss, e);
                     Log.ErrorFormat("请求服务器异常 GetAsync:{0}", url);
                 }
             });
@@ -256,11 +287,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    //Log.DebugFormat("PostAsync return:{0}", ss);
                     callBack?.Invoke(ss, null);
                 }
                 else
                 {
+                    ss = "fail";
+                    callBack?.Invoke(ss, e);
                     Log.ErrorFormat("请求服务器异常 PostAsync:{0}", url);
                 }
             });
@@ -273,11 +305,12 @@ namespace ModelBase.Base.HttpServer
             {
                 if (e == null)
                 {
-                    //Log.DebugFormat("PostAsync return:{0}", ss);
                     callBack?.Invoke(ss, null);
                 }
                 else
                 {
+                    ss = "fail";
+                    callBack?.Invoke(ss, e);
                     Log.ErrorFormat("请求服务器异常 PostAsync:{0}", url);
                 }
             });

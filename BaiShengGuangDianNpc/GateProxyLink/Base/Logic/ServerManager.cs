@@ -80,40 +80,44 @@ namespace GateProxyLink.Base.Logic
             {
                 if (resp == "fail")
                 {
-                    Log.ErrorFormat("ServerManager LoadClient Fail, Server: {0},{1}", serverInfo.ServerId, serverInfo.Url);
-                    return;
+                    Log.ErrorFormat("ServerManager LoadClient Fail, Server: {0},{1}", serverInfo.ServerId,
+                        serverInfo.Url);
                 }
-
-                try
+                else
                 {
-                    var result = JsonConvert.DeserializeObject<DeviceResult>(resp);
-                    var devicesList = result.datas;
-                    if (!devicesList.Any())
+                    try
                     {
-                        return;
-                    }
-
-                    foreach (var deviceInfo in devicesList)
-                    {
-                        var deviceId = deviceInfo.DeviceId;
-                        if (_clients.ContainsKey(deviceId))
+                        var result = JsonConvert.DeserializeObject<DeviceResult>(resp);
+                        var devicesList = result.datas;
+                        if (!devicesList.Any())
                         {
-                            var existDeviceInfo = _clients[deviceId];
-                            Log.ErrorFormat("ServerManager AddClient Fail, Clients: {0},{1}:{2}, Add: {0},{1}:{2}",
-                                existDeviceInfo.DeviceId, existDeviceInfo.Ip, existDeviceInfo.Port,
-                                deviceInfo.DeviceId, deviceInfo.Ip, deviceInfo.Port);
-                            _clients.TryRemove(deviceId, out _);
+                            return;
                         }
-                        _clients.TryAdd(deviceId, deviceInfo);
-                    }
 
-                    _doneList.Remove(serverInfo.ServerId);
-                    serverInfo.Normal = true;
+                        foreach (var deviceInfo in devicesList)
+                        {
+                            var deviceId = deviceInfo.DeviceId;
+                            if (_clients.ContainsKey(deviceId))
+                            {
+                                var existDeviceInfo = _clients[deviceId];
+                                Log.ErrorFormat("ServerManager AddClient Fail, Clients: {0},{1}:{2}, Add: {0},{1}:{2}",
+                                    existDeviceInfo.DeviceId, existDeviceInfo.Ip, existDeviceInfo.Port,
+                                    deviceInfo.DeviceId, deviceInfo.Ip, deviceInfo.Port);
+                                _clients.TryRemove(deviceId, out _);
+                            }
+
+                            _clients.TryAdd(deviceId, deviceInfo);
+                        }
+
+                        serverInfo.Normal = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.ErrorFormat("LoadClient Res:{0}, Error:{1}", resp, e.Message);
+                    }
                 }
-                catch (Exception e)
-                {
-                    Log.ErrorFormat("LoadClient Res:{0}, Error:{1}", resp, e.Message);
-                }
+
+                _doneList.Remove(serverInfo.ServerId);
             });
 
         }

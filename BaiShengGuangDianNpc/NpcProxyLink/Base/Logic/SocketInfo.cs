@@ -179,6 +179,11 @@ namespace NpcProxyLink.Base.Logic
 
         public void CheckState()
         {
+            if (DeviceInfo.State != SocketState.Connected)
+            {
+                DeviceInfo.DeviceState = DeviceState.UnInit;
+            }
+
             if (DeviceInfo.State == SocketState.Connecting)
             {
                 return;
