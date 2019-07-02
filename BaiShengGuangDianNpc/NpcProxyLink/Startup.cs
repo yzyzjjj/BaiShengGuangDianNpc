@@ -44,7 +44,7 @@ namespace NpcProxyLink
             services.AddSwaggerGen(c =>
             {
                 //配置第一个Doc
-                c.SwaggerDoc("v1", new Info { Title = "My API_1", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "NPC API", Version = "v1" });
 
             });
 
@@ -66,7 +66,7 @@ namespace NpcProxyLink
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

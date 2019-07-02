@@ -19,6 +19,7 @@ namespace ModelBase.Models.Device
 
     public class DeviceInfo : DeviceBaseInfo
     {
+        public string Code { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public SocketState State { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]

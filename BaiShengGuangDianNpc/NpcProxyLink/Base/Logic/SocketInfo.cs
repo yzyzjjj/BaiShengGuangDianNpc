@@ -92,7 +92,7 @@ namespace NpcProxyLink.Base.Logic
                 _args.Completed += ConnectCompleted;
                 DeviceInfo.State = SocketState.Connecting;
                 _isTrying = true;
-                //Log.Info("start connect");
+                Log.InfoFormat("Ip:{0}, Port：{1} Start Connect", DeviceInfo.Ip, DeviceInfo.Port);
                 ConnectAsync();
             }
             else
@@ -132,7 +132,6 @@ namespace NpcProxyLink.Base.Logic
                 {
                     //响应超时设置
                     ReceiveTimeout = 1000,
-                    NoDelay = true,
                     //Blocking = false,
                 };
                 _socket.ConnectAsync(_args);
@@ -216,7 +215,7 @@ namespace NpcProxyLink.Base.Logic
             }
             if (_tryTime == 0)
             {
-                Log.InfoFormat("Ip:{0}, Port：{1} ReConnect", DeviceInfo.Ip, DeviceInfo.Port);
+                Log.ErrorFormat("Ip:{0}, Port：{1} ReConnect", DeviceInfo.Ip, DeviceInfo.Port);
             }
             _tryTime++;
             if (_tryTime == _maxLogCount)
@@ -552,16 +551,16 @@ namespace NpcProxyLink.Base.Logic
                     SendTime = DateTime.Now,
                     UserSend = true
                 };
-                _socket.Send(messageBytes);
+                backSocket.Send(messageBytes);
                 var tryReceive = 0;
                 while (true)
                 {
                     tryReceive++;
-                    var len = _socket.Available;
+                    var len = backSocket.Available;
                     if (len > 0)
                     {
                         var receiveData = new byte[len];
-                        _socket.Receive(receiveData);
+                        backSocket.Receive(receiveData);
                         if (socketMessage.DataList.Count == 0)
                         {
                             if (receiveData[0] != 243)

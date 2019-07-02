@@ -33,6 +33,7 @@ function load() {
                 "columns": [
                     { "data": null, "title": "操作", "render": op },
                     { "data": "DeviceId", "title": "设备ID" },
+                    { "data": "Code", "title": "机台号" },
                     { "data": "State", "title": "连接状态" },
                     { "data": "DeviceState", "title": "设备状态" },
                     { "data": "ServerId", "title": "NpcServerId" },

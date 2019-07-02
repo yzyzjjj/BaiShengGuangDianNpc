@@ -24,7 +24,7 @@ namespace GateProxyLink.Base.Logic
         private static Dictionary<int, ServerInfo> _serversUrl = new Dictionary<int, ServerInfo>();
         private static Timer _checkTimer = new Timer(CheckClientState, null, 10000, 2000);
         private static bool _isInit;
-        private static List<int> _doneList = new List<int>();
+        private static Dictionary<int, DateTime> _doneList = new Dictionary<int, DateTime>();
         public void LoadConfig()
         {
             LoadServer();
@@ -51,10 +51,17 @@ namespace GateProxyLink.Base.Logic
             foreach (var server in _serversUrl)
             {
                 server.Value.Normal = false;
-                if (!_doneList.Contains(server.Key))
+                if (!_doneList.ContainsKey(server.Key))
                 {
-                    _doneList.Add(server.Key);
+                    _doneList.Add(server.Key, DateTime.Now);
                     LoadClient(server.Value);
+                }
+                else
+                {
+                    if ((DateTime.Now - _doneList[server.Key]).TotalSeconds > 10)
+                    {
+                        _doneList.Remove(server.Key);
+                    }
                 }
             }
         }
@@ -66,14 +73,14 @@ namespace GateProxyLink.Base.Logic
         /// <returns></returns>
         public static void LoadClient(ServerInfo serverInfo)
         {
-            var clients = _clients.Where(x => x.Value.ServerId == serverInfo.ServerId);
-            if (clients.Any())
-            {
-                foreach (var client in clients)
-                {
-                    _clients.TryRemove(client.Key, out _);
-                }
-            }
+            //var clients = _clients.Where(x => x.Value.ServerId == serverInfo.ServerId);
+            //if (clients.Any())
+            //{
+            //    foreach (var client in clients)
+            //    {
+            //        _clients.TryRemove(client.Key, out _);
+            //    }
+            //}
             var url = serverInfo.Url + UrlMappings.Urls["deviceList"];
             //向NpcProxyLink请求数据
             HttpServer.GetAsync(url, null, (resp, exp) =>
@@ -99,14 +106,18 @@ namespace GateProxyLink.Base.Logic
                             var deviceId = deviceInfo.DeviceId;
                             if (_clients.ContainsKey(deviceId))
                             {
-                                var existDeviceInfo = _clients[deviceId];
-                                Log.ErrorFormat("ServerManager AddClient Fail, Clients: {0},{1}:{2}, Add: {0},{1}:{2}",
-                                    existDeviceInfo.DeviceId, existDeviceInfo.Ip, existDeviceInfo.Port,
-                                    deviceInfo.DeviceId, deviceInfo.Ip, deviceInfo.Port);
-                                _clients.TryRemove(deviceId, out _);
+                                _clients[deviceId] = deviceInfo;
+                                //var existDeviceInfo = _clients[deviceId];
+                                //Log.ErrorFormat("ServerManager AddClient Fail, Clients: {0},{1}:{2}, Add: {0},{1}:{2}",
+                                //    existDeviceInfo.DeviceId, existDeviceInfo.Ip, existDeviceInfo.Port,
+                                //    deviceInfo.DeviceId, deviceInfo.Ip, deviceInfo.Port);
+                                //_clients.TryRemove(deviceId, out _);
+                            }
+                            else
+                            {
+                                _clients.TryAdd(deviceId, deviceInfo);
                             }
 
-                            _clients.TryAdd(deviceId, deviceInfo);
                         }
 
                         serverInfo.Normal = true;
