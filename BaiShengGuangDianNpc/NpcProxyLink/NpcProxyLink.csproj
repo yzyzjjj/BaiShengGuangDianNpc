@@ -30,6 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="ServerStart.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
