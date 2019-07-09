@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+
+<script src="js/myjs/index.js"></script>
+<div class="form-group text-right">
+    <button id="btnReload" type="button" class="btn btn-primary" onclick="load()">加载</button>
+</div>
+<table id="deviceTable" class="table table-bordered table-hover"></table>
+<textarea id="ins" class="form-control" disabled="disabled">
+</textarea>
+<textarea id="text" class="form-control">
+</textarea>
+<button type="button" class="btn btn-primary" onclick="btnAnalysis()">解析</button>
+<textarea id="d1" class="form-control">
+</textarea>
+<textarea id="d2" class="form-control">
+</textarea>
+<textarea id="d3" class="form-control">
+</textarea>
+<!-- 模态框（Modal）详细信息 -->
+<div class="modal fade" id="detailInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    设备信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box box-info">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body row">
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">设备ID：</label>
+                            <label id="deviceId" class="col-sm-8 control-label"></label>
+                        </div>
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">serverId：</label>
+                            <label id="serverId" class="col-sm-8 control-label"></label>
+                        </div>
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">Ip：</label>
+                            <input id="ip" class="col-sm-8 control-label">
+                        </div>
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">端口：</label>
+                            <input id="port" class="col-sm-8 control-label">
+                        </div>
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">是否监控：</label>
+                            <select id="monitoring" class="col-sm-8 control-label">
+                                <option>true</option>
+                                <option>false</option>
+                            </select>1000
+                        </div>
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">监控频率(毫秒)：</label>
+                            <input id="frequency" class="col-sm-8 control-label">
+                        </div>
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">指令：</label>
+                            <input id="instruction" class="col-sm-8 control-label">
+                        </div>
+                        <div class="col-lg-12 form-control">
+                            <label class="col-sm-4 control-label">是否存储：</label>
+                            <select id="storage" class="col-sm-8 control-label">
+                                <option>true</option>
+                                <option>false</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnStorage" type="button" class="btn btn-default" data-dismiss="modal" onclick="btnStorage()">设置存储</button>
+                    <button id="btnMonitoring" type="button" class="btn btn-default" data-dismiss="modal" onclick="btnMonitoring()">设置监控</button>
+                    <button id="btnSend" type="button" class="btn btn-default" data-dismiss="modal" onclick="btnSend()">发送消息</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+

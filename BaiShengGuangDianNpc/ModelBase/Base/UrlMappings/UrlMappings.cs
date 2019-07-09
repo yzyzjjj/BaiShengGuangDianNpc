@@ -22,17 +22,10 @@ namespace ModelBase.Base.UrlMappings
 
             { "deviceListGate", "/gate/device/list"},
             { "deviceSingleGate", "/gate/device/single"},
-            { "addDeviceGate", "/gate/device/add"},
             { "batchAddDeviceGate", "/gate/device/batchadd"},
-            { "delDeviceGate", "/gate/device/delete"},
             { "batchDelDeviceGate", "/gate/device/batchdelete"},
-            { "sendGate", "/gate/device/send"},
-            { "batchSendGate", "/gate/device/batchsend"},
-            { "sendBackGate", "/gate/device/sendback"},
             { "batchSendBackGate", "/gate/device/batchsendback"},
-            { "setStorageGate", "/gate/device/setstorage"},
             { "batchSetStorageGate", "/gate/device/batchsetstorage"},
-            { "setFrequencyGate", "/gate/device/setfrequency"},
             { "batchSetFrequencyGate", "/gate/device/batchsetfrequency"},
         };
     }

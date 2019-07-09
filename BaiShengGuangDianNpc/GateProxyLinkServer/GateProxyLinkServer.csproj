@@ -1,0 +1,1142 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Log4NetConfig\log4net.config" />
+    <_ContentIncludedByDefault Remove="Log4NetConfig\log4net.unix.config" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap-theme.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap-theme.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap-theme.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap-theme.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\css\bootstrap.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\js\bootstrap.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\js\bootstrap.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\bootstrap\js\npm.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\AdminLTE.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\AdminLTE.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-bootstrap-social.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-bootstrap-social.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-fullcalendar.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-fullcalendar.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-select2.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-select2.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-without-plugins.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\alt\AdminLTE-without-plugins.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-black-light.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-black-light.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-black.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-black.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-blue-light.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-blue-light.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-blue.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-blue.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-green-light.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-green-light.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-green.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-green.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-purple-light.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-purple-light.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-purple.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-purple.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-red-light.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-red-light.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-red.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-red.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-yellow-light.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-yellow-light.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-yellow.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\skin-yellow.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\_all-skins.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\css\skins\_all-skins.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\avatar.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\avatar04.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\avatar2.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\avatar3.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\avatar5.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\boxed-bg.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\boxed-bg.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\credit\american-express.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\credit\cirrus.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\credit\mastercard.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\credit\mestro.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\credit\paypal.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\credit\paypal2.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\credit\visa.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\default-50x50.gif" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\icons.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\photo1.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\photo2.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\photo3.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\photo4.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user1-128x128.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user2-160x160.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user3-128x128.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user4-128x128.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user5-128x128.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user6-128x128.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user7-128x128.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\img\user8-128x128.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\js\app.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\dist\js\app.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\adminlte-options.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\advice.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\browsers.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\components.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\dependencies.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\download.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\faq.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\implementations.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\introduction.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\layout.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\license.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\plugins.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\include\upgrade.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\build\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\docs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\documentation\style.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\bootstrap-slider\bootstrap-slider.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\bootstrap-slider\slider.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\chartjs\Chart.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\chartjs\Chart.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\adapters\jquery.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\build-config.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\CHANGES.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\ckeditor.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\config.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\contents.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\af.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ar.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\bg.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\bn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\bs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\cs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\cy.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\da.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\de-ch.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\de.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\el.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\en-au.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\en-ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\en-gb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\en.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\eo.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\es.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\et.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\eu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\fa.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\fi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\fo.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\fr-ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\fr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\gl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\gu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\he.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\hi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\hr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\hu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\id.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\is.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\it.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ja.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ka.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\km.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ko.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ku.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\lt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\lv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\mk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\mn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ms.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\nb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\nl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\no.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\pl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\pt-br.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\pt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ro.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ru.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\si.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\sk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\sl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\sq.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\sr-latn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\sr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\sv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\th.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\tr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\tt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\ug.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\uk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\vi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\zh-cn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\lang\zh.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\LICENSE.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\de-ch.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\eu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\fo.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\_translationstatus.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\about\dialogs\about.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\about\dialogs\hidpi\logo_ckeditor.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\about\dialogs\logo_ckeditor.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\clipboard\dialogs\paste.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\icons.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\icons_hidpi.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\image\dialogs\image.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\image\images\noimage.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\link\dialogs\anchor.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\link\dialogs\link.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\link\images\anchor.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\link\images\hidpi\anchor.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\magicline\images\hidpi\icon-rtl.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\magicline\images\hidpi\icon.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\magicline\images\icon-rtl.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\magicline\images\icon.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\pastefromword\filter\default.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\scayt\CHANGELOG.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\scayt\dialogs\options.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\scayt\dialogs\toolbar.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\scayt\LICENSE.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\scayt\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\da.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\de-ch.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\es.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\eu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\id.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\km.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\ko.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\si.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\lang\_translationstatus.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\table\dialogs\table.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\wsc\dialogs\ciframe.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\wsc\dialogs\tmpFrameset.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\wsc\dialogs\wsc.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\wsc\dialogs\wsc.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\wsc\LICENSE.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\plugins\wsc\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\css\samples.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\img\github-top.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\img\header-bg.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\img\header-separator.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\img\logo.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\img\navigation-tip.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\js\sample.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\js\sf.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\ajax.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\api.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\appendto.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\assets\inlineall\logo.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\assets\outputxhtml\outputxhtml.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\assets\posteddata.php" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\assets\sample.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\assets\uilanguages\languages.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\datafiltering.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\dialog\assets\my_dialog.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\dialog\dialog.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\divreplace.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\enterkey\enterkey.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.fla" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.swf" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\htmlwriter\assets\outputforflash\swfobject.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\htmlwriter\outputforflash.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\htmlwriter\outputhtml.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\inlineall.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\inlinebycode.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\inlinetextarea.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\jquery.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\magicline\magicline.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\readonly.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\replacebyclass.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\replacebycode.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\sample.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\sample.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\sample_posteddata.php" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\tabindex.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\toolbar\toolbar.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\uicolor.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\uilanguages.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\wysiwygarea\fullpage.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\old\xhtmlstyle.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\css\fontello.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\font\config.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\font\fontello.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\font\fontello.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\font\fontello.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\font\LICENSE.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\js\abstracttoolbarmodifier.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\js\fulltoolbareditor.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\js\toolbarmodifier.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\js\toolbartextmodifier.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\javascript.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\neo.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\dialog.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\dialog_ie.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\dialog_ie7.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\dialog_ie8.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\dialog_iequirks.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\editor.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\editor_gecko.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\editor_ie.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\editor_ie7.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\editor_ie8.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\editor_iequirks.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\icons.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\icons_hidpi.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\arrow.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\close.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\hidpi\close.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\hidpi\lock-open.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\hidpi\lock.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\hidpi\refresh.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\lock-open.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\lock.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\refresh.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\images\spinner.gif" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\skins\moono\readme.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ckeditor\styles.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\bootstrap-colorpicker.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\bootstrap-colorpicker.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\bootstrap-colorpicker.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\bootstrap-colorpicker.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\img\alpha-horizontal.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\img\alpha.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\img\hue-horizontal.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\img\hue.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\colorpicker\img\saturation.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\dataTables.bootstrap.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\dataTables.bootstrap.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\dataTables.bootstrap.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\css\dataTables.autoFill.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\css\dataTables.autoFill.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\columns.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\complete-callback.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\fill-both.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\fill-horizontal.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\scrolling.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\examples\step-callback.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\images\filler.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\js\dataTables.autoFill.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\js\dataTables.autoFill.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\AutoFill\Readme.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\css\dataTables.colReorder.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\css\dataTables.colReorder.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\alt_insert.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\colvis.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\col_filter.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\fixedcolumns.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\fixedheader.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\jqueryui.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\new_init.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\predefined.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\realtime.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\reset.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\scrolling.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\server_side.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\examples\state_save.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\images\insert.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\js\dataTables.colReorder.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\js\dataTables.colReorder.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\License.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColReorder\Readme.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\css\dataTables.colVis.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\css\dataTables.colvis.jqueryui.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\css\dataTables.colVis.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\button_order.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\exclude_columns.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\group_columns.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\jqueryui.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\mouseover.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\new_init.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\restore.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\text.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\title_callback.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\two_tables.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\examples\two_tables_identical.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\js\dataTables.colVis.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\js\dataTables.colVis.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\License.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\ColVis\Readme.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\css\dataTables.fixedColumns.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\css\dataTables.fixedColumns.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\bootstrap.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\colvis.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\col_filter.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\css_size.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\index_column.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\left_right_columns.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\right_column.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\rowspan.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\server-side-processing.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\size_fixed.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\size_fluid.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\examples\two_columns.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\js\dataTables.fixedColumns.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\js\dataTables.fixedColumns.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\License.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedColumns\Readme.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\css\dataTables.fixedHeader.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\css\dataTables.fixedHeader.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\examples\header_footer.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\examples\top_left_right.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\examples\two_tables.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\examples\zIndexes.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\js\dataTables.fixedHeader.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\js\dataTables.fixedHeader.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\FixedHeader\Readme.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\css\dataTables.keyTable.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\css\dataTables.keyTable.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\examples\events.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\examples\html.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\examples\scrolling.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\js\dataTables.keyTable.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\js\dataTables.keyTable.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\KeyTable\Readme.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\css\dataTables.responsive.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\css\dataTables.responsive.scss" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\child-rows\column-control.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\child-rows\custom-renderer.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\child-rows\disable-child-rows.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\child-rows\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\child-rows\right-column.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\child-rows\whole-row-control.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\display-control\auto.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\display-control\classes.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\display-control\complexHeader.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\display-control\fixedHeader.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\display-control\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\display-control\init-classes.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\initialisation\ajax.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\initialisation\className.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\initialisation\default.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\initialisation\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\initialisation\new.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\initialisation\option.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\styling\bootstrap.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\styling\compact.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\styling\foundation.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\styling\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\examples\styling\scrolling.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\js\dataTables.responsive.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\js\dataTables.responsive.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\License.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Responsive\Readme.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\css\dataTables.scroller.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\css\dataTables.scroller.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\api_scrolling.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\data\2500.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\data\ssp.php" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\large_js_source.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\server-side_processing.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\examples\state_saving.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\images\loading-background.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\js\dataTables.scroller.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\js\dataTables.scroller.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\Scroller\Readme.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\css\dataTables.tableTools.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\css\dataTables.tableTools.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\ajax.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\alter_buttons.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\bootstrap.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\button_text.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\collection.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\defaults.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\jqueryui.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\multiple_tables.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\multi_instance.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\new_init.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\pdf_message.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\plug-in.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\select_column.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\select_multi.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\select_os.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\select_single.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\simple.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\examples\swf_path.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\collection.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\collection_hover.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\copy.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\copy_hover.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\csv.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\csv_hover.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\pdf.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\pdf_hover.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\print.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\print_hover.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\psd\collection.psd" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\psd\copy document.psd" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\psd\file_types.psd" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\psd\printer.psd" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\xls.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\images\xls_hover.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\js\dataTables.tableTools.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\js\dataTables.tableTools.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\Readme.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\swf\copy_csv_xls.swf" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\extensions\TableTools\swf\copy_csv_xls_pdf.swf" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\images\sort_asc.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\images\sort_asc_disabled.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\images\sort_both.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\images\sort_desc.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\images\sort_desc_disabled.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\jquery.dataTables.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\jquery.dataTables.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\jquery.dataTables.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\jquery.dataTables.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datatables\jquery.dataTables_themeroller.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\bootstrap-datepicker.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\datepicker3.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ar.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.az.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.bg.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.cs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.cy.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.da.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.de.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.el.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.es.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.et.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.fa.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.fi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.fr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.gl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.he.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.hr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.hu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.id.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.is.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.it.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ja.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ka.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.kk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.kr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.lt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.lv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.mk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ms.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.nb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.nl-BE.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.nl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.no.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.pl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.pt-BR.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.pt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ro.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.rs-latin.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.rs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ru.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.sk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.sl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.sq.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.sv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.sw.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.th.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.tr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.ua.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.vi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.zh-CN.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\datepicker\locales\bootstrap-datepicker.zh-TW.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\daterangepicker\daterangepicker.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\daterangepicker\daterangepicker.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\daterangepicker\moment.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\daterangepicker\moment.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\fastclick\fastclick.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\fastclick\fastclick.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\excanvas.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\excanvas.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.colorhelpers.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.colorhelpers.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.canvas.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.canvas.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.categories.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.categories.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.crosshair.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.crosshair.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.errorbars.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.errorbars.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.fillbetween.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.fillbetween.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.image.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.image.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.navigate.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.navigate.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.pie.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.pie.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.resize.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.resize.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.selection.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.selection.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.stack.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.stack.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.symbol.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.symbol.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.threshold.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.threshold.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.time.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\flot\jquery.flot.time.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\fullcalendar\fullcalendar.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\fullcalendar\fullcalendar.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\fullcalendar\fullcalendar.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\fullcalendar\fullcalendar.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\fullcalendar\fullcalendar.print.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\all.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\aero.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\aero.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\aero@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\blue.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\blue.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\blue@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\flat.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\flat.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\flat@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\green.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\green.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\green@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\grey.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\grey.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\grey@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\orange.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\orange.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\orange@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\pink.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\pink.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\pink@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\purple.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\purple.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\purple@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\red.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\red.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\red@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\yellow.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\yellow.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\yellow@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\flat\_all.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\futurico\futurico.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\futurico\futurico.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\futurico\futurico@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\icheck.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\icheck.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\aero.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\blue.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\green.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\grey.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\line.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\line.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\line@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\orange.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\pink.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\purple.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\red.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\yellow.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\line\_all.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\aero.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\aero.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\aero@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\blue.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\blue.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\blue@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\green.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\green.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\green@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\grey.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\grey.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\grey@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\minimal.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\minimal.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\minimal@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\orange.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\orange.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\orange@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\pink.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\pink.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\pink@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\purple.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\purple.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\purple@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\red.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\red.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\red@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\yellow.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\yellow.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\yellow@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\minimal\_all.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\polaris\polaris.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\polaris\polaris.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\polaris\polaris@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\aero.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\aero.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\aero@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\blue.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\blue.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\blue@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\green.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\green.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\green@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\grey.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\grey.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\grey@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\orange.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\orange.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\orange@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\pink.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\pink.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\pink@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\purple.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\purple.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\purple@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\red.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\red.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\red@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\square.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\square.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\square@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\yellow.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\yellow.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\yellow@2x.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\iCheck\square\_all.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\jquery.inputmask.date.extensions.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\jquery.inputmask.extensions.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\jquery.inputmask.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\jquery.inputmask.numeric.extensions.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\jquery.inputmask.phone.extensions.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\jquery.inputmask.regex.extensions.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\phone-codes\phone-be.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\phone-codes\phone-codes.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\input-mask\phone-codes\readme.txt" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ionslider\img\sprite-skin-flat.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ionslider\img\sprite-skin-nice.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ionslider\ion.rangeSlider.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ionslider\ion.rangeSlider.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ionslider\ion.rangeSlider.skinFlat.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\ionslider\ion.rangeSlider.skinNice.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\jqueryUI\jquery-ui.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\jqueryUI\jquery-ui.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\jquery\jquery-2.2.3.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\jvectormap\jquery-jvectormap-1.2.2.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\jvectormap\jquery-jvectormap-1.2.2.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\jvectormap\jquery-jvectormap-usa-en.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\jvectormap\jquery-jvectormap-world-mill-en.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\knob\jquery.knob.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\morris\morris.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\morris\morris.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\morris\morris.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\pace\pace.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\pace\pace.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\pace\pace.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\pace\pace.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\ar.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\az.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\bg.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\ca.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\cs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\da.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\de.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\el.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\en.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\es.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\et.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\eu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\fa.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\fi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\fr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\gl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\he.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\hi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\hr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\hu.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\id.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\is.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\it.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\ja.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\km.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\ko.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\lt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\lv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\mk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\ms.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\nb.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\nl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\pl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\pt-BR.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\pt.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\ro.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\ru.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\sk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\sr-Cyrl.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\sr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\sv.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\th.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\tr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\uk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\vi.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\zh-CN.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\i18n\zh-TW.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\select2.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\select2.full.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\select2.full.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\select2.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\select2.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\select2\select2.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\slimScroll\jquery.slimscroll.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\slimScroll\jquery.slimscroll.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\sparkline\jquery.sparkline.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\sparkline\jquery.sparkline.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\timepicker\bootstrap-timepicker.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\timepicker\bootstrap-timepicker.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\timepicker\bootstrap-timepicker.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\AdminLTE-2.3.11\plugins\timepicker\bootstrap-timepicker.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModelBase\ModelBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\packages\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\packages\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\packages\ServiceStack.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\packages\ServiceStack.Text.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="appsettings.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="libman.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\About.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Home\Contact.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Home\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Home\Privacy.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\Error.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_CookieConsentPartial.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_Layout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_ValidationScriptsPartial.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\_ViewImports.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\_ViewStart.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="wwwroot\css\fonts\element-icons.woff">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\site.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\site.min.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\images\banner1.svg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\images\banner2.svg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\images\banner3.svg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\myjs\index.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\.bower.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.eot">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\npm.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\LICENSE">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\.bower.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\.bower.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\additional-methods.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\additional-methods.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\jquery.validate.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\LICENSE.md">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\.bower.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\dist\jquery.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\dist\jquery.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\dist\jquery.min.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\LICENSE.txt">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
