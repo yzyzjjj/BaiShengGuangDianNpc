@@ -18,7 +18,7 @@ namespace GateProxyLinkServer.Base.Logic
         public int ServerId;
         public Socket Socket;
         private CancellationTokenSource _cancellationToken;
-        private static readonly int ReceiveBufferSize = 1024;
+        private static readonly int ReceiveBufferSize = 1024 * 4;
         private byte[] _mBuffer = new byte[ReceiveBufferSize];
         private SocketBufferReader _reader;
         public SocketState SocketState;
@@ -26,6 +26,7 @@ namespace GateProxyLinkServer.Base.Logic
         private readonly object _lockObj = new object();
         public DateTime LastReceiveTime;
 
+        private int _count = 0;
         public ClientSocket()
         {
             LastReceiveTime = DateTime.Now;
@@ -60,7 +61,6 @@ namespace GateProxyLinkServer.Base.Logic
                 var rEnd = Socket.EndReceive(ar);
                 if (rEnd > 0)
                 {
-                    LastReceiveTime = DateTime.Now;
                     var partBytes = new byte[rEnd];
                     Array.Copy(_mBuffer, 0, partBytes, 0, rEnd);
                     //在此次可以对data进行按需处理
@@ -83,6 +83,13 @@ namespace GateProxyLinkServer.Base.Logic
                             Task.Run(() =>
                             {
                                 var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
+                                if (msg.MsgType != NpcSocketMsgType.Heart)
+                                {
+                                    if (_count == 0)
+                                    {
+                                        Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} receive");
+                                    }
+                                }
                                 NpcSocketMsg responseMsg = null;
                                 switch (msg.MsgType)
                                 {
@@ -96,11 +103,13 @@ namespace GateProxyLinkServer.Base.Logic
                                         //Console.WriteLine("连接正常");
                                         break;
                                     case NpcSocketMsgType.List:
+                                        LastReceiveTime = DateTime.Now;
                                         DeviceInfos = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
                                         if (DeviceInfos.Any())
                                         {
                                             ServerId = DeviceInfos.First().ServerId;
                                         }
+
                                         break;
                                     case NpcSocketMsgType.Add:
                                     case NpcSocketMsgType.Delete:
@@ -112,18 +121,22 @@ namespace GateProxyLinkServer.Base.Logic
                                     default:
                                         break;
                                 }
-
-                                //if (msg.MsgType != NpcSocketMsgType.Heart)
-                                //{
-                                //    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------receive done");
-                                //}
                                 if (responseMsg != null)
                                 {
-                                    //Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------send done");
+                                    if (_count == 0)
+                                    {
+                                        Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} send");
+                                    }
+
                                     Send(responseMsg);
                                 }
                             });
                             _reader = null;
+
+                            if (_count++ == 50)
+                            {
+                                _count = 0;
+                            }
                         }
 
                         Socket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
@@ -133,6 +146,7 @@ namespace GateProxyLinkServer.Base.Logic
             }
             catch (Exception ex)
             {
+                Log.Error($"ReceiveCallback Error, {ex.StackTrace}");
                 SocketState = SocketState.Close;
             }
         }
@@ -151,6 +165,7 @@ namespace GateProxyLinkServer.Base.Logic
             }
             catch (Exception ex)
             {
+                Log.Error($"Dispose Error, {ex.StackTrace}");
                 // ignored
             }
         }
@@ -173,7 +188,7 @@ namespace GateProxyLinkServer.Base.Logic
             }
         }
 
-        public void Send(byte[] byteData)
+        private void Send(byte[] byteData)
         {
             lock (_lockObj)
             {
@@ -185,6 +200,7 @@ namespace GateProxyLinkServer.Base.Logic
                     }
                     catch (Exception ex)
                     {
+                        Log.Error($"Send Error, {ex.StackTrace}");
                         SocketState = SocketState.Fail;
                     }
                 }
@@ -200,6 +216,7 @@ namespace GateProxyLinkServer.Base.Logic
             }
             catch (Exception ex)
             {
+                Log.Error($"SendCallback Error, {ex.StackTrace}");
                 SocketState = SocketState.Fail;
             }
         }

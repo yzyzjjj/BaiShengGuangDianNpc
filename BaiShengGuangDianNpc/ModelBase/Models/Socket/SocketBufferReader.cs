@@ -46,13 +46,11 @@ namespace ModelBase.Models.Socket
             {
                 _mStream = new MemoryStream(data);
                 _mReader = new BinaryReader(_mStream);
-                //_mHeader = ReadInt();
-
                 _mDataLength = ReadInt();
             }
             else
             {
-                if (_mDataLength + 4 == _data.Count)
+                if (IsValid)
                 {
                     _mStream = new MemoryStream(_data.ToArray());
                     _mReader = new BinaryReader(_mStream);

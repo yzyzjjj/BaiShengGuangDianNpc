@@ -35,14 +35,16 @@ namespace NpcProxyLinkClient.Base.Logic
         private int _connectLogCount = 0;
 
         private bool _isSocketTry = false;
+        private DateTime _tryTime;
         private readonly object _lockObj = new object();
         private bool _isNormal = false;
+        private DateTime _lastTime;
         public void Init(IPAddress ip, int port)
         {
             _ip = ip;
             _port = port;
             Connect();
-            _heartTimer = new Timer(Heart, null, 10000, 2000);
+            _heartTimer = new Timer(Heart, null, 10000, 5000);
         }
 
         private void Connect()
@@ -59,13 +61,15 @@ namespace NpcProxyLinkClient.Base.Logic
                 Dispose();
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
-                    SendTimeout = 500
+                    SendTimeout = 2000,
+                    ReceiveTimeout = 2000
                 };
-                _cancellationToken = new CancellationTokenSource();
                 _socket.BeginConnect(_ip, _port, new AsyncCallback(ConnectCallback), _socket);
                 _isSocketTry = true;
+                _tryTime = DateTime.Now;
+                _lastTime = DateTime.Now;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 _isSocketTry = false;
                 SocketState = SocketState.Fail;
@@ -76,9 +80,10 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             try
             {
-                Socket handler = (Socket)ar.AsyncState;
+                var handler = (Socket)ar.AsyncState;
                 handler.EndConnect(ar);
                 SocketState = SocketState.Connected;
+                _cancellationToken = new CancellationTokenSource();
                 Task.Run(() =>
                 {
                     ReceiveData(_socket);
@@ -108,10 +113,21 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             if (_isSocketTry)
             {
+                if ((DateTime.Now - _lastTime).TotalSeconds > 30)
+                {
+                    _isSocketTry = false;
+                }
                 return;
             }
+
             if (SocketState == SocketState.Connected)
             {
+                if (_lastTime != default(DateTime) && (DateTime.Now - _lastTime).TotalSeconds > 10)
+                {
+                    Console.WriteLine("超时");
+                    SocketState = SocketState.Close;
+                    return;
+                }
                 try
                 {
                     var msg = new NpcSocketMsg
@@ -127,6 +143,7 @@ namespace NpcProxyLinkClient.Base.Logic
                 {
                     _isNormal = false;
                     SocketState = SocketState.Fail;
+                    Log.Error($"Heart Error, {ex.StackTrace}");
                 }
             }
             else
@@ -139,7 +156,16 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             if (SocketState == SocketState.Connected)
             {
-                clientSocket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
+                try
+                {
+                    clientSocket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
+                }
+                catch (Exception ex)
+                {
+                    _isNormal = false;
+                    SocketState = SocketState.Fail;
+                    Log.Error($"ReceiveData Error, {ex.StackTrace}");
+                }
             }
         }
 
@@ -147,6 +173,7 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             try
             {
+                _lastTime = DateTime.Now;
                 var rEnd = _socket.EndReceive(ar);
                 if (rEnd > 0)
                 {
@@ -170,6 +197,10 @@ namespace NpcProxyLinkClient.Base.Logic
                         Task.Run(() =>
                         {
                             var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
+                            //if (msg.MsgType != NpcSocketMsgType.HeartSuccess)
+                            //{
+                            //    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------receive done");
+                            //}
                             NpcSocketMsg responseMsg = null;
                             List<DeviceInfo> devicesList;
                             var dataErrResult = new DataErrResult();
@@ -251,10 +282,6 @@ namespace NpcProxyLinkClient.Base.Logic
                                 default:
                                     break;
                             }
-                            //if (msg.MsgType != NpcSocketMsgType.HeartSuccess)
-                            //{
-                            //    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------receive done");
-                            //}
                             if (responseMsg != null)
                             {
                                 //Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------send done");
@@ -270,6 +297,7 @@ namespace NpcProxyLinkClient.Base.Logic
             }
             catch (Exception ex)
             {
+                Log.Error($"ReceiveCallback Error, {ex.StackTrace}");
                 _isNormal = false;
                 SocketState = SocketState.Close;
             }
@@ -279,18 +307,22 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             try
             {
-                _cancellationToken.Cancel();
-                _socket.Shutdown(SocketShutdown.Both);
-                _socket.Close();
+                if (_socket != null && _socket.Connected)
+                {
+                    _cancellationToken.Cancel();
+                    _socket.Shutdown(SocketShutdown.Both);
+                    _socket.Close();
+                }
                 SocketState = SocketState.Close;
             }
             catch (Exception ex)
             {
+                Log.Error($"Dispose Error, {ex.StackTrace}");
                 // ignored
             }
         }
 
-        public void Send(NpcSocketMsg msg)
+        private void Send(NpcSocketMsg msg)
         {
             if (SocketState == SocketState.Connected)
             {
@@ -322,6 +354,7 @@ namespace NpcProxyLinkClient.Base.Logic
                     {
                         _isNormal = false;
                         SocketState = SocketState.Fail;
+                        Log.Error($"Send Error, {ex.StackTrace}");
                     }
                 }
             }
@@ -338,6 +371,7 @@ namespace NpcProxyLinkClient.Base.Logic
             {
                 _isNormal = false;
                 SocketState = SocketState.Fail;
+                Log.Error($"SendCallback Error, {ex.StackTrace}");
             }
         }
     }
