@@ -40,10 +40,10 @@ namespace GateProxyLinkServer.Base.Logic
             //绑定ip和端口  
             _mServerSocket.Bind(ipEndPoint);
             //设置最长的连接请求队列长度  
-            _mServerSocket.Listen(10);
+            _mServerSocket.Listen(50);
             Console.WriteLine("启动监听{0}成功", _mServerSocket.LocalEndPoint);
             //在新线程中监听客户端的连接
-            var thread = new Thread(ClientConnectListen);
+            var thread = new Thread(ClientConnectListen) { IsBackground = true };
             thread.Start();
 
             _checkTimer = new Timer(CheckClientState, null, 10000, 2000);
@@ -56,8 +56,7 @@ namespace GateProxyLinkServer.Base.Logic
             {
                 //为新的客户端连接创建一个Socket对象  
                 var socket = _mServerSocket.Accept();
-                var clientSocket = new ClientSocket { Socket = socket };
-                clientSocket.Init();
+                var clientSocket = new ClientSocket(socket);
                 _clientSockets.Add(clientSocket);
                 var log = $"ClientSockets Count:{_clientSockets.Count}";
                 Console.WriteLine(log);
@@ -92,7 +91,8 @@ namespace GateProxyLinkServer.Base.Logic
             for (var index = 0; index < _clientSockets.Count; index++)
             {
                 var clientSocket = _clientSockets[index];
-                if ((DateTime.Now - clientSocket.LastReceiveTime).TotalSeconds > 30)
+                if (clientSocket.SocketState == SocketState.Connected
+                    && (DateTime.Now - clientSocket.LastReceiveTime).TotalSeconds > 30)
                 {
                     var log = $"CheckClientState 超时:{clientSocket.ServerId}";
                     Console.WriteLine(log);

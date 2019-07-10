@@ -16,41 +16,57 @@ namespace GateProxyLinkServer.Base.Logic
     public class ClientSocket
     {
         public int ServerId;
-        public Socket Socket;
+        private Socket _socket;
         private CancellationTokenSource _cancellationToken;
-        private static readonly int ReceiveBufferSize = 1024 * 4;
+        private static readonly int ReceiveBufferSize = 1024 * 1024;
         private byte[] _mBuffer = new byte[ReceiveBufferSize];
         private SocketBufferReader _reader;
         public SocketState SocketState;
         public List<DeviceInfo> DeviceInfos = new List<DeviceInfo>();
         private readonly object _lockObj = new object();
         public DateTime LastReceiveTime;
-
-        private int _count = 0;
-        public ClientSocket()
+        public ClientSocket(Socket socket)
         {
+            _socket = socket;
             LastReceiveTime = DateTime.Now;
             _cancellationToken = new CancellationTokenSource();
             SocketState = SocketState.Connected;
-        }
-
-        public void Init()
-        {
-            var log = $"客户端{Socket.RemoteEndPoint}成功连接";
+            var log = $"客户端{_socket.RemoteEndPoint}成功连接";
             Log.Info(log);
             Console.WriteLine(log);
-
-            Task.Run(() =>
+            var thread = new Thread(ReceiveData)
             {
-                ReceiveData(Socket);
-            }, _cancellationToken.Token);
+                IsBackground = true
+            };
+            thread.Start();
+            //ReceiveData();
+            //Task.Run(() =>
+            //{
+            //    if (!_cancellationToken.IsCancellationRequested)
+            //    {
+            //        ReceiveData(Socket);
+            //    }
+            //}, _cancellationToken.Token);
         }
 
-        private void ReceiveData(Socket clientSocket)
+        private void ReceiveData()
         {
+            if (_cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
             if (SocketState == SocketState.Connected)
             {
-                clientSocket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
+                try
+                {
+                    _socket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, ReceiveCallback, _socket);
+                }
+                catch (Exception ex)
+                {
+                    SocketState = SocketState.Fail;
+                    Log.Error($"ReceiveData Error, {ex.Message}, {ex.StackTrace}");
+                }
             }
         }
 
@@ -58,25 +74,26 @@ namespace GateProxyLinkServer.Base.Logic
         {
             try
             {
-                var rEnd = Socket.EndReceive(ar);
+                var ts = (Socket)ar.AsyncState;
+                var rEnd = ts.EndReceive(ar);
                 if (rEnd > 0)
                 {
                     var partBytes = new byte[rEnd];
                     Array.Copy(_mBuffer, 0, partBytes, 0, rEnd);
                     //在此次可以对data进行按需处理
 
-                    var b = partBytes.Take(2).ToArray();
-                    var mHeader = Encoding.UTF8.GetString(b);
+                    var mHeader = Encoding.UTF8.GetString(partBytes.Take(2).ToArray());
                     if (mHeader == SocketBufferReader.Header)
                     {
                         _reader = new SocketBufferReader();
                         partBytes = partBytes.Skip(2).ToArray();
+                        _reader.MDataLength = BitConverter.ToInt32(partBytes.Take(4).ToArray(), 0);
+                        partBytes = partBytes.Skip(4).ToArray();
                     }
 
                     if (_reader != null)
                     {
                         _reader.SocketBufferReaderAdd(partBytes);
-
                         if (_reader.IsValid)
                         {
                             var data = _reader.ReadString();
@@ -85,10 +102,7 @@ namespace GateProxyLinkServer.Base.Logic
                                 var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
                                 if (msg.MsgType != NpcSocketMsgType.Heart)
                                 {
-                                    if (_count == 0)
-                                    {
-                                        Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} receive");
-                                    }
+                                    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} receive");
                                 }
                                 NpcSocketMsg responseMsg = null;
                                 switch (msg.MsgType)
@@ -123,30 +137,26 @@ namespace GateProxyLinkServer.Base.Logic
                                 }
                                 if (responseMsg != null)
                                 {
-                                    if (_count == 0)
+                                    if (responseMsg.MsgType != NpcSocketMsgType.HeartSuccess)
                                     {
                                         Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} send");
                                     }
 
                                     Send(responseMsg);
                                 }
+
                             });
                             _reader = null;
-
-                            if (_count++ == 50)
-                            {
-                                _count = 0;
-                            }
                         }
 
-                        Socket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
+                        ReceiveData();
+                        //Socket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
                     }
-
                 }
             }
             catch (Exception ex)
             {
-                Log.Error($"ReceiveCallback Error, {ex.StackTrace}");
+                Log.Error($"ReceiveCallback Error, {ex.Message}, {ex.StackTrace}");
                 SocketState = SocketState.Close;
             }
         }
@@ -155,17 +165,17 @@ namespace GateProxyLinkServer.Base.Logic
         {
             try
             {
-                var log = $"客户端{Socket.RemoteEndPoint}断开连接";
+                var log = $"客户端{_socket.RemoteEndPoint} {SocketState} 断开连接";
                 Log.Info(log);
                 Console.WriteLine(log);
                 _cancellationToken.Cancel();
-                Socket.Shutdown(SocketShutdown.Both);
-                Socket.Close();
+                _socket.Shutdown(SocketShutdown.Both);
+                _socket.Close();
                 SocketState = SocketState.Close;
             }
             catch (Exception ex)
             {
-                Log.Error($"Dispose Error, {ex.StackTrace}");
+                Log.Error($"Dispose Error, {ex.Message}, {ex.StackTrace}");
                 // ignored
             }
         }
@@ -196,11 +206,11 @@ namespace GateProxyLinkServer.Base.Logic
                 {
                     try
                     {
-                        Socket.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), Socket);
+                        _socket.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, _socket);
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"Send Error, {ex.StackTrace}");
+                        Log.Error($"Send Error, {ex.Message}, {ex.StackTrace}");
                         SocketState = SocketState.Fail;
                     }
                 }
@@ -211,12 +221,12 @@ namespace GateProxyLinkServer.Base.Logic
         {
             try
             {
-                Socket handler = (Socket)ar.AsyncState;
-                handler.EndSend(ar);
+                var ts = (Socket)ar.AsyncState;
+                ts.EndSend(ar);
             }
             catch (Exception ex)
             {
-                Log.Error($"SendCallback Error, {ex.StackTrace}");
+                Log.Error($"SendCallback Error, {ex.Message}, {ex.StackTrace}");
                 SocketState = SocketState.Fail;
             }
         }

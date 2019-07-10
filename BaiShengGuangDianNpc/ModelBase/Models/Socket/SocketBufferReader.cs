@@ -1,5 +1,4 @@
-﻿using ServiceStack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,47 +14,28 @@ namespace ModelBase.Models.Socket
         public static string Header => "f3";
         private MemoryStream _mStream;
         private BinaryReader _mReader;
-        private string _mHeader;
-        public int _mDataLength;
+        public int MDataLength;
         private List<byte> _data;
 
         public SocketBufferReader()
         {
-            _mDataLength = 0;
+            MDataLength = 0;
             _data = new List<byte>();
         }
 
-        public bool IsValid => _mDataLength + 4 == _data.Count;
+        public bool IsValid => MDataLength == _data.Count;
         public void SocketBufferReaderAdd(byte[] data)
         {
-            if (data == null)
+            if (data == null || !data.Any())
             {
                 return;
             }
 
-            if (_mDataLength != 0)
+            _data.AddRange(data);
+            if (IsValid)
             {
-                var valid = data.Take(_mDataLength + 4 - _data.Count);
-                _data.AddRange(valid);
-            }
-            else
-            {
-                _data.AddRange(data);
-            }
-            if (_mDataLength == 0)
-            {
-                _mStream = new MemoryStream(data);
+                _mStream = new MemoryStream(_data.ToArray());
                 _mReader = new BinaryReader(_mStream);
-                _mDataLength = ReadInt();
-            }
-            else
-            {
-                if (IsValid)
-                {
-                    _mStream = new MemoryStream(_data.ToArray());
-                    _mReader = new BinaryReader(_mStream);
-                    _mDataLength = ReadInt();
-                }
             }
         }
         public byte ReadByte()

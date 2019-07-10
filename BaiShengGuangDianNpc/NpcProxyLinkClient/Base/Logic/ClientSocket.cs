@@ -22,8 +22,8 @@ namespace NpcProxyLinkClient.Base.Logic
         public int ServerId;
         private Socket _socket;
         private CancellationTokenSource _cancellationToken;
-        private static readonly int ReceiveBufferSize = 1024;
-        private byte[] _mBuffer = new byte[ReceiveBufferSize];
+        private static readonly int bufferSize = 1024 * 4;
+        private byte[] _mBuffer = new byte[bufferSize];
         private SocketBufferReader _reader;
         private IPAddress _ip;
         private int _port;
@@ -62,7 +62,9 @@ namespace NpcProxyLinkClient.Base.Logic
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
                     SendTimeout = 2000,
-                    ReceiveTimeout = 2000
+                    ReceiveTimeout = 2000,
+                    ReceiveBufferSize = bufferSize,
+                    SendBufferSize = bufferSize
                 };
                 _socket.BeginConnect(_ip, _port, new AsyncCallback(ConnectCallback), _socket);
                 _isSocketTry = true;
@@ -84,10 +86,16 @@ namespace NpcProxyLinkClient.Base.Logic
                 handler.EndConnect(ar);
                 SocketState = SocketState.Connected;
                 _cancellationToken = new CancellationTokenSource();
-                Task.Run(() =>
+
+                var thread = new Thread(ReceiveData)
                 {
-                    ReceiveData(_socket);
-                }, _cancellationToken.Token);
+                    IsBackground = true
+                };
+                thread.Start();
+                //ReceiveData();
+                //Task.Run(() =>
+                //{
+                //}, _cancellationToken.Token);
                 var msg = $"连接Gate成功,{ServerConfig.GateIp},{ServerConfig.GatePort}";
                 Log.Error(msg);
                 Console.WriteLine(msg);
@@ -143,7 +151,7 @@ namespace NpcProxyLinkClient.Base.Logic
                 {
                     _isNormal = false;
                     SocketState = SocketState.Fail;
-                    Log.Error($"Heart Error, {ex.StackTrace}");
+                    Log.Error($"Heart Error, {ex.Message}, {ex.StackTrace}");
                 }
             }
             else
@@ -152,19 +160,24 @@ namespace NpcProxyLinkClient.Base.Logic
             }
         }
 
-        private void ReceiveData(Socket clientSocket)
+        private void ReceiveData()
         {
+            if (_cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
             if (SocketState == SocketState.Connected)
             {
                 try
                 {
-                    clientSocket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
+                    _socket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, ReceiveCallback, _socket);
                 }
                 catch (Exception ex)
                 {
                     _isNormal = false;
                     SocketState = SocketState.Fail;
-                    Log.Error($"ReceiveData Error, {ex.StackTrace}");
+                    Log.Error($"ReceiveData Error, {ex.Message}, {ex.StackTrace}");
                 }
             }
         }
@@ -174,130 +187,135 @@ namespace NpcProxyLinkClient.Base.Logic
             try
             {
                 _lastTime = DateTime.Now;
-                var rEnd = _socket.EndReceive(ar);
+                var ts = (Socket)ar.AsyncState;
+                var rEnd = ts.EndReceive(ar);
                 if (rEnd > 0)
                 {
                     var partBytes = new byte[rEnd];
                     Array.Copy(_mBuffer, 0, partBytes, 0, rEnd);
                     //在此次可以对data进行按需处理
 
-                    var b = partBytes.Take(2).ToArray();
-                    var mHeader = Encoding.UTF8.GetString(b);
+                    var mHeader = Encoding.UTF8.GetString(partBytes.Take(2).ToArray());
                     if (mHeader == SocketBufferReader.Header)
                     {
                         _reader = new SocketBufferReader();
                         partBytes = partBytes.Skip(2).ToArray();
+                        _reader.MDataLength = BitConverter.ToInt32(partBytes.Take(4).ToArray(), 0);
+                        partBytes = partBytes.Skip(4).ToArray();
                     }
 
-                    _reader.SocketBufferReaderAdd(partBytes);
-
-                    if (_reader.IsValid)
+                    if (_reader != null)
                     {
-                        var data = _reader.ReadString();
-                        Task.Run(() =>
+                        _reader.SocketBufferReaderAdd(partBytes);
+                        if (_reader.IsValid)
                         {
-                            var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
-                            //if (msg.MsgType != NpcSocketMsgType.HeartSuccess)
-                            //{
-                            //    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------receive done");
-                            //}
-                            NpcSocketMsg responseMsg = null;
-                            List<DeviceInfo> devicesList;
-                            var dataErrResult = new DataErrResult();
-                            switch (msg.MsgType)
+                            var data = _reader.ReadString();
+                            Task.Run(() =>
                             {
-                                case NpcSocketMsgType.Heart:
-                                    //responseMsg = new NpcSocketMsg
-                                    //{
-                                    //    MsgType = NpcSocketMsgType.HeartSuccess,
-                                    //};
-                                    break;
-                                case NpcSocketMsgType.HeartSuccess:
-                                    //Console.WriteLine("连接正常");
-                                    if (_isNormal == false)
-                                    {
-                                        _isNormal = true;
-                                        Log.Info("连接Gate正常");
-                                    }
-                                    break;
-                                case NpcSocketMsgType.List:
-                                    //设备列表
-                                    responseMsg = new NpcSocketMsg
-                                    {
-                                        MsgType = msg.MsgType,
-                                        Body = ClientManager.GetDevices().ToJSON()
-                                    };
-                                    break;
-                                case NpcSocketMsgType.Add:
-                                    devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
-                                    dataErrResult.datas.AddRange(ClientManager.AddClient(devicesList));
-                                    responseMsg = new NpcSocketMsg
-                                    {
-                                        Guid = msg.Guid,
-                                        MsgType = msg.MsgType,
-                                        Body = dataErrResult.ToJSON()
-                                    };
-                                    break;
-                                case NpcSocketMsgType.Delete:
-                                    devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
-                                    dataErrResult.datas.AddRange(ClientManager.DelClient(devicesList));
-                                    responseMsg = new NpcSocketMsg
-                                    {
-                                        Guid = msg.Guid,
-                                        MsgType = msg.MsgType,
-                                        Body = dataErrResult.ToJSON()
-                                    };
-                                    break;
-                                case NpcSocketMsgType.Storage:
-                                    devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
-                                    dataErrResult.datas.AddRange(ClientManager.SetStorage(devicesList));
-                                    responseMsg = new NpcSocketMsg
-                                    {
-                                        Guid = msg.Guid,
-                                        MsgType = msg.MsgType,
-                                        Body = dataErrResult.ToJSON()
-                                    };
-                                    break;
-                                case NpcSocketMsgType.Frequency:
-                                    devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
-                                    dataErrResult.datas.AddRange(ClientManager.SetFrequency(devicesList));
-                                    responseMsg = new NpcSocketMsg
-                                    {
-                                        Guid = msg.Guid,
-                                        MsgType = msg.MsgType,
-                                        Body = dataErrResult.ToJSON()
-                                    };
-                                    break;
-                                case NpcSocketMsgType.SendBack:
-                                    devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
-                                    var messageResult = new MessageResult();
-                                    messageResult.messages.AddRange(ClientManager.SendMessageBack(devicesList));
-                                    responseMsg = new NpcSocketMsg
-                                    {
-                                        Guid = msg.Guid,
-                                        MsgType = msg.MsgType,
-                                        Body = messageResult.ToJSON()
-                                    };
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (responseMsg != null)
-                            {
-                                //Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------send done");
-                                Send(responseMsg);
-                            }
+                                var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
+                                //if (msg.MsgType != NpcSocketMsgType.HeartSuccess)
+                                //{
+                                //    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------receive done");
+                                //}
+                                NpcSocketMsg responseMsg = null;
+                                List<DeviceInfo> devicesList;
+                                var dataErrResult = new DataErrResult();
+                                switch (msg.MsgType)
+                                {
+                                    case NpcSocketMsgType.Heart:
+                                        //responseMsg = new NpcSocketMsg
+                                        //{
+                                        //    MsgType = NpcSocketMsgType.HeartSuccess,
+                                        //};
+                                        break;
+                                    case NpcSocketMsgType.HeartSuccess:
+                                        //Console.WriteLine("连接正常");
+                                        if (_isNormal == false)
+                                        {
+                                            _isNormal = true;
+                                            Log.Info("连接Gate正常");
+                                        }
+                                        break;
+                                    case NpcSocketMsgType.List:
+                                        //设备列表
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            MsgType = msg.MsgType,
+                                            Body = ClientManager.GetDevices().ToJSON()
+                                        };
+                                        break;
+                                    case NpcSocketMsgType.Add:
+                                        devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
+                                        dataErrResult.datas.AddRange(ClientManager.AddClient(devicesList));
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            Guid = msg.Guid,
+                                            MsgType = msg.MsgType,
+                                            Body = dataErrResult.ToJSON()
+                                        };
+                                        break;
+                                    case NpcSocketMsgType.Delete:
+                                        devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
+                                        dataErrResult.datas.AddRange(ClientManager.DelClient(devicesList));
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            Guid = msg.Guid,
+                                            MsgType = msg.MsgType,
+                                            Body = dataErrResult.ToJSON()
+                                        };
+                                        break;
+                                    case NpcSocketMsgType.Storage:
+                                        devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
+                                        dataErrResult.datas.AddRange(ClientManager.SetStorage(devicesList));
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            Guid = msg.Guid,
+                                            MsgType = msg.MsgType,
+                                            Body = dataErrResult.ToJSON()
+                                        };
+                                        break;
+                                    case NpcSocketMsgType.Frequency:
+                                        devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
+                                        dataErrResult.datas.AddRange(ClientManager.SetFrequency(devicesList));
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            Guid = msg.Guid,
+                                            MsgType = msg.MsgType,
+                                            Body = dataErrResult.ToJSON()
+                                        };
+                                        break;
+                                    case NpcSocketMsgType.SendBack:
+                                        devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
+                                        var messageResult = new MessageResult();
+                                        messageResult.messages.AddRange(ClientManager.SendMessageBack(devicesList));
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            Guid = msg.Guid,
+                                            MsgType = msg.MsgType,
+                                            Body = messageResult.ToJSON()
+                                        };
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                if (responseMsg != null)
+                                {
+                                    //Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------send done");
+                                    Send(responseMsg);
+                                }
 
-                        });
-                        _reader = null;
+                            });
+                            _reader = null;
+                        }
+
+                        ReceiveData();
+                        //_socket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
                     }
-
-                    _socket.BeginReceive(_mBuffer, 0, _mBuffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
                 }
             }
             catch (Exception ex)
             {
-                Log.Error($"ReceiveCallback Error, {ex.StackTrace}");
+                Log.Error($"ReceiveCallback Error, {ex.Message}, {ex.StackTrace}");
                 _isNormal = false;
                 SocketState = SocketState.Close;
             }
@@ -317,7 +335,7 @@ namespace NpcProxyLinkClient.Base.Logic
             }
             catch (Exception ex)
             {
-                Log.Error($"Dispose Error, {ex.StackTrace}");
+                Log.Error($"Dispose Error, {ex.Message}, {ex.StackTrace}");
                 // ignored
             }
         }
@@ -348,13 +366,13 @@ namespace NpcProxyLinkClient.Base.Logic
                 {
                     try
                     {
-                        _socket.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), _socket);
+                        _socket.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, _socket);
                     }
                     catch (Exception ex)
                     {
                         _isNormal = false;
                         SocketState = SocketState.Fail;
-                        Log.Error($"Send Error, {ex.StackTrace}");
+                        Log.Error($"Send Error, {ex.Message}, {ex.StackTrace}");
                     }
                 }
             }
@@ -364,14 +382,14 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             try
             {
-                Socket handler = (Socket)ar.AsyncState;
-                handler.EndSend(ar);
+                var ts = (Socket)ar.AsyncState;
+                ts.EndSend(ar);
             }
             catch (Exception ex)
             {
                 _isNormal = false;
                 SocketState = SocketState.Fail;
-                Log.Error($"SendCallback Error, {ex.StackTrace}");
+                Log.Error($"SendCallback Error, {ex.Message}, {ex.StackTrace}");
             }
         }
     }

@@ -72,7 +72,7 @@ namespace NpcProxyLinkClient.Base.Logic
         /// </summary>
         private bool _hearting = false;
 
-        private readonly SocketAsyncEventArgs _args = new SocketAsyncEventArgs();
+        private SocketAsyncEventArgs _args = new SocketAsyncEventArgs();
 
         //private SocketMsgManager _socketMsgManager = new SocketMsgManager();
         ///<summary>
