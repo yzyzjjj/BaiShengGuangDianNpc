@@ -176,12 +176,12 @@ namespace GateProxyLink.Controllers.Api
         /// <param name="deviceInfo"></param>
         /// <returns></returns>
         [HttpPost("batchsendback")]
-        public DataResult BatchSendMessageBack()
+        public MessageResult BatchSendMessageBack()
         {
             var param = Request.GetRequestParams();
             var devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(param.GetValue("devicesList"));
-            var result = new DataResult();
-            result.datas.AddRange(ServerConfig.ServerManager.SendMessage(devicesList));
+            var result = new MessageResult();
+            result.messages.AddRange(ServerConfig.ServerManager.SendMessageBack(devicesList));
             return result;
         }
 
