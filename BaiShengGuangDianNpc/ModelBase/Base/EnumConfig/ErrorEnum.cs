@@ -356,6 +356,21 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("加工中设备不能设置工艺数据")]
         ProcessingNotSet = 1062,
+        /// <summary>
+        /// 未开始加工
+        /// </summary>
+        [Description("该工序未开始加工")]
+        ProcessNotStart = 1063,
+        /// <summary>
+        /// 流程卡类型已存在
+        /// </summary>
+        [Description("流程卡类型已存在")]
+        FlowCardTypeIsExist = 1064,
+        /// <summary>
+        /// 流程卡类型不存在
+        /// </summary>
+        [Description("流程卡类型不存在")]
+        FlowCardTypeNotExist = 1065,
         #endregion
 
         #region 管理后台  3000 - 3999

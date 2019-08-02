@@ -61,14 +61,11 @@ namespace ModelBase.Base.HttpServer
                         if (httpVerb == HttpVerb.GET)
                         {
                             var requestBody = JObject.Parse(rawData);
-                            if (requestBody.Count == 1)
+                            if (requestBody.Count == 1 && requestBody.GetValue("id") != null)
                             {
-                                if (requestBody.GetValue("id") != null)
-                                {
-                                    url += "/" + requestBody["id"];
-                                    requestBody.Remove("id");
-                                    rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
-                                }
+                                url += "/" + requestBody["id"];
+                                requestBody.Remove("id");
+                                rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
                             }
                             else
                             {
@@ -152,14 +149,40 @@ namespace ModelBase.Base.HttpServer
             }
             if (!rawData.IsNullOrEmpty())
             {
+
                 try
                 {
-                    var requestBody = JObject.Parse(rawData);
-                    if (requestBody.GetValue("id") != null)
+                    if (httpVerb == HttpVerb.GET)
                     {
-                        url += "/" + requestBody["id"];
-                        requestBody.Remove("id");
-                        rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                        var requestBody = JObject.Parse(rawData);
+                        if (requestBody.Count == 1 && requestBody.GetValue("id") != null)
+                        {
+                            url += "/" + requestBody["id"];
+                            requestBody.Remove("id");
+                            rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                        }
+                        else
+                        {
+                            var dts = new ArrayOfString();
+                            foreach (var variable in requestBody)
+                            {
+                                dts.Add($"{variable.Key}={variable.Value}");
+                            }
+                            if (dts.Count > 0)
+                            {
+                                url += "?" + dts.Join("&");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var requestBody = JObject.Parse(rawData);
+                        if (requestBody.GetValue("id") != null)
+                        {
+                            url += "/" + requestBody["id"];
+                            requestBody.Remove("id");
+                            rawData = requestBody.HasValues ? requestBody.ToJSON() : "";
+                        }
                     }
                 }
                 catch (Exception)
@@ -182,7 +205,6 @@ namespace ModelBase.Base.HttpServer
                 }
             });
         }
-
 
 
         public static string Get(string url, Dictionary<string, string> data = null)

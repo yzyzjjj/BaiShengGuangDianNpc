@@ -537,6 +537,10 @@ namespace NpcProxyLinkClient.Base.Logic
                 return data;
             }
 
+            if (DeviceInfo.State != SocketState.Connected)
+            {
+                return "连接异常";
+            }
             var backSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             {
                 //响应超时设置
