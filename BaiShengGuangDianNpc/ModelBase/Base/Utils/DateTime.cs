@@ -11,79 +11,121 @@ namespace ModelBase.Base.Utils
         /// <returns>Unix时间戳</returns>
         public static int ToUnixTime(this DateTime dte)
         {
-            int intResult = 0;
-            DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
-            intResult = (int)((dte - startTime).TotalSeconds);
+            var startTime = TimeZoneInfo.ConvertTime(Default, TimeZoneInfo.Local);
+            var intResult = (int)((dte - startTime).TotalSeconds);
             return intResult;
         }
 
         /// <summary>
         /// DateTime扩展方法，根据Unix时间戳（Int32）设置当前DateTime实例。
         /// </summary>
-        /// <param name="dte">DateTime实例</param>
-        /// <param name="unix_time">Unix时间戳</param>
-        public static void FromUnixTime(this DateTime dte, int unix_time)
+        /// <param name="date">DateTime实例</param>
+        /// <param name="unixTime">Unix时间戳</param>
+        public static void FromUnixTime(this DateTime date, int unixTime)
         {
-            DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
-            dte = startTime.AddSeconds(unix_time);
+            var startTime = TimeZoneInfo.ConvertTime(Default, TimeZoneInfo.Local);
+            date = startTime.AddSeconds(unixTime);
         }
 
         /// <summary>
         /// DateTime扩展方法，根据Unix时间戳（Int32）设置当前DateTime实例。
         /// </summary>
-        /// <param name="dte">DateTime实例</param>
-        /// <param name="unix_time">Unix时间戳</param>
-        public static DateTime FromUnixTime(int unix_time)
+        /// <param name="unixTime">Unix时间戳</param>
+        public static DateTime FromUnixTime(int unixTime)
         {
-            DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
-            return startTime.AddSeconds(unix_time);
+            DateTime startTime = TimeZoneInfo.ConvertTime(Default, TimeZoneInfo.Local);
+            return startTime.AddSeconds(unixTime);
+        }
+
+        /// <summary>
+        /// 判断两个DateTime是否属于同一秒。
+        /// </summary>
+        /// <param name="date">日期一</param>
+        /// <param name="targetDay">日期二</param>
+        /// <returns>是否属于同一周</returns>
+        public static bool InSameSecond(this DateTime date, DateTime targetDay)
+        {
+            return date.NoMillisecond() == targetDay.NoMillisecond();
+        }
+
+        /// <summary>
+        /// 判断两个DateTime是否属于同一分。
+        /// </summary>
+        /// <param name="date">日期一</param>
+        /// <param name="targetDay">日期二</param>
+        /// <returns>是否属于同一周</returns>
+        public static bool InSameMinute(this DateTime date, DateTime targetDay)
+        {
+            return date.NoSecond() == targetDay.NoSecond();
+        }
+
+        /// <summary>
+        /// 判断两个DateTime是否属于同一小时。
+        /// </summary>
+        /// <param name="date">日期一</param>
+        /// <param name="targetDay">日期二</param>
+        /// <returns>是否属于同一周</returns>
+        public static bool InSameHour(this DateTime date, DateTime targetDay)
+        {
+            return date.NoMinute() == targetDay.NoMinute();
+        }
+
+        /// <summary>
+        /// DateTime扩展方法，根据日起始时间，判断两个DateTime是否属于同一天。
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="targetDay"></param>
+        /// <param name="beginTimeOfDay"></param>
+        /// <returns>是否属于同一日</returns>
+        public static bool InSameDay(this DateTime date, DateTime targetDay, DateTime beginTimeOfDay)
+        {
+            return (int)((date - beginTimeOfDay).TotalDays) == (int)((targetDay - beginTimeOfDay).TotalDays);
+
+        }
+        public static bool InSameDay(this DateTime dte, DateTime targetDay)
+        {
+            return dte.Date == targetDay.Date;
         }
 
         /// <summary>
         /// DateTime扩展方法，根据周起始时间，判断两个DateTime是否属于同一周。
         /// </summary>
-        /// <param name="day1">日期一</param>
-        /// <param name="day2">日期二</param>
-        /// <param name="firstdayofweek">周起始时间</param>
+        /// <param name="date">日期一</param>
+        /// <param name="targetDay">日期二</param>
+        /// <param name="firstDayOfWeek">周起始时间</param>
         /// <returns>是否属于同一周</returns>
-        public static bool InSameWeek(this DateTime dte, DateTime targetday, DateTime begin_time_of_week)
+        public static bool InSameWeek(this DateTime date, DateTime targetDay, DateTime firstDayOfWeek)
         {
-            return (int)((dte - begin_time_of_week).TotalDays / 7) == (int)((targetday - begin_time_of_week).TotalDays / 7);
+            return (int)((date - firstDayOfWeek).TotalDays / 7) == (int)((targetDay - firstDayOfWeek).TotalDays / 7);
+        }
 
+        public static bool InSameWeek(this DateTime date, DateTime targetDay)
+        {
+            return GetWeek(0, date).Item1 == GetWeek(0, targetDay).Item1;
         }
 
         /// <summary>
-        /// DateTime扩展方法，根据日起始时间，判断两个DateTime是否属于同一日。
+        /// 判断两个DateTime是否属于同一年同一月。
         /// </summary>
-        /// <param name="day1">日期一</param>
-        /// <param name="day2">日期二</param>
-        /// <param name="firstdayofweek">日起始时间</param>
-        /// <returns>是否属于同一日</returns>
-        public static bool InSameDay(this DateTime dte, DateTime targetday, DateTime beginTimeOfDay)
+        /// <param name="date">日期一</param>
+        /// <param name="targetDay">日期二</param>
+        /// <returns>是否属于同一周</returns>
+        public static bool InSameMonth(this DateTime date, DateTime targetDay)
         {
-            return (int)((dte - beginTimeOfDay).TotalDays) == (int)((targetday - beginTimeOfDay).TotalDays);
+            return date.Year == targetDay.Year && date.Month == targetDay.Month;
+        }
+        /// <summary>
+        /// 判断两个DateTime是否属于同一年。
+        /// </summary>
+        /// <param name="date">日期一</param>
+        /// <param name="targetDay">日期二</param>
+        /// <returns>是否属于同一周</returns>
+        public static bool InSameYear(this DateTime date, DateTime targetDay)
+        {
+            return date.Year == targetDay.Year;
+        }
 
-        }
-        public static bool InSameDay(this DateTime dte, DateTime targetday)
-        {
-            return dte.Year == targetday.Year && dte.Month == targetday.Month && dte.Day == targetday.Day;
-
-        }
-        public static bool InSameMonth(this DateTime dte, DateTime targetday)
-        {
-            return dte.Year == targetday.Year && dte.Month == targetday.Month;
-
-        }
-        public static bool InSameYear(this DateTime dte, DateTime targetday)
-        {
-            return dte.Year == targetday.Year;
-
-        }
-        private static readonly DateTime _default = new DateTime(1970, 1, 1);
-        public static DateTime Default
-        {
-            get { return _default; }
-        }
+        public static DateTime Default { get; } = new DateTime(1970, 1, 1);
 
         /// <summary>
         /// 中文日期
@@ -125,7 +167,7 @@ namespace ModelBase.Base.Utils
             return firstDayOfWeek.AddDays(days - (days % 7));
         }
         /// <summary>
-        /// 获取 00:00:00
+        /// 获取 日  00:00:00
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -135,7 +177,7 @@ namespace ModelBase.Base.Utils
         }
 
         /// <summary>
-        /// 获取 23:59:59
+        /// 获取 日 23:59:59
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -143,20 +185,40 @@ namespace ModelBase.Base.Utils
         {
             return date.AddDays(1).Date.AddSeconds(-1);
         }
+        /// <summary>
+        /// 获取 周 00:00:00
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime WeekBeginTime(this DateTime date)
+        {
+            return GetWeek(0, date).Item1;
+        }
+
+        /// <summary>
+        /// 获取 周 23:59:59
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime WeekEndTime(this DateTime date)
+        {
+            return GetWeek(0, date).Item2;
+        }
 
         /// <summary>
         /// 前几个星期  0 表示本星期  -1 表示上周  1表示 下周
         /// 返回: 周一的00:00:00 周日的23:59:59
         /// </summary>
         /// <param name="interval"></param>
+        /// <param name="time"></param>
         /// <returns></returns>
-        public static Tuple<DateTime, DateTime> GetWeek(int interval)
+        public static Tuple<DateTime, DateTime> GetWeek(int interval, DateTime time = default(DateTime))
         {
-            var now = DateTime.Now;
-            var day = (int)now.DayOfWeek;
-            var weekFirstDay = now.AddDays((1 - (day == 0 ? 7 : day)) + (interval * 7)).DayBeginTime();
-            var weeklastDay = weekFirstDay.AddDays(6).DayEndTime();
-            return new Tuple<DateTime, DateTime>(weekFirstDay, weeklastDay);
+            time = time == default(DateTime) ? DateTime.Now : time;
+            var day = (int)time.DayOfWeek;
+            var weekFirstDay = time.AddDays(1 - (day == 0 ? 7 : day) + interval * 7).DayBeginTime();
+            var weekLastDay = weekFirstDay.AddDays(6).DayEndTime();
+            return new Tuple<DateTime, DateTime>(weekFirstDay, weekLastDay);
         }
 
         /// <summary>
@@ -187,6 +249,22 @@ namespace ModelBase.Base.Utils
         {
             return date.StartOfMonth().AddMonths(1);
         }
+
+        /// <summary>
+        /// 前几个月  0 表示本月  -1 表示上月  1表示 下月
+        /// 返回: 该月第一天的00:00:00 该月最后一天的23:59:59
+        /// </summary>
+        /// <param name="interval"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static Tuple<DateTime, DateTime> GetMonth(int interval, DateTime time = default(DateTime))
+        {
+            time = time == default(DateTime) ? DateTime.Now : time;
+            var monthFirstDay = time.StartOfMonth().AddMonths(interval);
+            var montLastDay = monthFirstDay.StartOfNextMonth().AddDays(-1);
+            return new Tuple<DateTime, DateTime>(monthFirstDay, montLastDay);
+        }
+
         /// <summary>
         /// 去除 小时
         /// </summary>
@@ -194,7 +272,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static DateTime NoHour(this DateTime date)
         {
-            return date.DayBeginTime();
+            return date.Date;
         }
         /// <summary>
         /// 去除分 
@@ -243,6 +321,7 @@ namespace ModelBase.Base.Utils
         {
             return date.ToString("yyMMdd_HHmmss");
         }
+
 
     }
 }
