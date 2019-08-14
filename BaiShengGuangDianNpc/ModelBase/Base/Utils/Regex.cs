@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
+﻿using System.Text.RegularExpressions;
 
 namespace ModelBase.Base.Utils
 {
@@ -19,30 +15,26 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsNumAndEn(this string input)
         {
-            bool ret = System.Text.RegularExpressions.Regex.IsMatch(input, _En) && Regex.IsMatch(input, _Num) && !Regex.IsMatch(input, _Cha);
+            var ret = Regex.IsMatch(input, _En) && Regex.IsMatch(input, _Num) && !Regex.IsMatch(input, _Cha);
             return ret;
         }
 
         public static bool IsNum(this string input)
         {
-            bool ret = !Regex.IsMatch(input, @"[^0-9]");
+            var ret = !Regex.IsMatch(input, @"[^0-9]");
             return ret;
         }
 
         private static string sRxStr = @"[\;|\<|\>|\<\=|\>\=|\<\>|\'|\""|\?|\#|\|\*|\\|\,]";
         public static bool HasSQLInject(this string contents)
         {
-            if (contents.Length > 0)
-            {
-                return Regex.IsMatch(contents, sRxStr);
-            }
-            return false;
+            return contents.Length > 0 && Regex.IsMatch(contents, sRxStr);
         }
 
-       
-        
+
+
         //static string phoneRegexStr = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
-        static string phoneNum = "^\\d{11}$";
+        private static string phoneNum = "^\\d{11}$";
         /// <summary>
         ///  移动号码段:139、138、137、136、135、134、150、151、152、157、158、159、182、183、187、188、147
         ///  联通号码段:130、131、132、136、185、186、145
@@ -52,12 +44,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsPhone(string phone)
         {
-            if (phone.Length > 0)
-            {
-                //return Regex.IsMatch(phone, phoneRegexStr);
-                return Regex.IsMatch(phone, phoneNum);
-            }
-            return false;
+            return phone.Length > 0 && Regex.IsMatch(phone, phoneNum);
         }
 
         /// <summary>
@@ -67,11 +54,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsTelePhone(string telephone)
         {
-            if (telephone.Length > 0)
-            {
-                return Regex.IsMatch(telephone, @"^(\(\d{3,4}\)|\d{3,4}-)?\d{6,14}$");
-            }
-            return false;
+            return telephone.Length > 0 && Regex.IsMatch(telephone, @"^(\(\d{3,4}\)|\d{3,4}-)?\d{6,14}$");
         }
 
         /// <summary>
@@ -81,11 +64,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsPhoneOrTel(string phone)
         {
-            if ( IsPhone(phone) || IsTelePhone(phone) )
-            {
-                return true;
-            }
-            return false;
+            return IsPhone(phone) || IsTelePhone(phone);
         }
 
         /// <summary>
@@ -95,12 +74,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsCardId(string cardid)
         {
-
-            if (Regex.IsMatch(cardid, @"^(^\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$", RegexOptions.IgnoreCase))
-            {
-                return true;
-            }
-            return false;
+            return Regex.IsMatch(cardid, @"^(^\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$", RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -110,11 +84,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsName(string name)
         {
-            if (Regex.IsMatch(name, @"^[\u4E00-\u9FA5·]+$", RegexOptions.IgnoreCase))
-            {
-                return true;
-            }
-            return false;
+            return Regex.IsMatch(name, @"^[\u4E00-\u9FA5·]+$", RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -124,11 +94,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsCompanyName(string name)
         {
-            if (Regex.IsMatch(name, @"^[\u4E00-\u9FA5·（）()]+$", RegexOptions.IgnoreCase))
-            {
-                return true;
-            }
-            return false;
+            return Regex.IsMatch(name, @"^[\u4E00-\u9FA5·（）()]+$", RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -138,11 +104,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsCompanyUnionId(string uid)
         {
-            if (uid.Length != 18)
-            {
-                return false;
-            }
-            return true;
+            return uid.Length == 18;
         }
 
         /// <summary>
@@ -152,22 +114,20 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsChinese(string name)
         {
-            if (Regex.IsMatch(name, @"^[\u4E00-\u9FA5]+$", RegexOptions.IgnoreCase))
-            {
-                return true;
-            }
-            return false;
+            return Regex.IsMatch(name, @"^[\u4E00-\u9FA5]+$", RegexOptions.IgnoreCase);
         }
 
         //非负浮点数
         public static bool IsNumber(string num)
         {
             Regex reg = new Regex(@"^\d+(\.\d+)?$");
-            if (reg.IsMatch(num))
-            {
-                return true;
-            }
-            return false;
+            return reg.IsMatch(num);
+        }
+        //邮箱
+        public static bool IsEmail(string mail)
+        {
+            var reg = new Regex(@"^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$");
+            return reg.IsMatch(mail);
         }
     }
 }
