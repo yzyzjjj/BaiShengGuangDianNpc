@@ -469,6 +469,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("只支持单个文件上传")]
         FileSingle = 3019,
+        /// <summary>
+        /// 账号或密码不正确
+        /// </summary>
+        [Description("账号或密码不正确")]
+        AccountOrPasswordError = 3020,
 
         #endregion
 
