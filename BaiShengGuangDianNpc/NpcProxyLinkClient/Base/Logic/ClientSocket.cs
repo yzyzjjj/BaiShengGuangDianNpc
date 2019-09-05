@@ -264,6 +264,16 @@ namespace NpcProxyLinkClient.Base.Logic
                                             Body = dataErrResult.ToJSON()
                                         };
                                         break;
+                                    case NpcSocketMsgType.Update:
+                                        devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
+                                        dataErrResult.datas.AddRange(ClientManager.UpdateClient(devicesList));
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            Guid = msg.Guid,
+                                            MsgType = msg.MsgType,
+                                            Body = dataErrResult.ToJSON()
+                                        };
+                                        break;
                                     case NpcSocketMsgType.Storage:
                                         devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(msg.Body);
                                         dataErrResult.datas.AddRange(ClientManager.SetStorage(devicesList));

@@ -1,4 +1,8 @@
-﻿var op = function (data, type, row) {
+﻿$(function () {
+    load();
+});
+
+var op = function (data, type, row) {
     var html = '<button type="button" class="btn btn-primary" data-toggle="modal"  onclick="showDevice(\'' +
         row.DeviceId +
         '\',\'' +

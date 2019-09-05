@@ -173,6 +173,7 @@ namespace NpcProxyLinkClient.Base.Logic
 
             return res;
         }
+
         public static bool DelClient(DeviceInfo deviceInfo)
         {
             if (_clients.TryRemove(deviceInfo.DeviceId, out var client))
@@ -182,6 +183,13 @@ namespace NpcProxyLinkClient.Base.Logic
             }
             return false;
         }
+
+        public static bool UpdateClient(DeviceInfo deviceInfo)
+        {
+            DelClient(deviceInfo);
+            return AddClient(deviceInfo);
+        }
+
         public static IEnumerable<DeviceErr> DelClient(IEnumerable<DeviceInfo> devicesList)
         {
             var res = new List<DeviceErr>();
@@ -197,6 +205,26 @@ namespace NpcProxyLinkClient.Base.Logic
             {
                 var deviceId = deviceInfo.DeviceId;
                 res.Add(new DeviceErr(deviceId, DelClient(deviceInfo) ? Error.Success : Error.DeviceNotExist));
+            }
+
+            return res;
+        }
+        public static IEnumerable<DeviceErr> UpdateClient(IEnumerable<DeviceInfo> devicesList)
+        {
+            var res = new List<DeviceErr>();
+            foreach (var device in devicesList)
+            {
+                var deviceId = device.DeviceId;
+                if (!_clients.ContainsKey(deviceId))
+                {
+                    res.Add(new DeviceErr(deviceId, Error.DeviceNotExist));
+                }
+            }
+
+            foreach (var deviceInfo in devicesList.Where(x => _clients.Any(y => y.Key == x.DeviceId)))
+            {
+                var deviceId = deviceInfo.DeviceId;
+                res.Add(new DeviceErr(deviceId, UpdateClient(deviceInfo) ? Error.Success : Error.DeviceNotExist));
             }
 
             return res;

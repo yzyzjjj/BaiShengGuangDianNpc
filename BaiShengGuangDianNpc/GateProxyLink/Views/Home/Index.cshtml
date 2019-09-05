@@ -1,10 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
 }
 
 <script src="js/myjs/index.js"></script>
-
-<button id="btnReload" type="button" class="btn btn-default right" onclick="reload()">加载</button>
+<button id="btnReload" type="button" class="btn btn-default right" onclick="load()">加载</button>
 <button id="btnReloadServer" type="button" class="btn btn-default right" onclick="reloadServer()">加载服务器</button>
 <table id="deviceTable" class="table table-bordered table-hover"></table>
 <textarea id="ins" class="form-control" disabled="disabled">

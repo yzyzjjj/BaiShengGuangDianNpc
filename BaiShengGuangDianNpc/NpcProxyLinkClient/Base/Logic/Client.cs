@@ -9,7 +9,7 @@ namespace NpcProxyLinkClient.Base.Logic
         /// <summary>
         /// 客户端信息
         /// </summary>
-        public DeviceInfo DeviceInfo => Socket.DeviceInfo;
+        public DeviceInfo DeviceInfo => Socket?.DeviceInfo;
 
         public SocketInfo Socket;
         public DateTime NextSendTime;

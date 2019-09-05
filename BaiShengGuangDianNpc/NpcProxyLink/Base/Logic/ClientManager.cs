@@ -71,7 +71,7 @@ namespace NpcProxyLink.Base.Logic
             foreach (var client in _clients)
             {
                 var c = client.Value;
-                c.Socket.CheckState();
+                c.Socket?.CheckState();
             }
         }
 
@@ -87,7 +87,7 @@ namespace NpcProxyLink.Base.Logic
 
             var nowTime = DateTime.Now;
             var clients = _clients.Values
-                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && x.NextSendTime <= nowTime);
+                .Where(x => x.DeviceInfo != null && x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && x.NextSendTime <= nowTime);
             if (clients.Any())
             {
                 Parallel.ForEach(clients, client =>
@@ -168,6 +168,13 @@ namespace NpcProxyLink.Base.Logic
             }
             return false;
         }
+
+        public bool UpdateClient(DeviceInfo deviceInfo)
+        {
+            DelClient(deviceInfo);
+            return AddClient(deviceInfo);
+        }
+
         public IEnumerable<DeviceErr> DelClient(IEnumerable<DeviceInfo> devicesList)
         {
             var res = new List<DeviceErr>();
@@ -183,6 +190,27 @@ namespace NpcProxyLink.Base.Logic
             {
                 var deviceId = deviceInfo.DeviceId;
                 res.Add(new DeviceErr(deviceId, DelClient(deviceInfo) ? Error.Success : Error.DeviceNotExist));
+            }
+
+            return res;
+        }
+
+        public IEnumerable<DeviceErr> UpdateClient(IEnumerable<DeviceInfo> devicesList)
+        {
+            var res = new List<DeviceErr>();
+            foreach (var device in devicesList)
+            {
+                var deviceId = device.DeviceId;
+                if (!_clients.ContainsKey(deviceId))
+                {
+                    res.Add(new DeviceErr(deviceId, Error.DeviceNotExist));
+                }
+            }
+
+            foreach (var deviceInfo in devicesList.Where(x => _clients.Any(y => y.Key == x.DeviceId)))
+            {
+                var deviceId = deviceInfo.DeviceId;
+                res.Add(new DeviceErr(deviceId, UpdateClient(deviceInfo) ? Error.Success : Error.DeviceNotExist));
             }
 
             return res;

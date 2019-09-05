@@ -71,6 +71,20 @@ namespace GateProxyLinkServer.Controllers.Api
         }
 
         /// <summary>
+        /// 批量更新设备
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("batchupdate")]
+        public DataResult BatchUpdateDevice()
+        {
+            var param = Request.GetRequestParams();
+            var devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(param.GetValue("devicesList"));
+            var result = new DataResult();
+            result.datas.AddRange(ServerConfig.ServerManager.UpdateClient(devicesList));
+            return result;
+        }
+
+        /// <summary>
         /// 批量发送消息 有返回值
         /// </summary>
         /// <returns></returns>

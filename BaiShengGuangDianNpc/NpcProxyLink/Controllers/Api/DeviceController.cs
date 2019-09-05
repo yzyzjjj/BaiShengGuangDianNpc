@@ -86,6 +86,19 @@ namespace NpcProxyLink.Controllers.Api
         }
 
         /// <summary>
+        /// 批量更新设备
+        /// </summary>
+        /// <param name="devicesList"></param>
+        /// <returns></returns>
+        [HttpPost("batchupdate")]
+        public DataErrResult BatchUpdateDevice([FromBody] List<DeviceInfo> devicesList)
+        {
+            var result = new DataErrResult();
+            result.datas.AddRange(ServerConfig.ClientManager.UpdateClient(devicesList));
+            return result;
+        }
+
+        /// <summary>
         /// 发送消息
         /// </summary>
         /// <param name="deviceInfo"></param>

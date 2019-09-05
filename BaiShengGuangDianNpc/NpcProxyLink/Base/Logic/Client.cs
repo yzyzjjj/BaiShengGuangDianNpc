@@ -1,5 +1,5 @@
-﻿using System;
-using ModelBase.Models.Device;
+﻿using ModelBase.Models.Device;
+using System;
 
 namespace NpcProxyLink.Base.Logic
 {
@@ -9,7 +9,7 @@ namespace NpcProxyLink.Base.Logic
         /// <summary>
         /// 客户端信息
         /// </summary>
-        public DeviceInfo DeviceInfo => Socket.DeviceInfo;
+        public DeviceInfo DeviceInfo => Socket?.DeviceInfo;
 
         public SocketInfo Socket;
         public DateTime NextSendTime;

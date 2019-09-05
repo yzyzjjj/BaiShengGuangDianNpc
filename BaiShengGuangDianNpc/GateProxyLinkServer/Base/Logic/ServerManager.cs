@@ -210,6 +210,22 @@ namespace GateProxyLinkServer.Base.Logic
         }
 
         /// <summary>
+        /// 更新设备 根据deviceId
+        /// </summary>
+        /// <param name="dealList">待处理列表</param>
+        /// <returns></returns>
+        public IEnumerable<DeviceErr> UpdateClient(IEnumerable<DeviceInfo> dealList)
+        {
+            var res = new List<DeviceErr>();
+            if (dealList.Any())
+            {
+                res.AddRange(SocketResponseErr(dealList, "batchUpdateDevice", "UpdateClient"));
+            }
+
+            return res;
+        }
+
+        /// <summary>
         /// 设置设备存储数据 根据deviceId
         /// </summary>
         /// <param name="dealList">待处理列表</param>
@@ -316,6 +332,14 @@ namespace GateProxyLinkServer.Base.Logic
                     }
                 }
             }
+            else if (funName.Contains("Update"))
+            {
+                foreach (var device in devicesList)
+                {
+                    device.Ip = dealList.First(x => x.DeviceId == device.DeviceId).Ip;
+                    device.Port = dealList.First(x => x.DeviceId == device.DeviceId).Port;
+                }
+            }
 
             var clientSockets = _clientSockets.Where(x => x.SocketState == SocketState.Connected).GroupBy(x => x.ServerId)
                 .ToDictionary(x => x.Key, x => x.First());
@@ -340,6 +364,9 @@ namespace GateProxyLinkServer.Base.Logic
                         break;
                     case "batchDelDevice":
                         msgType = NpcSocketMsgType.Delete;
+                        break;
+                    case "batchUpdateDevice":
+                        msgType = NpcSocketMsgType.Update;
                         break;
                     case "batchSetStorage":
                         msgType = NpcSocketMsgType.Storage;

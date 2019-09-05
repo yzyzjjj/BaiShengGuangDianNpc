@@ -23,6 +23,10 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         Delete,
         /// <summary>
+        /// 更新设备
+        /// </summary>
+        Update,
+        /// <summary>
         /// 设置设备存储数据
         /// </summary>
         Storage,

@@ -73,14 +73,6 @@ namespace GateProxyLink.Base.Logic
         /// <returns></returns>
         public static void LoadClient(ServerInfo serverInfo)
         {
-            //var clients = _clients.Where(x => x.Value.ServerId == serverInfo.ServerId);
-            //if (clients.Any())
-            //{
-            //    foreach (var client in clients)
-            //    {
-            //        _clients.TryRemove(client.Key, out _);
-            //    }
-            //}
             var url = serverInfo.Url + UrlMappings.Urls["deviceList"];
             //向NpcProxyLink请求数据
             HttpServer.GetAsync(url, null, (resp, exp) =>
@@ -96,11 +88,27 @@ namespace GateProxyLink.Base.Logic
                     {
                         var result = JsonConvert.DeserializeObject<DeviceResult>(resp);
                         var devicesList = result.datas;
+                        IEnumerable<KeyValuePair<int, DeviceInfo>> clients;
                         if (!devicesList.Any())
                         {
+                            clients = _clients.Where(x => x.Value.ServerId == serverInfo.ServerId);
+                            if (clients.Any())
+                            {
+                                foreach (var client in clients)
+                                {
+                                    _clients.TryRemove(client.Key, out _);
+                                }
+                            }
                             return;
                         }
-
+                        clients = _clients.Where(z => z.Value.ServerId == serverInfo.ServerId).Where(x => devicesList.All(y => y.DeviceId != x.Key));
+                        if (clients.Any())
+                        {
+                            foreach (var client in clients)
+                            {
+                                _clients.TryRemove(client.Key, out _);
+                            }
+                        }
                         foreach (var deviceInfo in devicesList)
                         {
                             var deviceId = deviceInfo.DeviceId;
@@ -235,6 +243,22 @@ namespace GateProxyLink.Base.Logic
         }
 
         /// <summary>
+        /// 更新设备 根据deviceId
+        /// </summary>
+        /// <param name="dealList">待处理列表</param>
+        /// <returns></returns>
+        public IEnumerable<DeviceErr> UpdateClient(IEnumerable<DeviceInfo> dealList)
+        {
+            var res = new List<DeviceErr>();
+            if (dealList.Any())
+            {
+                res.AddRange(HttpResponseErr(dealList, "batchUpdateDevice", "UpdateClient"));
+            }
+
+            return res;
+        }
+
+        /// <summary>
         /// 设置设备存储数据 根据deviceId
         /// </summary>
         /// <param name="dealList">待处理列表</param>
@@ -361,6 +385,14 @@ namespace GateProxyLink.Base.Logic
                     {
                         device.Instruction = dealList.First(x => x.DeviceId == device.DeviceId).Instruction;
                     }
+                }
+            }
+            else if (funName.Contains("Update"))
+            {
+                foreach (var device in devicesList)
+                {
+                    device.Ip = dealList.First(x => x.DeviceId == device.DeviceId).Ip;
+                    device.Port = dealList.First(x => x.DeviceId == device.DeviceId).Port;
                 }
             }
 

@@ -56,7 +56,6 @@ namespace GateProxyLink.Controllers.Api
         /// <summary>
         /// 添加设备
         /// </summary>
-        /// <param name="deviceInfo"></param>
         /// <returns></returns>
         [HttpPost("add")]
         public Result AddDevice()
@@ -75,7 +74,6 @@ namespace GateProxyLink.Controllers.Api
         /// <summary>
         /// 批量添加设备
         /// </summary>
-        /// <param name="deviceInfo"></param>
         /// <returns></returns>
         [HttpPost("batchadd")]
         public DataResult BatchAddDevice()
@@ -90,7 +88,6 @@ namespace GateProxyLink.Controllers.Api
         /// <summary>
         /// 删除设备
         /// </summary>
-        /// <param name="deviceInfo"></param>
         /// <returns></returns>
         [HttpPost("delete")]
         public Result DelDevice()
@@ -108,7 +105,6 @@ namespace GateProxyLink.Controllers.Api
         /// <summary>
         /// 批量删除设备
         /// </summary>
-        /// <param name="deviceInfo"></param>
         /// <returns></returns>
         [HttpPost("batchdelete")]
         public DataResult BatchDelDevice()
@@ -117,6 +113,20 @@ namespace GateProxyLink.Controllers.Api
             var devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(param.GetValue("devicesList"));
             var result = new DataResult();
             result.datas.AddRange(ServerConfig.ServerManager.DelClient(devicesList));
+            return result;
+        }
+
+        /// <summary>
+        /// 批量更新设备
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("batchupdate")]
+        public DataResult BatchUpdateDevice()
+        {
+            var param = Request.GetRequestParams();
+            var devicesList = JsonConvert.DeserializeObject<List<DeviceInfo>>(param.GetValue("devicesList"));
+            var result = new DataResult();
+            result.datas.AddRange(ServerConfig.ServerManager.UpdateClient(devicesList));
             return result;
         }
 
