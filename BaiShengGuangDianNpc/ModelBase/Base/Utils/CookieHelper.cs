@@ -3,7 +3,7 @@ using System;
 
 namespace ModelBase.Base.Utils
 {
-    public class CookieHelper
+    public static class CookieHelper
     {
         /// <summary>
         /// 从请求中获取cookie
@@ -35,16 +35,16 @@ namespace ModelBase.Base.Utils
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="resp"></param>
-        /// <param name="exiresec">有效时间，单位秒</param>
-        public static void SetCookie(string key, string value, HttpResponse resp, int exiresec = 0)
+        /// <param name="expireSecond">有效时间，单位秒</param>
+        public static void SetCookie(string key, string value, HttpResponse resp, int expireSecond = 0)
         {
             DelCookie(key, resp);
 
-            if (exiresec > 0)
+            if (expireSecond > 0)
             {
                 resp.Cookies.Append(key, value, new CookieOptions
                 {
-                    Expires = DateTime.Now.AddSeconds(exiresec)
+                    Expires = DateTime.Now.AddSeconds(expireSecond)
                 });
             }
             else
