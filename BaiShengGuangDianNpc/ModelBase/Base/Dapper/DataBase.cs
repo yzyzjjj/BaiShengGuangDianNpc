@@ -13,11 +13,19 @@ namespace ModelBase.Base.Dapper
             _connectionString = connectionString;
         }
 
-        public IEnumerable<T> Query<T>(string sql, object param = null, int? second = null)
+        public IEnumerable<T> Query<T>(string sql, object param = null, int? second = null, bool buffered = true)
         {
             using (var con = new MySqlConnection(_connectionString))
             {
-                return con.Query<T>(sql, param, null, true, second);
+                return con.Query<T>(sql, param, null, buffered, second);
+            }
+        }
+
+        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, int? second = null)
+        {
+            using (var con = new MySqlConnection(_connectionString))
+            {
+                return await con.QueryAsync<T>(sql, param, null, second);
             }
         }
 
