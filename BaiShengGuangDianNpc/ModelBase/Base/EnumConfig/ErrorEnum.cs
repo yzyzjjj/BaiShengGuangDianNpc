@@ -371,6 +371,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("流程卡类型不存在")]
         FlowCardTypeNotExist = 1065,
+        /// <summary>
+        /// 机台号存在,请选择后上报
+        /// </summary>
+        [Description("机台号存在,请选择后上报")]
+        ReportDeviceCodeIsExist = 1066,
         #endregion
 
         #region 管理后台  3000 - 3999
