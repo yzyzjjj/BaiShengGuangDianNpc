@@ -37,11 +37,11 @@ namespace ModelBase.Base.Dapper
             }
         }
 
-        public Task<int> ExecuteAsync(string sql, object param = null, int? second = null)
+        public async Task<int> ExecuteAsync(string sql, object param = null, int? second = null)
         {
             using (var con = new MySqlConnection(_connectionString))
             {
-                return con.ExecuteAsync(sql, param, null, second);
+                return await con.ExecuteAsync(sql, param, null, second);
             }
         }
 

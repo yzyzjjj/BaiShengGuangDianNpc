@@ -71,16 +71,6 @@ namespace ModelBase.Base.EnumConfig
         [Description("设备类型已存在")]
         DeviceCategoryIsExist = 1007,
         /// <summary>
-        /// 设备型号不存在
-        /// </summary>
-        [Description("设备型号不存在")]
-        DeviceModelNotExist = 1006,
-        /// <summary>
-        /// 设备型号已存在
-        /// </summary>
-        [Description("设备型号已存在")]
-        DeviceModelIsExist = 1007,
-        /// <summary>
         /// 固件版本不存在
         /// </summary>
         [Description("固件版本不存在")]
@@ -376,6 +366,62 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("机台号存在,请选择后上报")]
         ReportDeviceCodeIsExist = 1066,
+        /// <summary>
+        /// 设备型号不存在
+        /// </summary>
+        [Description("设备型号不存在")]
+        DeviceModelNotExist = 1067,
+        /// <summary>
+        /// 设备型号已存在
+        /// </summary>
+        [Description("设备型号已存在")]
+        DeviceModelIsExist = 1068,
+        /// <summary>
+        /// 设备型号使用该类型中,无法删除
+        /// </summary>
+        [Description("设备型号使用该类型中,无法删除")]
+        DeviceModelUseDeviceCategory = 1069,
+        /// <summary>
+        /// 设备型号使用该场地中,无法删除
+        /// </summary>
+        [Description("设备使用该场地中,无法删除")]
+        DeviceLibraryUseSite = 1070,
+        /// <summary>
+        /// 设备使用该固件中,无法删除
+        /// </summary>
+        [Description("设备使用该固件中,无法删除")]
+        DeviceLibraryUseFirmware = 1071,
+        /// <summary>
+        /// 设备使用该固件中,无法删除
+        /// </summary>
+        [Description("设备使用该硬件中,无法删除")]
+        DeviceLibraryUseHardware = 1072,
+        /// <summary>
+        /// 设备使用该应用层中,无法删除
+        /// </summary>
+        [Description("设备使用该应用层中,无法删除")]
+        DeviceLibraryUseApplication = 1073,
+        /// <summary>
+        /// 故障设备使用该类型中,无法删除
+        /// </summary>
+        [Description("故障设备使用该类型中,无法删除")]
+        FaultDeviceUseFaultType = 1074,
+
+        ///// <summary>
+        ///// 流程卡使用该工序中,无法删除
+        ///// </summary>
+        //[Description("流程卡工序使用该工序中,无法删除")]
+        //FlowCardLibraryUseDeviceProcessStep = 1076,
+        ///// <summary>
+        ///// 设备使用该应用层中,无法删除
+        ///// </summary>
+        //[Description("设备使用该应用层中,无法删除")]
+        //DeviceLibraryUseApplication = 1075,
+        ///// <summary>
+        ///// 设备使用该应用层中,无法删除
+        ///// </summary>
+        //[Description("设备使用该应用层中,无法删除")]
+        //DeviceLibraryUseApplication = 1076,
         #endregion
 
         #region 管理后台  3000 - 3999
@@ -479,6 +525,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("账号或密码不正确")]
         AccountOrPasswordError = 3020,
+        /// <summary>
+        /// 用户使用该角色中,无法删除
+        /// </summary>
+        [Description("用户使用该角色中,无法删除")]
+        AccountUseRole = 3021,
 
         #endregion
 
