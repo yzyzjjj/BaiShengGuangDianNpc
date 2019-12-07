@@ -406,6 +406,71 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("故障设备使用该类型中,无法删除")]
         FaultDeviceUseFaultType = 1074,
+        /// <summary>
+        /// 设备工序使用该类型中,无法删除
+        /// </summary>
+        [Description("设备工序使用该类型中,无法删除")]
+        DeviceProcessStepUseDeviceCategory = 1075,
+        /// <summary>
+        /// 点检计划不存在
+        /// </summary>
+        [Description("点检计划不存在")]
+        SpotCheckPlanNotExist = 1076,
+        /// <summary>
+        /// 点检计划已存在
+        /// </summary>
+        [Description("点检计划已存在")]
+        SpotCheckPlanIsExist = 1077,
+        /// <summary>
+        /// 点检计划已存在
+        /// </summary>
+        [Description("请输入点检计划名")]
+        SpotCheckPlanNotEmpty = 1078,
+        /// <summary>
+        /// 点检项不存在
+        /// </summary>
+        [Description("点检项不存在")]
+        SpotCheckItemNotExist = 1079,
+        /// <summary>
+        /// 点检项已存在
+        /// </summary>
+        [Description("点检项已存在")]
+        SpotCheckItemIsExist = 1080,
+        /// <summary>
+        /// 点检项重复
+        /// </summary>
+        [Description("点检项重复")]
+        SpotCheckItemDuplicate = 1081,
+        /// <summary>
+        /// 请输入点检项名
+        /// </summary>
+        [Description("请输入点检项名")]
+        SpotCheckItemNotEmpty = 1082,
+        /// <summary>
+        /// 点检设备已设置该计划
+        /// </summary>
+        [Description("点检设备已设置该计划")]
+        SpotCheckDeviceHaveThisPlan = 1083,
+        /// <summary>
+        /// 点检设备没有设置该计划
+        /// </summary>
+        [Description("点检设备没有设置该计划")]
+        SpotCheckDeviceNotHaveThisPlan = 1084,
+        /// <summary>
+        /// 点检项已过期
+        /// </summary>
+        [Description("点检项已过期")]
+        SpotCheckDeviceExpired = 1085,
+        /// <summary>
+        /// 点检记录已存在
+        /// </summary>
+        [Description("点检记录已存在")]
+        SpotCheckLogIsExits = 1086,
+        /// <summary>
+        /// 点检记录不存在
+        /// </summary>
+        [Description("点检记录不存在")]
+        SpotCheckLogNotExits = 1087,
 
         ///// <summary>
         ///// 流程卡使用该工序中,无法删除
@@ -530,6 +595,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("用户使用该角色中,无法删除")]
         AccountUseRole = 3021,
+        /// <summary>
+        /// 请选择文件
+        /// </summary>
+        [Description("请选择文件")]
+        NoUploadFile = 3022,
 
         #endregion
 

@@ -12,9 +12,18 @@ namespace ModelBase.Models.Socket
     public class SocketBufferReader
     {
         public static string Header => "f3";
+        /// <summary>
+        /// 功能码
+        /// </summary>
+        public int FunctionCode { get; set; }
+        /// <summary>
+        /// 子功能码
+        /// </summary>
+        public int SubFunctionCode { get; set; }
         private MemoryStream _mStream;
         private BinaryReader _mReader;
         public int MDataLength;
+        public int TDataLength => _data.Count;
         private List<byte> _data;
 
         public SocketBufferReader()
@@ -23,8 +32,9 @@ namespace ModelBase.Models.Socket
             _data = new List<byte>();
         }
 
+        public IEnumerable<byte> Data => _data;
         public bool IsValid => MDataLength == _data.Count;
-        public void SocketBufferReaderAdd(byte[] data)
+        public void SocketBufferReaderAdd(IEnumerable<byte> data)
         {
             if (data == null || !data.Any())
             {

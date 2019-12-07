@@ -6,6 +6,7 @@ namespace ModelBase.Models.Device
 {
     public class DeviceBaseInfo
     {
+        public int Id { get; set; }
         public int DeviceId { get; set; }
         public int ServerId { get; set; }
         public int GroupId { get; set; }

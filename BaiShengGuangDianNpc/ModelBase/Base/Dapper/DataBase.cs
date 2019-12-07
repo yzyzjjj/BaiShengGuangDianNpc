@@ -49,12 +49,23 @@ namespace ModelBase.Base.Dapper
         {
             using (var con = new MySqlConnection(_connectionString))
             {
-                //return con.ExecuteAsync(sql, param, null, second);
                 con.Open();
                 var trans = con.BeginTransaction();
                 var r = con.Execute(sql, param, trans);
                 trans.Commit();
                 return r;
+            }
+        }
+
+        public async Task<int> ExecuteTransAsync(string sql, object param = null, int? second = null)
+        {
+            using (var con = new MySqlConnection(_connectionString))
+            {
+                con.Open();
+                var trans = con.BeginTransaction();
+                var r = con.ExecuteAsync(sql, param, trans);
+                trans.Commit();
+                return await r;
             }
         }
     }

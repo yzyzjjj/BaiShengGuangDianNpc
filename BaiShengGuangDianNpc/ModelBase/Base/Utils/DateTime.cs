@@ -319,7 +319,7 @@ namespace ModelBase.Base.Utils
         }
         public static string ToStrFile(this DateTime date)
         {
-            return date.ToString("yyMMdd_HHmmss");
+            return date.ToString("yyMMddHHmmss");
         }
 
 
