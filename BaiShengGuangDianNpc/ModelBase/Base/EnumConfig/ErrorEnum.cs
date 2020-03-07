@@ -160,22 +160,22 @@ namespace ModelBase.Base.EnumConfig
         /// 原料批号不存在
         /// </summary>
         [Description("原料批号不存在")]
-        RawMateriaNotExist = 1025,
+        RawMaterialNotExist = 1025,
         /// <summary>
         /// 原料批号已存在
         /// </summary>
         [Description("原料批号已存在")]
-        RawMateriaIsExist = 1026,
+        RawMaterialIsExist = 1026,
         /// <summary>
         /// 原料规格不存在
         /// </summary>
         [Description("原料规格不存在")]
-        RawMateriaSpecificationNotExist = 1027,
+        RawMaterialSpecificationNotExist = 1027,
         /// <summary>
         /// 原料规格已存在
         /// </summary>
         [Description("原料规格已存在")]
-        RawMateriaSpecificationIsExist = 1028,
+        RawMaterialSpecificationIsExist = 1028,
         /// <summary>
         /// 加工人不存在
         /// </summary>
@@ -465,12 +465,477 @@ namespace ModelBase.Base.EnumConfig
         /// 点检记录已存在
         /// </summary>
         [Description("点检记录已存在")]
-        SpotCheckLogIsExits = 1086,
+        SpotCheckLogIsExist = 1086,
         /// <summary>
         /// 点检记录不存在
         /// </summary>
         [Description("点检记录不存在")]
-        SpotCheckLogNotExits = 1087,
+        SpotCheckLogNotExist = 1087,
+
+        /// <summary>
+        /// 货品位置已存在
+        /// </summary>
+        [Description("货品位置已存在")]
+        MaterialSiteIsExist = 1088,
+        /// <summary>
+        /// 货品位置不存在
+        /// </summary>
+        [Description("货品位置不存在")]
+        MaterialSiteNotExist = 1089,
+        /// <summary>
+        /// 请输入货品位置
+        /// </summary>
+        [Description("请输入货品位置")]
+        MaterialSiteNotEmpty = 1090,
+        /// <summary>
+        /// 货品位置重复
+        /// </summary>
+        [Description("货品位置重复")]
+        MaterialSiteDuplicate = 1091,
+
+        /// <summary>
+        /// 货品类别已存在
+        /// </summary>
+        [Description("货品类别已存在")]
+        MaterialCategoryIsExist = 1092,
+        /// <summary>
+        /// 货品类别不存在
+        /// </summary>
+        [Description("货品类别不存在")]
+        MaterialCategoryNotExist = 1093,
+        /// <summary>
+        /// 请输入货品类别
+        /// </summary>
+        [Description("请输入货品类别")]
+        MaterialCategoryNotEmpty = 1094,
+        /// <summary>
+        /// 货品类别重复
+        /// </summary>
+        [Description("货品类别重复")]
+        MaterialCategoryDuplicate = 1095,
+
+        /// <summary>
+        /// 货品名称已存在
+        /// </summary>
+        [Description("货品名称已存在")]
+        MaterialNameIsExist = 1096,
+        /// <summary>
+        /// 货品名称不存在
+        /// </summary>
+        [Description("货品名称不存在")]
+        MaterialNameNotExist = 1097,
+        /// <summary>
+        /// 请输入货品名称
+        /// </summary>
+        [Description("请输入货品名称")]
+        MaterialNameNotEmpty = 1098,
+        /// <summary>
+        /// 货品名称重复
+        /// </summary>
+        [Description("货品名称重复")]
+        MaterialNameDuplicate = 1099,
+
+        /// <summary>
+        /// 货品供应商已存在
+        /// </summary>
+        [Description("货品供应商已存在")]
+        MaterialSupplierIsExist = 1100,
+        /// <summary>
+        /// 货品供应商不存在
+        /// </summary>
+        [Description("货品供应商不存在")]
+        MaterialSupplierNotExist = 1101,
+        /// <summary>
+        /// 请输入货品供应商
+        /// </summary>
+        [Description("请输入货品供应商")]
+        MaterialSupplierNotEmpty = 1102,
+        /// <summary>
+        /// 货品供应商重复
+        /// </summary>
+        [Description("货品供应商重复")]
+        MaterialSupplierDuplicate = 1103,
+
+        /// <summary>
+        /// 货品规格已存在
+        /// </summary>
+        [Description("货品规格已存在")]
+        MaterialSpecificationIsExist = 1104,
+        /// <summary>
+        /// 货品规格不存在
+        /// </summary>
+        [Description("货品规格不存在")]
+        MaterialSpecificationNotExist = 1105,
+        /// <summary>
+        /// 请输入货品规格
+        /// </summary>
+        [Description("请输入货品规格")]
+        MaterialSpecificationNotEmpty = 1106,
+        /// <summary>
+        /// 货品规格重复
+        /// </summary>
+        [Description("货品规格重复")]
+        MaterialSpecificationDuplicate = 1107,
+
+        /// <summary>
+        /// 货品编号已存在
+        /// </summary>
+        [Description("货品编号已存在")]
+        MaterialBillIsExist = 1108,
+        /// <summary>
+        /// 货品编号不存在
+        /// </summary>
+        [Description("货品编号不存在")]
+        MaterialBillNotExist = 1109,
+        /// <summary>
+        /// 请输入货品编号
+        /// </summary>
+        [Description("请输入货品编号")]
+        MaterialBillNotEmpty = 1110,
+        /// <summary>
+        /// 货品编号重复
+        /// </summary>
+        [Description("货品编号重复")]
+        MaterialBillDuplicate = 1111,
+        /// <summary>
+        /// 相同规格、位置的货品编号已存在
+        /// </summary>
+        [Description("相同规格、位置的货品编号已存在")]
+        MaterialBillSpecificationSiteIsExist = 1112,
+        /// <summary>
+        /// 相同规格、位置的货品编号重复
+        /// </summary>
+        [Description("相同规格、位置的货品编号重复")]
+        MaterialBillSpecificationSiteDuplicate = 1113,
+
+        /// <summary>
+        /// 计划已存在
+        /// </summary>
+        [Description("计划已存在")]
+        ProductionPlanIsExist = 1114,
+        /// <summary>
+        /// 计划不存在
+        /// </summary>
+        [Description("计划不存在")]
+        ProductionPlanNotExist = 1115,
+        /// <summary>
+        /// 请输入计划
+        /// </summary>
+        [Description("请输入计划")]
+        ProductionPlanNotEmpty = 1116,
+        /// <summary>
+        /// 计划重复
+        /// </summary>
+        [Description("计划重复")]
+        ProductionPlanDuplicate = 1117,
+
+        /// <summary>
+        /// 请输入货品清单
+        /// </summary>
+        [Description("请输入货品清单")]
+        MaterialManagementNotEmpty = 1118,
+        /// <summary>
+        /// 库存不足
+        /// </summary>
+        [Description("库存不足")]
+        MaterialManagementLess = 1119,
+
+        /// <summary>
+        /// 无法删除已领用货品
+        /// </summary>
+        [Description("无法删除已领用货品")]
+        ProductionPlanBillConsumed = 1120,
+        /// <summary>
+        /// 计划不包含该货品
+        /// </summary>
+        [Description("计划不包含该货品")]
+        ProductionPlanBillNotExist = 1121,
+
+        /// <summary>
+        /// 6s分组已存在
+        /// </summary>
+        [Description("6s分组已存在")]
+        _6sGroupIsExist = 1122,
+
+        /// <summary>
+        /// 6s分组不存在
+        /// </summary>
+        [Description("6s分组不存在")]
+        _6sGroupNotExist = 1123,
+
+        /// <summary>
+        /// 6s分组名称不能为空
+        /// </summary>
+        [Description("6s分组名称不能为空")]
+        _6sGroupNotEmpty = 1124,
+
+        /// <summary>
+        /// 6s检查项已存在
+        /// </summary>
+        [Description("6s检查项已存在")]
+        _6sItemIsExist = 1125,
+
+        /// <summary>
+        /// 6s检查项不存在
+        /// </summary>
+        [Description("6s检查项不存在")]
+        _6sItemNotExist = 1126,
+
+        /// <summary>
+        /// 6s检查项不能为空
+        /// </summary>
+        [Description("6s检查项不能为空")]
+        _6sItemNotEmpty = 1127,
+
+        /// <summary>
+        /// 6s检查日志已存在
+        /// </summary>
+        [Description("6s检查日志已存在")]
+        _6sLogIsExist = 1128,
+
+        /// <summary>
+        /// 6s检查日志不存在
+        /// </summary>
+        [Description("6s检查日志不存在")]
+        _6sLogNotExist = 1129,
+
+        /// <summary>
+        /// 生产任务模块已存在
+        /// </summary>
+        [Description("任务模块已存在")]
+        ManufactureTaskModuleIsExist = 1130,
+
+        /// <summary>
+        /// 生产任务模块不存在
+        /// </summary>
+        [Description("任务模块不存在")]
+        ManufactureTaskModuleNotExist = 1131,
+
+        /// <summary>
+        /// 检验配置单已存在
+        /// </summary>
+        [Description("检验配置单已存在")]
+        ManufactureCheckIsExist = 1132,
+
+        /// <summary>
+        /// 检验配置单不存在
+        /// </summary>
+        [Description("检验配置单不存在")]
+        ManufactureCheckNotExist = 1133,
+
+        /// <summary>
+        /// 检验配置单名称不能为空
+        /// </summary>
+        [Description("检验配置单名称不能为空")]
+        ManufactureCheckNotEmpty = 1134,
+
+        /// <summary>
+        /// 检验项已存在
+        /// </summary>
+        [Description("检验项已存在")]
+        ManufactureCheckItemIsExist = 1135,
+
+        /// <summary>
+        /// 检验项不存在
+        /// </summary>
+        [Description("检验项不存在")]
+        ManufactureCheckItemNotExist = 1136,
+
+        /// <summary>
+        /// 检验流程不能为空
+        /// </summary>
+        [Description("检验流程不能为空")]
+        ManufactureCheckItemNotEmpty = 1137,
+
+        /// <summary>
+        /// 任务配置单已存在
+        /// </summary>
+        [Description("任务配置单已存在")]
+        ManufactureTaskIsExist = 1138,
+
+        /// <summary>
+        /// 任务配置单不存在
+        /// </summary>
+        [Description("任务配置单不存在")]
+        ManufactureTaskNotExist = 1139,
+
+        /// <summary>
+        /// 任务配置单名称不能为空
+        /// </summary>
+        [Description("任务配置单名称不能为空")]
+        ManufactureTaskNotEmpty = 1140,
+
+        /// <summary>
+        /// 任务已存在
+        /// </summary>
+        [Description("任务已存在")]
+        ManufactureTaskItemIsExist = 1141,
+
+        /// <summary>
+        /// 任务不存在
+        /// </summary>
+        [Description("任务不存在")]
+        ManufactureTaskItemNotExist = 1142,
+
+        /// <summary>
+        /// 任务名不能为空
+        /// </summary>
+        [Description("任务名不能为空")]
+        ManufactureTaskItemNotEmpty = 1143,
+
+        /// <summary>
+        /// 任务顺序重复
+        /// </summary>
+        [Description("任务顺序重复")]
+        ManufactureTaskItemOrderDuplicate = 1144,
+
+        /// <summary>
+        /// 任务关联错误
+        /// </summary>
+        [Description("任务关联错误")]
+        ManufactureTaskItemRelationError = 1145,
+
+        /// <summary>
+        /// 检验单需先关联任务
+        /// </summary>
+        [Description("检验单需先关联任务")]
+        ManufactureCheckItemNoRelation = 1146,
+
+        /// <summary>
+        /// 计划配置单已存在
+        /// </summary>
+        [Description("计划配置单已存在")]
+        ManufacturePlanIsExist = 1147,
+
+        /// <summary>
+        /// 计划配置单不存在
+        /// </summary>
+        [Description("计划配置单不存在")]
+        ManufacturePlanNotExist = 1148,
+
+        /// <summary>
+        /// 计划已下发
+        /// </summary>
+        [Description("计划已下发")]
+        ManufacturePlaneAssignState = 1149,
+
+        /// <summary>
+        /// 非待下发计划无法修改
+        /// </summary>
+        [Description("非待下发计划无法修改")]
+        ManufacturePlaneChangeState = 1150,
+
+        /// <summary>
+        /// 计划名不能为空
+        /// </summary>
+        [Description("计划名不能为空")]
+        ManufacturePlanNotEmpty = 1151,
+
+        /// <summary>
+        /// 请先配置任务
+        /// </summary>
+        [Description("请先配置任务")]
+        ManufacturePlaneNoTask = 1152,
+
+        /// <summary>
+        /// 生产日志不存在
+        /// </summary>
+        [Description("生产日志不存在")]
+        ManufactureLogNotExist = 1153,
+
+        /// <summary>
+        /// 请选择计划
+        /// </summary>
+        [Description("请选择计划")]
+        ManufactureLogSelectPlan = 1154,
+
+        /// <summary>
+        /// 分组已存在
+        /// </summary>
+        [Description("分组已存在")]
+        ManufactureGroupIsExist = 1155,
+
+        /// <summary>
+        /// 分组不存在
+        /// </summary>
+        [Description("分组不存在")]
+        ManufactureGroupNotExist = 1156,
+
+        /// <summary>
+        /// 分组名不能为空
+        /// </summary>
+        [Description("分组名不能为空")]
+        ManufactureGroupNotEmpty = 1157,
+
+        /// <summary>
+        /// 员工已存在
+        /// </summary>
+        [Description("员工已存在")]
+        ManufactureProcessorIsExist = 1158,
+
+        /// <summary>
+        /// 员工不存在
+        /// </summary>
+        [Description("员工不存在")]
+        ManufactureProcessorNotExist = 1159,
+
+        /// <summary>
+        /// 分组名不能为空
+        /// </summary>
+        [Description("分组名不能为空")]
+        ManufactureProcessorNotEmpty = 1160,
+
+        /// <summary>
+        /// 无任务
+        /// </summary>
+        [Description("无任务")]
+        ManufactureNoTask = 1161,
+
+        /// <summary>
+        /// 无检验任务
+        /// </summary>
+        [Description("无检验任务")]
+        ManufactureNoCheck = 1162,
+
+        /// <summary>
+        /// 任务状态错误
+        /// </summary>
+        [Description("任务状态错误")]
+        ManufactureTaskStateError = 1163,
+
+        /// <summary>
+        /// 计划未下发
+        /// </summary>
+        [Description("计划未下发")]
+        ManufacturePlaneNotAssign = 1164,
+
+        /// <summary>
+        /// 无法删除关联或被关联任务
+        /// </summary>
+        [Description("无法删除关联或被关联任务，请先修改")]
+        ManufacturePlaneTaskDeleteHaveRelation = 1165,
+
+        /// <summary>
+        /// 无法删除关联或被关联任务
+        /// </summary>
+        [Description("无法停止关联或被关联任务，请先修改")]
+        ManufacturePlaneTaskStopHaveRelation = 1166,
+
+
+
+
+
+
+        ///// <summary>
+        ///// 请输入货品清单
+        ///// </summary>
+        //[Description("请输入货品清单")]
+        //ProductionPlanBillNotEmpty = 1118,
+        ///// <summary>
+        ///// 货品清单重复
+        ///// </summary>
+        //[Description("货品清单重复")]
+        //ProductionPlanBillDuplicate = 1119,
 
         ///// <summary>
         ///// 流程卡使用该工序中,无法删除
@@ -600,6 +1065,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("请选择文件")]
         NoUploadFile = 3022,
+        /// <summary>
+        /// 请选择角色
+        /// </summary>
+        [Description("请选择角色")]
+        RoleNotSelect = 3023,
 
         #endregion
 

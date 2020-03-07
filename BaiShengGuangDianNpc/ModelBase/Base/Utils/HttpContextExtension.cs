@@ -49,6 +49,12 @@ namespace ModelBase.Base.Utils
             {
                 identityInformation = GetIp(request);
             }
+#if DEBUG
+            if (identityInformation == "192.168.1.184")
+            {
+                identityInformation = "admin";
+            }
+#endif
             return identityInformation;
         }
     }

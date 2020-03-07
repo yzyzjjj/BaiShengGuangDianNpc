@@ -322,6 +322,37 @@ namespace ModelBase.Base.Utils
             return date.ToString("yyMMddHHmmss");
         }
 
-
+        /// <summary>
+        /// 秒转化为天小时分秒
+        /// </summary>
+        /// <param name="second"></param>
+        /// <returns></returns>
+        public static string ToTimeStr(int second)
+        {
+            var str = "";
+            var day = second / (24 * 3600);
+            if (day > 0)
+            {
+                str += day + "天";
+            }
+            second -= day * (24 * 3600);
+            var hour = second / 3600;
+            if (hour > 0)
+            {
+                str += hour + "小时";
+            }
+            second -= hour * 3600;
+            var min = second / 60;
+            if (min > 0)
+            {
+                str += min + "分";
+            }
+            second -= min * 60;
+            if (day > 0)
+            {
+                str += second + "秒";
+            }
+            return str;
+        }
     }
 }
