@@ -623,33 +623,38 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("请输入计划")]
         ProductionPlanNotEmpty = 1116,
-        /// <summary>
-        /// 计划重复
-        /// </summary>
-        [Description("计划重复")]
-        ProductionPlanDuplicate = 1117,
+        ///// <summary>
+        ///// 计划重复
+        ///// </summary>
+        //[Description("计划重复")]
+        //ProductionPlanDuplicate = 1117,
 
         /// <summary>
         /// 请输入货品清单
         /// </summary>
         [Description("请输入货品清单")]
-        MaterialManagementNotEmpty = 1118,
+        MaterialManagementNotEmpty = 1117,
         /// <summary>
         /// 库存不足
         /// </summary>
         [Description("库存不足")]
-        MaterialManagementLess = 1119,
+        MaterialManagementLess = 1118,
 
         /// <summary>
         /// 无法删除已领用货品
         /// </summary>
         [Description("无法删除已领用货品")]
-        ProductionPlanBillConsumed = 1120,
+        ProductionPlanBillConsumed = 1119,
         /// <summary>
         /// 计划不包含该货品
         /// </summary>
         [Description("计划不包含该货品")]
-        ProductionPlanBillNotExist = 1121,
+        ProductionPlanBillNotExist = 1120,
+        /// <summary>
+        /// 退回数量超过实际用量
+        /// </summary>
+        [Description("退回数量超过实际用量")]
+        ProductionPlanBillActualConsumeLess = 1121,
 
         /// <summary>
         /// 6s分组已存在
@@ -1070,6 +1075,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("请选择角色")]
         RoleNotSelect = 3023,
+        /// <summary>
+        /// 手机号错误
+        /// </summary>
+        [Description("手机号错误")]
+        PhoneError = 3024,
 
         #endregion
 

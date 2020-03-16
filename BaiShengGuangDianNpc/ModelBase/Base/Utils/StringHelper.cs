@@ -26,7 +26,7 @@ namespace ModelBase.Base.Utils
             return Guid.NewGuid().ToString("N");
         }
         /// <summary>
-        /// 创建订单号
+        /// 
         /// </summary>
         /// <returns></returns>
         public static string CreateOrderId(string userid)
@@ -35,7 +35,7 @@ namespace ModelBase.Base.Utils
             return str;
         }
         /// <summary>
-        /// 创建订单号
+        /// 
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<string> CreateOrderIdAsc(string userid, int count)

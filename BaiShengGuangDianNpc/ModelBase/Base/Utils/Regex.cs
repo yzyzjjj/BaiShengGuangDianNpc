@@ -42,17 +42,17 @@ namespace ModelBase.Base.Utils
         /// </summary>
         /// <param name="phone"></param>
         /// <returns></returns>
-        public static bool IsPhone(string phone)
+        public static bool IsPhone(this string phone)
         {
             return phone.Length > 0 && Regex.IsMatch(phone, phoneNum);
         }
 
         /// <summary>
-        /// 检查是不是电话号码格式
+        /// 检查是不是固定电话
         /// </summary>
         /// <param name="telephone"></param>
         /// <returns></returns>
-        public static bool IsTelePhone(string telephone)
+        public static bool IsTelPhone(this string telephone)
         {
             return telephone.Length > 0 && Regex.IsMatch(telephone, @"^(\(\d{3,4}\)|\d{3,4}-)?\d{6,14}$");
         }
@@ -64,7 +64,7 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static bool IsPhoneOrTel(string phone)
         {
-            return IsPhone(phone) || IsTelePhone(phone);
+            return phone.IsPhone() || phone.IsTelPhone();
         }
 
         /// <summary>
