@@ -242,10 +242,10 @@ namespace ModelBase.Base.EnumConfig
         [Description("故障设备不存在")]
         FaultDeviceNotExist = 1041,
         /// <summary>
-        /// 故障设备已存在
+        /// 与故障指派维修工不符
         /// </summary>
-        [Description("故障设备已存在")]
-        FaultDeviceIsExist = 1042,
+        [Description("与故障指派维修工不符")]
+        FaultDeviceRepairMaintainerError = 1042,
         /// <summary>
         /// 常见故障不存在
         /// </summary>
@@ -925,6 +925,23 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("无法停止关联或被关联任务，请先修改")]
         ManufacturePlaneTaskStopHaveRelation = 1166,
+
+        /// <summary>
+        /// 维修工已存在
+        /// </summary>
+        [Description("维修工已存在")]
+        MaintainerIsExist = 1167,
+
+        /// <summary>
+        /// 维修工不存在
+        /// </summary>
+        [Description("维修工不存在")]
+        MaintainerNotExist = 1168,
+        /// <summary>
+        /// 维修工重复
+        /// </summary>
+        [Description("维修工重复")]
+        MaintainerDuplicate = 1169,
 
 
 

@@ -18,5 +18,6 @@ namespace ModelBase.Models.Result
         public List<object> applicationLibraries = new List<object>();
         public List<object> scriptVersions = new List<object>();
         public List<object> sites = new List<object>();
+        public List<object> maintainers = new List<object>();
     }
 }
