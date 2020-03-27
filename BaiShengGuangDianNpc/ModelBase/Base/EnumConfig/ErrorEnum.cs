@@ -29,6 +29,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("参数错误")]
         ParamError,
+        /// <summary>
+        /// 服务繁忙
+        /// </summary>
+        [Description("服务繁忙")]
+        ServerBusy,
         #region 设备相关 1000 - 1999
         /// <summary>
         /// 设备不存在
@@ -942,6 +947,42 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("维修工重复")]
         MaintainerDuplicate = 1169,
+
+        /// <summary>
+        /// 任务无法上移至进行中任务前
+        /// </summary>
+        [Description("任务无法上移至进行中任务前")]
+        ManufacturePlaneTaskAfterDoing = 1170,
+        /// <summary>
+        /// 任务无法上移至检验中任务前
+        /// </summary>
+        [Description("任务无法上移至检验中任务前")]
+        ManufacturePlaneTaskCheckAfterChecking = 1171,
+        /// <summary>
+        /// 任务无法上移至关联任务前
+        /// </summary>
+        [Description("任务无法上移至关联任务前")]
+        ManufacturePlaneTaskAfterRelation = 1172,
+        /// <summary>
+        /// 无法上移非等待中/待检验任务
+        /// </summary>
+        [Description("无法上移非等待中/非待检验任务")]
+        ManufacturePlaneTaskNotWait = 1173,
+        /// <summary>
+        /// 维修未完成
+        /// </summary>
+        [Description("维修未完成")]
+        RepairRecordNotComplete = 1074,
+        /// <summary>
+        /// 关联任务非完成状态无法修改
+        /// </summary>
+        [Description("关联任务非完成状态无法修改")]
+        ManufacturePlaneTaskNotDone = 1175,
+        /// <summary>
+        /// 关联任务非待返工状态无法修改
+        /// </summary>
+        [Description("关联任务非待返工/非待检验状态无法修改")]
+        ManufacturePlaneTaskNotWaitRedo = 1176,
 
 
 

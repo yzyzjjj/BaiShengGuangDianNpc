@@ -16,6 +16,14 @@ namespace ModelBase.Models.Device
         public int Frequency { get; set; }
         public string Instruction { get; set; }
         public bool Storage { get; set; }
+
+        public void Update(DeviceBaseInfo device)
+        {
+            Monitoring = device.Monitoring;
+            Frequency = device.Frequency;
+            Instruction = device.Instruction;
+            Storage = device.Storage;
+        }
     }
 
     public class DeviceInfo : DeviceBaseInfo

@@ -5,13 +5,11 @@ using NpcProxyLinkClient.Base.Server;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using ModelBase.Base.Utils;
-using ModelBase.Models.Socket;
 
 namespace NpcProxyLinkClient.Base.Logic
 {
@@ -19,12 +17,13 @@ namespace NpcProxyLinkClient.Base.Logic
     {
         // deviceId, client
         private static readonly int _period = 50;
-        private static readonly int _wc = 25;
+        private static readonly int _wc = _period / 2;
         private static ConcurrentDictionary<int, Client> _clients = new ConcurrentDictionary<int, Client>();
-        private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, _period);
+        //private static Timer _frequencyTimer = new Timer(FrequencyMonitoring, null, 5000, _period);
         private static Timer _checkTimer = new Timer(CheckClientState, null, 5000, 2000);
 
         private static bool _isInit;
+        private static bool _isRun;
 
         #region 客户端socket
         private static ClientSocket _mClientSocket;
@@ -37,9 +36,9 @@ namespace NpcProxyLinkClient.Base.Logic
             var deviceInfos = ServerConfig.ApiDb.
                 Query<DeviceInfo>("SELECT a.Code, a.Ip, a.`Port`, a.ScriptId, b.`Id`, b.`DeviceId`, b.`ServerId`, b.`GroupId`, b.`Monitoring`, b.`Frequency`, b.`Instruction`, b.`Storage` FROM `device_library` a JOIN `npc_proxy_link` b ON " +
                                   "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
-                {
-                    ServerConfig.ServerId
-                });
+                                  {
+                                      ServerConfig.ServerId
+                                  });
             foreach (var deviceInfo in deviceInfos)
             {
                 //if (deviceInfo.Ip== "192.168.1.16")
@@ -59,18 +58,31 @@ namespace NpcProxyLinkClient.Base.Logic
             _mClientSocket.Init(ipAddress, ServerConfig.GatePort);
             _isInit = true;
 
+            Task.Run(() =>
+            {
+                var sw = new Stopwatch();
+                sw.Start();
+                while (true)
+                {
+                    if (sw.ElapsedMilliseconds >= 50)
+                    {
+                        sw.Restart();
+                        FrequencyMonitoring();
+                    }
+                    Thread.Sleep(5);
+                }
+            });
         }
-
-
 
         public static void UpdateConfig()
         {
             var deviceInfos = ServerConfig.ApiDb.
-                Query<DeviceInfo>("SELECT b.DeviceId, a.ScriptId FROM `device_library` a JOIN `npc_proxy_link` b ON " +
+                Query<DeviceInfo>("SELECT b.*, a.* FROM `device_library` a JOIN `npc_proxy_link` b ON " +
                                   "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
                                   {
                                       ServerConfig.ServerId
                                   });
+
             foreach (var deviceInfo in deviceInfos)
             {
                 var deviceId = deviceInfo.DeviceId;
@@ -78,6 +90,16 @@ namespace NpcProxyLinkClient.Base.Logic
                 {
                     _clients[deviceId].Socket.UpdateInfo(deviceInfo);
                 }
+                else
+                {
+                    AddClient(deviceInfo);
+                }
+            }
+
+            foreach (var client in _clients.Values.Where(x => deviceInfos.All(y => y.DeviceId != x.DeviceInfo.DeviceId)))
+            {
+                client.Dispose();
+                _clients.Remove(client.DeviceInfo.DeviceId, out _);
             }
         }
 
@@ -97,28 +119,72 @@ namespace NpcProxyLinkClient.Base.Logic
         /// <summary>
         /// 监控
         /// </summary>
-        private static void FrequencyMonitoring(object state)
+        private static void FrequencyMonitoring()
         {
+            var nowTime = DateTime.Now;
+            //Log.Debug($"当前:{nowTime:yyyy-MM-dd HH:mm:ss fff}");
             if (!_isInit)
             {
                 return;
             }
+            if (_isRun)
+            {
+                return;
+            }
 
-            var nowTime = DateTime.Now;
-            var clients = _clients.Values
-                .Where(x => x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && x.NextSendTime <= nowTime);
+            _isRun = true;
+            var clients = new List<int>();
+            clients.AddRange(_clients.Values.Where(x => x.DeviceInfo != null && x.DeviceInfo.Monitoring && x.DeviceInfo.Frequency > 0 && x.NextSendTime <= nowTime
+                                                        && x.Socket.DeviceInfo.State == SocketState.Connected).Select(y => y.DeviceInfo.DeviceId)); ;
             if (clients.Any())
             {
-                Parallel.ForEach(clients, client =>
+                //Log.Debug("");
+                //Log.Debug($"------当前:{nowTime:yyyy-MM-dd HH:mm:ss fff} {clients.Count}------");
+                foreach (var deviceId in clients)
                 {
-                    //Log.Debug(client.DeviceInfo.Ip + " Monitoring success,当前:" + nowTime.ToString("yyyy-MM-dd HH:mm:ss fff") + ",本次:" + client.NextSendTime.ToString("yyyy-MM-dd HH:mm:ss fff"));
-                    client.NextSendTime = nowTime.AddMilliseconds(client.DeviceInfo.Frequency - _wc);
-                    var resError = client.Socket.SendMessage(client.Socket.HeartPacketByte);
-                    if (resError != Error.Success)
+                    //var client = _clients[deviceId];
+                    if (_clients[deviceId].NextSendTime == default(DateTime))
                     {
-                        //Log.Debug(client.DeviceInfo.Ip + " Monitoring Fail   ,下次:" + client.NextSendTime.ToString("yyyy-MM-dd HH:mm:ss fff"));
-                        client.NextSendTime = client.NextSendTime.AddMilliseconds(-client.DeviceInfo.Frequency + _wc);
-                        return;
+                        _clients[deviceId].NextSendTime = nowTime;
+                    }
+                    //Log.Debug($"------本次:{_clients[deviceId].NextSendTime:yyyy-MM-dd HH:mm:ss fff}------{_clients[deviceId].NextSendTime <= nowTime}");
+                    _clients[deviceId].NextSendTime = _clients[deviceId].NextSendTime.AddMilliseconds(_clients[deviceId].DeviceInfo.Frequency);
+                    //Log.Debug($"------下次:{ _clients[deviceId].NextSendTime:yyyy-MM-dd HH:mm:ss fff} {clients.Count}------");
+                }
+
+                Parallel.ForEach(clients, (deviceId, state) =>
+                {
+                    var client = _clients[deviceId];
+                    //if (client.NextSendTime == default(DateTime))
+                    //{
+                    //    client.NextSendTime = nowTime;
+                    //}
+                    //Log.Debug($"当前:{client.NextSendTime:yyyy-MM-dd HH:mm:ss fff} {clients.Count}");
+                    //Log.Debug($"{client.DeviceInfo.Ip} start, 当前:{nowTime:yyyy-MM-dd HH:mm:ss fff}");
+                    //Log.Debug($"{client.DeviceInfo.Ip} start, 本次:{client.NextSendTime:yyyy-MM-dd HH:mm:ss fff}");
+                    //client.NextSendTime = client.NextSendTime.AddMilliseconds(client.DeviceInfo.Frequency);
+                    //Log.Debug($"{client.DeviceInfo.Ip} start, 下次:{client.NextSendTime:yyyy-MM-dd HH:mm:ss fff}");
+                    //Log.Debug("");
+                    var resError = client.Socket.SendMessageAsync(client.Socket.HeartPacketByte, client.NextSendTime.AddMilliseconds(-_clients[deviceId].DeviceInfo.Frequency));
+                    //client.NextSendTime = nowTime.AddMilliseconds(client.DeviceInfo.Frequency > client.Socket.LastConsume ? client.DeviceInfo.Frequency - client.Socket.LastConsume : 0);
+                    //Log.Debug($"{client.DeviceInfo.Ip} {resError.GetAttribute<DescriptionAttribute>()?.Description ?? ""}, 当前:{nowTime:yyyy-MM-dd HH:mm:ss fff},下次:{client.NextSendTime:yyyy-MM-dd HH:mm:ss fff}");
+                    if (resError == Error.Success)
+                    {
+                        //ServerConfig.ApiDb.Execute(
+                        //    "UPDATE npc_proxy_link SET `Time` = @Time, `State` = 1 WHERE `DeviceId` = @DeviceId;", new
+                        //    {
+                        //        Time = client.NextSendTime,
+                        //        client.DeviceInfo.DeviceId
+                        //    });
+                    }
+                    else if (resError == Error.Fail)
+                    {
+                        //client.NextSendTime = DateTime.Now;
+                    }
+                    else if (resError == Error.ServerBusy)
+                    {
+                        //Log.Debug($"{client.DeviceInfo.Ip} busy, 本次:{client.NextSendTime:yyyy-MM-dd HH:mm:ss fff},下次:{client.NextSendTime.AddMilliseconds(client.DeviceInfo.Frequency):yyyy-MM-dd HH:mm:ss fff}");
+                        //client.NextSendTime = client.NextSendTime > DateTime.Now ? DateTime.Now : client.NextSendTime;
                     }
                     //Log.Debug(client.DeviceInfo.Ip + " Monitoring success,下次:" + client.NextSendTime.ToString("yyyy-MM-dd HH:mm:ss fff"));
 
@@ -126,6 +192,7 @@ namespace NpcProxyLinkClient.Base.Logic
                     //Log.Debug("-------------");
                 });
             }
+            _isRun = false;
         }
 
         #region device 
@@ -230,35 +297,35 @@ namespace NpcProxyLinkClient.Base.Logic
             return res;
         }
 
-        public static Error SendMessage(DeviceInfo deviceInfo)
-        {
-            if (!_clients.ContainsKey(deviceInfo.DeviceId))
-            {
-                return Error.DeviceNotExist;
-            }
+        //public static Error SendMessage(DeviceInfo deviceInfo)
+        //{
+        //    if (!_clients.ContainsKey(deviceInfo.DeviceId))
+        //    {
+        //        return Error.DeviceNotExist;
+        //    }
 
-            return _clients[deviceInfo.DeviceId].Socket.SendMessage(deviceInfo.Instruction);
-        }
+        //    return _clients[deviceInfo.DeviceId].Socket.SendMessage(deviceInfo.Instruction);
+        //}
 
-        public static IEnumerable<DeviceErr> SendMessage(IEnumerable<DeviceInfo> devicesList)
-        {
-            var res = new List<DeviceErr>();
-            foreach (var device in devicesList)
-            {
-                var deviceId = device.DeviceId;
-                if (!_clients.ContainsKey(deviceId))
-                {
-                    res.Add(new DeviceErr(deviceId, Error.DeviceNotExist));
-                }
-            }
-            foreach (var deviceInfo in devicesList.Where(x => _clients.Any(y => y.Key == x.DeviceId)))
-            {
-                var deviceId = deviceInfo.DeviceId;
-                res.Add(new DeviceErr(deviceId, _clients[deviceId].Socket.SendMessage(deviceInfo.Instruction)));
-            }
+        //public static IEnumerable<DeviceErr> SendMessage(IEnumerable<DeviceInfo> devicesList)
+        //{
+        //    var res = new List<DeviceErr>();
+        //    foreach (var device in devicesList)
+        //    {
+        //        var deviceId = device.DeviceId;
+        //        if (!_clients.ContainsKey(deviceId))
+        //        {
+        //            res.Add(new DeviceErr(deviceId, Error.DeviceNotExist));
+        //        }
+        //    }
+        //    foreach (var deviceInfo in devicesList.Where(x => _clients.Any(y => y.Key == x.DeviceId)))
+        //    {
+        //        var deviceId = deviceInfo.DeviceId;
+        //        res.Add(new DeviceErr(deviceId, _clients[deviceId].Socket.SendMessage(deviceInfo.Instruction)));
+        //    }
 
-            return res;
-        }
+        //    return res;
+        //}
 
         public static string SendMessageBack(DeviceInfo deviceInfo)
         {

@@ -9,11 +9,11 @@ namespace ModelBase.Base.Utils
         /// <summary>
         /// CRC校验
         /// </summary>
-        /// <param name="datas">校验数据</param>
+        /// <param name="data">校验数据</param>
         /// <returns>高低8位</returns>
-        public static IEnumerable<string> GetCrc16(IEnumerable<string> datas)
+        public static IEnumerable<string> GetCrc16(IEnumerable<string> data)
         {
-            var crcBuf = datas.Select(str => byte.Parse(str, System.Globalization.NumberStyles.AllowHexSpecifier)).ToArray();
+            var crcBuf = data.Select(str => byte.Parse(str, System.Globalization.NumberStyles.AllowHexSpecifier)).ToArray();
             //计算并填写CRC校验码
             var crc = 0xffff;
             var len = crcBuf.Length;

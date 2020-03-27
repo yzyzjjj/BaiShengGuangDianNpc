@@ -15,6 +15,13 @@ namespace NpcProxyLinkClient.Base.Logic
         public List<byte> DataList { get; set; } = new List<byte>();
         public IEnumerable<string> DataStrList => DataList.Select(t => Convert.ToString(t, 16).PadLeft(2, '0'));
         public string Data => DataStrList.Join(",");
+        public int DeviceId { get; set; }
+        public string Ip { get; set; }
+        public int Port { get; set; }
+        public int ScriptId { get; set; }
+        public int ValNum { get; set; }
+        public int InNum { get; set; }
+        public int OutNum { get; set; }
 
         public bool IsAll()
         {

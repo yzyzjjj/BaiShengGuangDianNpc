@@ -103,28 +103,28 @@ namespace NpcProxyLink.Controllers.Api
         /// </summary>
         /// <param name="deviceInfo"></param>
         /// <returns></returns>
-        [HttpPost("send")]
-        public Result SendMessage([FromBody]DeviceInfo deviceInfo)
-        {
-            var result = new Result
-            {
-                errno = ServerConfig.ClientManager.SendMessage(deviceInfo)
-            };
-            return result;
-        }
+        //[HttpPost("send")]
+        //public Result SendMessage([FromBody]DeviceInfo deviceInfo)
+        //{
+        //    var result = new Result
+        //    {
+        //        errno = ServerConfig.ClientManager.SendMessage(deviceInfo)
+        //    };
+        //    return result;
+        //}
 
         /// <summary>
         /// 批量发送消息
         /// </summary>
         /// <param name="devicesList"></param>
         /// <returns></returns>
-        [HttpPost("batchsend")]
-        public DataErrResult BatchSendMessage([FromBody] List<DeviceInfo> devicesList)
-        {
-            var result = new DataErrResult();
-            result.datas.AddRange(ServerConfig.ClientManager.SendMessage(devicesList));
-            return result;
-        }
+        //[HttpPost("batchsend")]
+        //public DataErrResult BatchSendMessage([FromBody] List<DeviceInfo> devicesList)
+        //{
+        //    var result = new DataErrResult();
+        //    result.datas.AddRange(ServerConfig.ClientManager.SendMessage(devicesList));
+        //    return result;
+        //}
 
         /// <summary>
         /// 发送消息

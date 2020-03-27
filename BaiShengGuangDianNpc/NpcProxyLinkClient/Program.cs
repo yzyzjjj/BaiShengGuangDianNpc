@@ -63,6 +63,7 @@ namespace NpcProxyLinkClient
                         foreach (var device in ClientManager.GetDevices())
                         {
                             Console.WriteLine(JsonConvert.SerializeObject(device));
+                            Console.WriteLine();
                         }
                         break;
                     default:
