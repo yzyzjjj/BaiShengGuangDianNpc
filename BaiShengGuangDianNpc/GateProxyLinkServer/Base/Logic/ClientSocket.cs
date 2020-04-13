@@ -102,7 +102,10 @@ namespace GateProxyLinkServer.Base.Logic
                                 var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
                                 if (msg.MsgType != NpcSocketMsgType.Heart)
                                 {
-                                    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} receive");
+                                    if (DateTime.Now.Minute % 5 == 0)
+                                    {
+                                        Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} receive");
+                                    }
                                 }
                                 NpcSocketMsg responseMsg = null;
                                 switch (msg.MsgType)

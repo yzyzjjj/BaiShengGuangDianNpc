@@ -1029,7 +1029,7 @@
     <Content Update="wwwroot\images\banner3.svg">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\js\myjs\index.js">
+    <Content Update="wwwroot\myjs\index.js">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="wwwroot\js\site.js">

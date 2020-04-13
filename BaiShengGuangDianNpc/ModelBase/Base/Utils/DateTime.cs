@@ -17,6 +17,15 @@ namespace ModelBase.Base.Utils
         }
 
         /// <summary>
+        /// 获取1970-01-01至dateTime的毫秒数
+        /// </summary>
+        public static string ToTimestamp(this DateTime dateTime)
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalMilliseconds).ToString();
+        }
+
+        /// <summary>
         /// DateTime扩展方法，根据Unix时间戳（Int32）设置当前DateTime实例。
         /// </summary>
         /// <param name="date">DateTime实例</param>
@@ -348,7 +357,7 @@ namespace ModelBase.Base.Utils
                 str += min + "分";
             }
             second -= min * 60;
-            if (day > 0)
+            if (second > 0)
             {
                 str += second + "秒";
             }

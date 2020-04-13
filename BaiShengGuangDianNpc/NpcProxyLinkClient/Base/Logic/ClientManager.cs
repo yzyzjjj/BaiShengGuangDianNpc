@@ -34,8 +34,9 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             _clients.Clear();
             var deviceInfos = ServerConfig.ApiDb.
-                Query<DeviceInfo>("SELECT a.Code, a.Ip, a.`Port`, a.ScriptId, b.`Id`, b.`DeviceId`, b.`ServerId`, b.`GroupId`, b.`Monitoring`, b.`Frequency`, b.`Instruction`, b.`Storage` FROM `device_library` a JOIN `npc_proxy_link` b ON " +
-                                  "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
+                Query<DeviceInfo>("SELECT a. CODE, a.Ip, a.`Port`, a.ScriptId, b.`Id`, b.`DeviceId`, b.`ServerId`, b.`GroupId`, b.`Monitoring`, b.`Frequency`, c.HeartPacket `Instruction`, b.`Storage` FROM `device_library` a " +
+                                  "JOIN `npc_proxy_link` b ON a.Id = b.DeviceId " +
+                                  "JOIN `script_version` c ON a.ScriptId = c.Id WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
                                   {
                                       ServerConfig.ServerId
                                   });

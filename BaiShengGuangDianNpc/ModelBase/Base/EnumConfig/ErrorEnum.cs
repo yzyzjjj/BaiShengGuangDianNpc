@@ -249,7 +249,7 @@ namespace ModelBase.Base.EnumConfig
         /// <summary>
         /// 与故障指派维修工不符
         /// </summary>
-        [Description("与故障指派维修工不符")]
+        [Description("与故障指派人不符")]
         FaultDeviceRepairMaintainerError = 1042,
         /// <summary>
         /// 常见故障不存在
@@ -972,7 +972,7 @@ namespace ModelBase.Base.EnumConfig
         /// 维修未完成
         /// </summary>
         [Description("维修未完成")]
-        RepairRecordNotComplete = 1074,
+        RepairRecordNotComplete = 1174,
         /// <summary>
         /// 关联任务非完成状态无法修改
         /// </summary>
@@ -983,6 +983,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("关联任务非待返工/非待检验状态无法修改")]
         ManufacturePlaneTaskNotWaitRedo = 1176,
+        /// <summary>
+        /// 维修状态错误
+        /// </summary>
+        [Description("维修状态错误")]
+        FaultDeviceStateError = 1177,
 
 
 
@@ -1138,6 +1143,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("手机号错误")]
         PhoneError = 3024,
+        /// <summary>
+        /// 员工编号不存在
+        /// </summary>
+        [Description("员工编号不存在")]
+        NumberNotExist = 3025,
 
         #endregion
 

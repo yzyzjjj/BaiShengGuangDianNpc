@@ -254,43 +254,49 @@ namespace NpcProxyLinkClient.Base.Logic
 
         private void UpdateStateInfo(SocketMessage socketMessage)
         {
-            var data = socketMessage.DataStrList.Skip(10).ToArray();
-
-            var start = (_stateDictionaryId - 1) * 4;
-            if (data.Length >= start + 4)
+            try
             {
-                var str = data.Skip(start).Take(4).Reverse().Join("");
-                var v = Convert.ToInt32(str, 16);
-                DeviceInfo.DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
-            }
-
-            start = (_processTimeDictionaryId - 1) * 4;
-            if (data.Length >= start + 4)
-            {
-                var str = data.Skip(start).Take(4).Reverse().Join("");
-                DeviceInfo.ProcessTime = Convert.ToInt32(str, 16).ToString();
-            }
-
-            start = (_leftTimeDictionaryId - 1) * 4;
-            if (data.Length >= start + 4)
-            {
-                var str = data.Skip(start).Take(4).Reverse().Join("");
-                DeviceInfo.LeftTime = Convert.ToInt32(str, 16).ToString();
-            }
-
-            start = (_flowCardDictionaryId - 1) * 4;
-            if (data.Length >= start + 4)
-            {
-                var str = data.Skip(start).Take(4).Reverse().Join("");
-                var fid = Convert.ToInt32(str, 16);
-
-                var flowCardName =
-                    ServerConfig.ApiDb.Query<string>("SELECT FlowCardName FROM `flowcard_library` WHERE Id = @Id;", new { Id = fid }).FirstOrDefault();
-
-                if (flowCardName != null)
+                var data = socketMessage.DataStrList.Skip(10).ToArray();
+                var start = (_stateDictionaryId - 1) * 4;
+                if (data.Length >= start + 4)
                 {
-                    DeviceInfo.FlowCard = flowCardName;
+                    var str = data.Skip(start).Take(4).Reverse().Join("");
+                    var v = Convert.ToInt32(str, 16);
+                    DeviceInfo.DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
                 }
+
+                start = (_processTimeDictionaryId - 1) * 4;
+                if (data.Length >= start + 4)
+                {
+                    var str = data.Skip(start).Take(4).Reverse().Join("");
+                    DeviceInfo.ProcessTime = Convert.ToInt32(str, 16).ToString();
+                }
+
+                start = (_leftTimeDictionaryId - 1) * 4;
+                if (data.Length >= start + 4)
+                {
+                    var str = data.Skip(start).Take(4).Reverse().Join("");
+                    DeviceInfo.LeftTime = Convert.ToInt32(str, 16).ToString();
+                }
+
+                start = (_flowCardDictionaryId - 1) * 4;
+                if (data.Length >= start + 4)
+                {
+                    var str = data.Skip(start).Take(4).Reverse().Join("");
+                    var fid = Convert.ToInt32(str, 16);
+
+                    var flowCardName =
+                        ServerConfig.ApiDb.Query<string>("SELECT FlowCardName FROM `flowcard_library` WHERE Id = @Id;", new { Id = fid }).FirstOrDefault();
+
+                    if (flowCardName != null)
+                    {
+                        DeviceInfo.FlowCard = flowCardName;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Ip:{DeviceInfo.Ip} UpdateStateInfo ERROR, ErrMsg：{e.Message}, StackTrace：{e.StackTrace}");
             }
         }
 

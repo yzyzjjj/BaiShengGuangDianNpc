@@ -21,7 +21,7 @@ var op = function (data, type, row) {
         row.Storage +
         '\')">操作</button>';
     return html;
-};
+}
 
 function load() {
     $.get("/gate/device/list", function (res) {
@@ -51,7 +51,16 @@ function load() {
             });
     });
 }
-
+function reload() {
+    $.get("/gate/device/reloadlist", function (res) {
+        load()
+    });
+}
+function reloadServer() {
+    $.get("/gate/server/reloadlist", function (res) {
+        load()
+    });
+}
 function showDevice(deviceId, serverId, ip, port, monitoring, frequency, instruction, storage) {
     $("#deviceId").html(deviceId);
     $("#serverId").html(serverId);
@@ -65,7 +74,7 @@ function showDevice(deviceId, serverId, ip, port, monitoring, frequency, instruc
 }
 
 function btnStorage() {
-    var data = [{
+    var data = {
         deviceId: $("#deviceId").text(),
         serverId: $("#serverId").text(),
         ip: $("#ip").val(),
@@ -74,26 +83,18 @@ function btnStorage() {
         frequency: $("#frequency").val(),
         storage: $("#storage").val(),
         instruction: $("#instruction").val(),
-    }];
-    $.post("/gate/device/batchsetstorage",
+    }
+    $.post("/gate/device/setstorage",
         {
-            devicesList: JSON.stringify(data)
+            deviceInfo: JSON.stringify(data)
         }, function (res) {
-            var s = "";
-            if (data.length == 1) {
-                s = res.datas[0].errmsg;
-            } else {
-                for (var i = 0; i < data.length; i++) {
-                    s += "设备ID:" + res.datas[i].DeviceId + "," + res.datas[i].errmsg + ";";
-                }
-            }
-            alert(s);
-            load();
-        });
+            alert(res.errmsg)
+            load()
+        })
 };
 
 function btnMonitoring() {
-    var data = [{
+    var data = {
         deviceId: $("#deviceId").text(),
         serverId: $("#serverId").text(),
         ip: $("#ip").val(),
@@ -102,27 +103,19 @@ function btnMonitoring() {
         frequency: $("#frequency").val(),
         instruction: $("#instruction").val(),
         storage: $("#storage").val(),
-    }];
-    $.post("/gate/device/batchsetfrequency",
+    }
+    $.post("/gate/device/setfrequency",
         {
-            devicesList: JSON.stringify(data)
+            deviceInfo: JSON.stringify(data)
         }, function (res) {
-            var s = "";
-            if (data.length == 1) {
-                s = res.datas[0].errmsg;
-            } else {
-                for (var i = 0; i < data.length; i++) {
-                    s += "设备ID:" + res.datas[i].DeviceId + "," + res.datas[i].errmsg + ";";
-                }
-            }
-            alert(s);
-            load();
-        });
+            alert(res.errmsg)
+            load()
+        })
 }
 
 function btnSend() {
     $("#text").empty();
-    var data = [{
+    var data = {
         deviceId: $("#deviceId").text(),
         serverId: $("#serverId").text(),
         ip: $("#ip").val(),
@@ -131,63 +124,47 @@ function btnSend() {
         frequency: $("#frequency").val(),
         instruction: $("#instruction").val(),
         storage: $("#storage").val(),
-    }];
+    }
     $("#ins").html($("#instruction").val());
-    $.post("/gate/device/batchsendback",
+    $.post("/gate/device/sendback",
         {
-            devicesList: JSON.stringify(data)
-        }, function (res) {
-            var s = "";
-            if (data.length == 1) {
-                s = res.messages[0].Item2;
-            } else {
-                for (var i = 0; i < data.length; i++) {
-                    s += "设备ID:" + res.messages[i].Item1 + "," + res.datas[i].Item2 + ";";
-                }
-            }
-            $("#text").append(s);
+            deviceInfo: JSON.stringify(data)
+        },
+        function(res) {
+            $("#text").append(res.messages[0].Item2);
         });
 }
 
 function btnAnalysis() {
-    $.post("/gate/device/analysis",
-        {
-            ins: $("#ins").text(),
-            msg: $("#text").text()
-        }, function (res) {
-            $("#d1").empty();
-            $("#d2").empty();
-            $("#d3").empty();
-            if (res.datas.length == 0)
-                return;
-
-            var i = 0;
-            for (var n in res.datas[0]) {
-                $("#d1").append(n + " : " + res.datas[0][n] + "       ");
-                i++;
-                if (i == 10) {
-                    $("#d1").append("\n");
-                    i = 0;
-                }
+    var len = 3;
+    for (var j = 0; j < len; j++) {
+        $("#d" + (j + 1)).empty();
+    }
+    var text = $("#text").text();
+    if (text == "" || text == null) {
+        return;
+    }
+    var msg = JSON.parse(text);
+    for (var j = 0; j < 3; j++) {
+        $("#d" + (j + 1)).empty();
+        var v = new Array();
+        if (j == 0) {
+            v = msg.vals;
+        } else if (j == 1) {
+            v = msg.ins;
+        } else if (j == 2) {
+            v = msg.outs;
+        } else {
+            break;
+        }
+        var i = 0;
+        for (var n in v) {
+            $("#d" + (j + 1)).append(n + " : " + v[n] + "       ");
+            i++;
+            if (i == 10) {
+                $("#d" + (j + 1)).append("\n");
+                i = 0;
             }
-            i = 0;
-            for (var n in res.datas[1]) {
-                $("#d2").append(n + " : " + res.datas[1][n] + "       ");
-                i++;
-                if (i == 10) {
-                    $("#d1").append("\n");
-                    i = 0;
-                }
-            }
-            i = 0;
-            for (var n in res.datas[2]) {
-                $("#d3").append(n + " : " + res.datas[2][n] + "       ");
-                i++;
-                if (i == 10) {
-                    $("#d1").append("\n");
-                    i = 0;
-                }
-            }
-        });
-
+        }
+    }
 }

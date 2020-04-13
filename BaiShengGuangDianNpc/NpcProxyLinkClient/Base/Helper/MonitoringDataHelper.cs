@@ -1,6 +1,6 @@
-﻿using System;
-using NpcProxyLinkClient.Base.Logic;
+﻿using NpcProxyLinkClient.Base.Logic;
 using NpcProxyLinkClient.Base.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,6 +10,7 @@ namespace NpcProxyLinkClient.Base.Helper
     public class MonitoringDataHelper
     {
         private static Timer _checkTimer = new Timer(SaveData, null, 5000, 2000);
+        private static bool _insert;
 #if DEBUG
         /// <summary>
         /// 日志上限  1s采集 * 200台 * 2s间隔
@@ -27,14 +28,21 @@ namespace NpcProxyLinkClient.Base.Helper
         private static List<SocketMessage> _socketMessages = new List<SocketMessage>();
         private static void SaveData(object state)
         {
-            var socketMessages = new List<SocketMessage>();
             if (_socketMessages.Count > LogMaxLength)
             {
+                if (_insert)
+                {
+                    return;
+                }
+
+                _insert = true;
+                var socketMessages = new List<SocketMessage>();
                 socketMessages.AddRange(_socketMessages.Take(LogMaxLength));
                 _socketMessages = _socketMessages.Skip(LogMaxLength).ToList();
                 //Log.Debug($"出{_socketMessages.Count}： {socketMessages.Count(y => y.DeviceId == 6)}.--{socketMessages.Where(y => y.DeviceId == 6).GroupBy(x => x.SendTime.ToStr().Length)}");
                 InsertSocketMessage(socketMessages);
                 socketMessages.Clear();
+                _insert = false;
             }
         }
         /// <summary>
@@ -62,17 +70,27 @@ namespace NpcProxyLinkClient.Base.Helper
 
         private static async void InsertSocketMessageAsync(IEnumerable<SocketMessage> socketMessages)
         {
-            await ServerConfig.DataStorageDb.ExecuteAsync(
-                "INSERT npc_monitoring_data (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
-                "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
-                , socketMessages.OrderBy(x => x.SendTime));
+            //await ServerConfig.DataStorageDb.ExecuteAsync(
+            //   "INSERT npc_monitoring_data (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
+            //   "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
+            //   , socketMessages.OrderBy(x => x.SendTime));
+
+            await ServerConfig.ApiDb.ExecuteAsync(
+               "INSERT npc_monitoring_analysis (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
+               "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
+               , socketMessages.OrderBy(x => x.ReceiveTime));
         }
         private static void InsertSocketMessage(IEnumerable<SocketMessage> socketMessages)
         {
-            ServerConfig.DataStorageDb.ExecuteTrans(
-               "INSERT npc_monitoring_data (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
+            //ServerConfig.DataStorageDb.ExecuteTrans(
+            //   "INSERT npc_monitoring_data (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
+            //   "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
+            //   , socketMessages.OrderBy(x => x.SendTime));
+
+            ServerConfig.ApiDb.ExecuteTrans(
+               "INSERT npc_monitoring_analysis (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
                "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
-               , socketMessages.OrderBy(x => x.SendTime));
+               , socketMessages.OrderBy(x => x.ReceiveTime));
         }
     }
 }
