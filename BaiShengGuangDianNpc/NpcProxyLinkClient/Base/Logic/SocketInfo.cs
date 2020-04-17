@@ -503,6 +503,7 @@ namespace NpcProxyLinkClient.Base.Logic
             else if (e.SocketError == SocketError.ConnectionReset && e.BytesTransferred == 0)
             {
                 DeviceInfo.State = SocketState.Connecting;
+                Disconnect();
                 ConnectAsync();
             }
             else
