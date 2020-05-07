@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GateProxyLinkServer.Base.Control;
 using GateProxyLinkServer.Base.Logic;
 using GateProxyLinkServer.Base.Server;
 using Microsoft.AspNetCore.Mvc;
 using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Utils;
+using ModelBase.Models.Control;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
 using Newtonsoft.Json;
+using ServiceStack;
 
 namespace GateProxyLinkServer.Controllers.Api
 {
     // npc/Device
-    [Route("gate/device")]
+    [Microsoft.AspNetCore.Mvc.Route("gate/device")]
     [ApiController]
     public class DeviceController : ControllerBase
     {
@@ -23,10 +24,18 @@ namespace GateProxyLinkServer.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet("list")]
-        public DeviceResult GetDevices()
+        public DeviceResult GetDevices([FromQuery]string ids)
         {
             var result = new DeviceResult();
-            result.datas.AddRange(ServerConfig.ServerManager.GetDevices());
+            if (ids.IsNullOrEmpty())
+            {
+                result.datas.AddRange(ServerConfig.ServerManager.GetDevices());
+            }
+            else
+            {
+                var idList = ids.Split(",").Select(int.Parse);
+                result.datas.AddRange(ServerConfig.ServerManager.GetDevices(idList));
+            }
             return result;
         }
 
@@ -167,5 +176,18 @@ namespace GateProxyLinkServer.Controllers.Api
             return result;
         }
 
+        // POST: api/DeviceLibrary/Upgrade
+        [HttpPost("batchUpgrade")]
+        public UpgradeResult Upgrade([FromBody] UpgradeInfos upgradeInfos)
+        {
+            if (upgradeInfos == null || !upgradeInfos.Infos.Any())
+            {
+                return Result.GenError<UpgradeResult>(Error.ParamError);
+            }
+
+            var result = new UpgradeResult { Type = upgradeInfos.Type };
+            result.datas.AddRange(ServerConfig.ServerManager.UpgradeClient(upgradeInfos));
+            return result;
+        }
     }
 }

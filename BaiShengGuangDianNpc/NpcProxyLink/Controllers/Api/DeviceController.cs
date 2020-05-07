@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Logger;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
 using NpcProxyLink.Base.Server;
 using System;
 using System.Collections.Generic;
-using ModelBase.Base.EnumConfig;
+using System.Linq;
 
 namespace NpcProxyLink.Controllers.Api
 {
@@ -206,6 +207,20 @@ namespace NpcProxyLink.Controllers.Api
         {
             var result = new DataErrResult();
             result.datas.AddRange(ServerConfig.ClientManager.SetFrequency(devicesList));
+            return result;
+        }
+
+        // POST: api/DeviceLibrary/Upgrade
+        [HttpPost("batchUpgrade")]
+        public UpgradeResult Upgrade([FromBody] UpgradeInfos upgradeInfos)
+        {
+            if (upgradeInfos == null || !upgradeInfos.Infos.Any())
+            {
+                return Result.GenError<UpgradeResult>(Error.ParamError);
+            }
+
+            var result = new UpgradeResult { Type = upgradeInfos.Type };
+            result.datas.AddRange(ServerConfig.ClientManager.UpgradeClient(upgradeInfos));
             return result;
         }
     }

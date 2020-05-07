@@ -305,6 +305,26 @@ namespace NpcProxyLinkClient.Base.Logic
                                             Body = messageResult.ToJSON()
                                         };
                                         break;
+                                    case NpcSocketMsgType.UpgradeClient:
+                                        var upgradeInfos = JsonConvert.DeserializeObject<UpgradeInfos>(msg.Body);
+                                        switch (upgradeInfos.Type)
+                                        {
+                                            case 0:
+                                                dataErrResult.datas.AddRange(ClientManager.UpgradeScript(upgradeInfos.Infos)); break;
+                                            case 1:
+                                                //dataErrResult.datas.AddRange(ClientManager.UpgradeScript(upgradeInfos.Infos));
+                                                break;
+                                            default:
+                                                dataErrResult.datas.AddRange(upgradeInfos.Infos.Select(x => new DeviceErr(x.DeviceId, Error.ParamError)));
+                                                break;
+                                        }
+                                        responseMsg = new NpcSocketMsg
+                                        {
+                                            Guid = msg.Guid,
+                                            MsgType = msg.MsgType,
+                                            Body = dataErrResult.ToJSON()
+                                        };
+                                        break;
                                     default:
                                         break;
                                 }

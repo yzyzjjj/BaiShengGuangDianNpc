@@ -34,6 +34,16 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("服务繁忙")]
         ServerBusy,
+        /// <summary>
+        /// 请求超时
+        /// </summary>
+        [Description("请求超时")]
+        TimeOut,
+        /// <summary>
+        /// Gate服务器异常
+        /// </summary>
+        [Description("Gate服务器异常")]
+        GateExceptionHappen,
         #region 设备相关 1000 - 1999
         /// <summary>
         /// 设备不存在
@@ -603,15 +613,15 @@ namespace ModelBase.Base.EnumConfig
         [Description("货品编号重复")]
         MaterialBillDuplicate = 1111,
         /// <summary>
-        /// 相同规格、位置的货品编号已存在
+        /// 相同规格、单价、位置的货品编号已存在
         /// </summary>
-        [Description("相同规格、位置的货品编号已存在")]
-        MaterialBillSpecificationSiteIsExist = 1112,
+        [Description("相同规格、单价、位置的货品编号已存在")]
+        MaterialBillSpecificationPriceSiteIsExist = 1112,
         /// <summary>
-        /// 相同规格、位置的货品编号重复
+        /// 相同规格、单价、位置的货品编号重复
         /// </summary>
-        [Description("相同规格、位置的货品编号重复")]
-        MaterialBillSpecificationSiteDuplicate = 1113,
+        [Description("相同规格、单价、位置的货品编号重复")]
+        MaterialBillSpecificationPriceSiteDuplicate = 1113,
 
         /// <summary>
         /// 计划已存在
@@ -989,6 +999,38 @@ namespace ModelBase.Base.EnumConfig
         [Description("维修状态错误")]
         FaultDeviceStateError = 1177,
 
+        /// <summary>
+        /// 变量地址超上限
+        /// </summary>
+        [Description("变量地址超上限")]
+        ValuePointerAddressOutLimit = 1178,
+        /// <summary>
+        /// 输入地址超上限
+        /// </summary>
+        [Description("输入地址超上限")]
+        InputPointerAddressOutLimit = 1179,
+        /// <summary>
+        /// 输出地址超上限
+        /// </summary>
+        [Description("输出地址超上限")]
+        OutputPointerAddressOutLimit = 1180,
+        /// <summary>
+        /// 非等待中设备无法升级
+        /// </summary>
+        [Description("非等待中设备无法升级")]
+        UpgradeDeviceStateError = 1181,
+        /// <summary>
+        /// 进入流程脚本升级状态失败
+        /// </summary>
+        [Description("进入流程脚本升级状态失败")]
+        UpgradeScriptStateError = 1182,
+        /// <summary>
+        /// 流程脚本数据发送失败
+        /// </summary>
+        [Description("流程脚本数据发送失败")]
+        UpgradeScriptError = 1183,
+
+
 
 
 
@@ -1114,10 +1156,10 @@ namespace ModelBase.Base.EnumConfig
         [Description("文件类型不符")]
         FileExtError = 3018,
         /// <summary>
-        /// 只支持单个文件上传
+        /// 文件不存在
         /// </summary>
-        [Description("只支持单个文件上传")]
-        FileSingle = 3019,
+        [Description("文件不存在")]
+        FileNotExist = 3019,
         /// <summary>
         /// 账号或密码不正确
         /// </summary>
@@ -1148,6 +1190,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("员工编号不存在")]
         NumberNotExist = 3025,
+        /// <summary>
+        /// 只支持单文件上传
+        /// </summary>
+        [Description("只支持单文件上传")]
+        FileSingle = 3026,
 
         #endregion
 

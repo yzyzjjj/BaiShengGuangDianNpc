@@ -15,7 +15,6 @@ namespace NpcProxyLink.Base.Server
     public class ServerConfig
     {
         public static DataBase ApiDb;
-        public static DataBase DataStorageDb;
         public static ClientManager ClientManager;
         public static int ServerId;
         public static RedisCacheHelper RedisHelper;
@@ -24,7 +23,6 @@ namespace NpcProxyLink.Base.Server
         public static void Init(IConfiguration configuration)
         {
             ApiDb = new DataBase(configuration.GetConnectionString("ApiDb"));
-            DataStorageDb = new DataBase(configuration.GetConnectionString("DataStorageDb"));
             ServerId = configuration.GetAppSettings<int>("ServerId");
 
             RedisHelper = new RedisCacheHelper(configuration);

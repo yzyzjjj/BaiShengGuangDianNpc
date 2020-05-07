@@ -22,5 +22,9 @@
         /// 升级状态2 
         /// </summary>
         Upgrade2,
+        /// <summary>
+        /// 升级流程中
+        /// </summary>
+        UpgradeScript,
     }
 }

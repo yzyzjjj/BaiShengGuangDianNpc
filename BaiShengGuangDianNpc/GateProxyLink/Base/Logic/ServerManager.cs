@@ -194,10 +194,11 @@ namespace GateProxyLink.Base.Logic
         /// 获取设备列表
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<DeviceInfo> GetDevices()
+        public IEnumerable<DeviceInfo> GetDevices(IEnumerable<int> ids = null)
         {
-            return _clients.Values.OrderBy(x => x.DeviceId);
+            return ids == null ? _clients.Values.OrderBy(x => x.DeviceId) : _clients.Values.Where(x => ids.Contains(x.DeviceId)).OrderBy(y => y.DeviceId);
         }
+
         public DeviceInfo GetDevice(int id)
         {
             return _clients.Values.FirstOrDefault(x => x.DeviceId == id);
@@ -220,7 +221,7 @@ namespace GateProxyLink.Base.Logic
 
                 ServerConfig.ApiDb.Execute("UPDATE npc_proxy_link SET `ServerId` = @ServerId WHERE `DeviceId` = @DeviceId;", dealList);
 
-                res.AddRange(HttpResponseErr(dealList, "batchAddDevice", "AddClient", true));
+                res.AddRange(HttpResponseErr(dealList, UrlMappings.batchAddDevice, "AddClient", true));
             }
 
             return res;
@@ -236,7 +237,7 @@ namespace GateProxyLink.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(HttpResponseErr(dealList, "batchDelDevice", "DelClient"));
+                res.AddRange(HttpResponseErr(dealList, UrlMappings.batchDelDevice, "DelClient"));
             }
 
             return res;
@@ -252,7 +253,7 @@ namespace GateProxyLink.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(HttpResponseErr(dealList, "batchUpdateDevice", "UpdateClient"));
+                res.AddRange(HttpResponseErr(dealList, UrlMappings.batchUpdateDevice, "UpdateClient"));
             }
 
             return res;
@@ -268,7 +269,7 @@ namespace GateProxyLink.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(HttpResponseErr(dealList, "batchSetStorage", "SetStorage"));
+                res.AddRange(HttpResponseErr(dealList, UrlMappings.batchSetStorage, "SetStorage"));
             }
 
             return res;
@@ -284,7 +285,7 @@ namespace GateProxyLink.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(HttpResponseErr(dealList, "batchSetFrequency", "SetFrequency"));
+                res.AddRange(HttpResponseErr(dealList, UrlMappings.batchSetFrequency, "SetFrequency"));
             }
 
             return res;
@@ -307,7 +308,7 @@ namespace GateProxyLink.Base.Logic
             dealList = dealList.Where(x => !x.Instruction.IsNullOrEmpty());
             if (dealList.Any())
             {
-                res.AddRange(HttpResponseErr(dealList, "batchSend", "SendMessage"));
+                res.AddRange(HttpResponseErr(dealList, UrlMappings.batchSend, "SendMessage"));
             }
 
             return res;
@@ -332,7 +333,7 @@ namespace GateProxyLink.Base.Logic
 
             if (dealList.Any())
             {
-                res.AddRange(HttpResponseStr(dealList, "batchSendBack", "SendMessageBack"));
+                res.AddRange(HttpResponseStr(dealList, UrlMappings.batchSendBack, "SendMessageBack"));
             }
 
             return res;
@@ -493,5 +494,62 @@ namespace GateProxyLink.Base.Logic
 
         #endregion
 
+        public IEnumerable<DeviceErr> UpgradeClient(UpgradeInfos upgradeInfos)
+        {
+            var res = new List<DeviceErr>();
+            if (upgradeInfos.Infos.Any())
+            {
+                res.AddRange(HttpResponseErr(upgradeInfos));
+            }
+            return res;
+        }
+
+        private static IEnumerable<DeviceErr> HttpResponseErr(UpgradeInfos upgradeInfos)
+        {
+            var res = new List<DeviceErr>();
+            //不存在设备列表
+            res.AddRange(upgradeInfos.Infos.Where(x => !_clients.ContainsKey(x.DeviceId)).Select(y => new DeviceErr(y.DeviceId, Error.DeviceNotExist)));
+            var leftInfos = upgradeInfos.Infos.Where(x => _clients.ContainsKey(x.DeviceId));
+            if (leftInfos.Any())
+            {
+                var devicesList = _clients.Values.Where(x => leftInfos.Any(y => y.DeviceId == x.DeviceId));
+                //根据serverId分组
+                foreach (var deviceGroup in devicesList.GroupBy(x => x.ServerId))
+                {
+                    var serverId = deviceGroup.Key;
+                    var devices = devicesList.Where(x => x.ServerId == serverId);
+                    //检查serverId是否存在
+                    if (!_serversUrl.ContainsKey(serverId))
+                    {
+                        res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.NpcServerNotExist)));
+                        continue;
+                    }
+                    var serverInfo = _serversUrl[serverId];
+
+                    var url = serverInfo.Url + UrlMappings.Urls[UrlMappings.batchUpgrade];
+                    //向NpcProxyLink请求数据
+                    var serverClientInfo = leftInfos.Where(x => devices.Any(y => x.DeviceId == y.DeviceId));
+                    var resp = HttpServer.Post(url, new UpgradeInfos { Type = upgradeInfos.Type, Infos = serverClientInfo.ToList() }.ToJSON());
+                    if (resp == "fail")
+                    {
+                        res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.ExceptionHappen)));
+                        continue;
+                    }
+
+                    var funName = "UpgradeClient";
+                    try
+                    {
+                        var result = JsonConvert.DeserializeObject<DataErrResult>(resp);
+                        res.AddRange(result.datas);
+                    }
+                    catch (Exception e)
+                    {
+                        res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.AnalysisFail)));
+                        Log.ErrorFormat("{0} Res:{1}, Error:{2}", funName, resp, e.Message);
+                    }
+                }
+            }
+            return res;
+        }
     }
 }

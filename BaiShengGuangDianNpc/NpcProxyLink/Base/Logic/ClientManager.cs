@@ -1,8 +1,8 @@
 ﻿using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Logger;
 using ModelBase.Base.Logic;
-using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
+using NpcProxyLink.Base.Server;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using NpcProxyLink.Base.Server;
 
 namespace NpcProxyLink.Base.Logic
 {
@@ -70,9 +69,9 @@ namespace NpcProxyLink.Base.Logic
             var deviceInfos = ServerConfig.ApiDb.
                 Query<DeviceInfo>("SELECT b.*, a.* FROM `device_library` a JOIN `npc_proxy_link` b ON " +
                                   "a.Id = b.DeviceId WHERE a.MarkedDelete = 0 AND b.ServerId = @ServerId;", new
-                {
-                    ServerConfig.ServerId
-                });
+                                  {
+                                      ServerConfig.ServerId
+                                  });
 
             foreach (var deviceInfo in deviceInfos)
             {
@@ -426,6 +425,72 @@ namespace NpcProxyLink.Base.Logic
             return res;
         }
 
+        /// <summary>
+        /// 升级设备 根据deviceId
+        /// </summary>
+        /// <param name="upgradeInfos">待处理列表</param>
+        /// <returns></returns>
+        public IEnumerable<DeviceErr> UpgradeClient(UpgradeInfos upgradeInfos)
+        {
+            var res = new List<DeviceErr>();
+            if (upgradeInfos.Infos.Any())
+            {
+                switch (upgradeInfos.Type)
+                {
+                    case 0:
+                        res.AddRange(UpgradeScript(upgradeInfos.Infos)); break;
+                    case 1:
+                        //res.AddRange(UpgradeScript(upgradeInfos.Infos));
+                        break;
+                    default:
+                        res.AddRange(upgradeInfos.Infos.Select(x => new DeviceErr(x.DeviceId, Error.ParamError)));
+                        break;
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 设备升级流程脚本
+        /// </summary>
+        /// <param name="upgradeInfos"></param>
+        /// <returns></returns>
+        public static IEnumerable<DeviceErr> UpgradeScript(IEnumerable<UpgradeInfo> upgradeInfos)
+        {
+            var res = new List<DeviceErr>();
+            var canDeviceList = new List<UpgradeInfo>();
+            foreach (var device in upgradeInfos)
+            {
+                var deviceId = device.DeviceId;
+                if (!_clients.ContainsKey(deviceId))
+                {
+                    res.Add(new DeviceErr(deviceId, Error.DeviceNotExist));
+                    continue;
+                }
+                if (_clients[deviceId].DeviceInfo.DeviceState != DeviceState.Waiting)
+                {
+                    res.Add(new DeviceErr(deviceId, Error.UpgradeDeviceStateError));
+                    continue;
+                }
+                canDeviceList.Add(device);
+            }
+            var asw = Stopwatch.StartNew();
+            var result = Parallel.ForEach(canDeviceList, (device) =>
+            {
+                var sw = Stopwatch.StartNew();
+                var err = _clients[device.DeviceId].Socket.UpgradeScript(device);
+                res.Add(new DeviceErr(device.DeviceId, err));
+                sw.Stop();
+                Console.WriteLine($"DeviceId {device.DeviceId} Done {sw.ElapsedMilliseconds} Err {err.ToString()}");
+            });
+            if (result.IsCompleted)
+            {
+                Console.WriteLine($"UpgradeScript1 Done {asw.ElapsedMilliseconds}");
+                return res;
+            }
+            Console.WriteLine($"UpgradeScript2 Done {asw.ElapsedMilliseconds}");
+            return res;
+        }
         #endregion
 
     }

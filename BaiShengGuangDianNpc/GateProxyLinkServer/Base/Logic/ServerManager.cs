@@ -2,6 +2,7 @@
 using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Logger;
 using ModelBase.Base.Logic;
+using ModelBase.Base.UrlMappings;
 using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
@@ -11,6 +12,7 @@ using ServiceStack;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -145,9 +147,9 @@ namespace GateProxyLinkServer.Base.Logic
         /// 获取设备列表
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<DeviceInfo> GetDevices()
+        public IEnumerable<DeviceInfo> GetDevices(IEnumerable<int> ids = null)
         {
-            return _clients.Values.OrderBy(x => x.DeviceId);
+            return ids == null ? _clients.Values.OrderBy(x => x.DeviceId) : _clients.Values.Where(x => ids.Contains(x.DeviceId)).OrderBy(y => y.DeviceId);
         }
 
         /// <summary>
@@ -187,7 +189,7 @@ namespace GateProxyLinkServer.Base.Logic
 
                 ServerConfig.ApiDb.Execute("UPDATE npc_proxy_link SET `ServerId` = @ServerId WHERE `DeviceId` = @DeviceId;", dealList);
 
-                res.AddRange(SocketResponseErr(dealList, "batchAddDevice", "AddClient", true));
+                res.AddRange(SocketResponseErr(dealList, UrlMappings.batchAddDevice, "AddClient", true));
             }
 
             return res;
@@ -203,7 +205,7 @@ namespace GateProxyLinkServer.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(SocketResponseErr(dealList, "batchDelDevice", "DelClient"));
+                res.AddRange(SocketResponseErr(dealList, UrlMappings.batchDelDevice, "DelClient"));
             }
 
             return res;
@@ -219,7 +221,7 @@ namespace GateProxyLinkServer.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(SocketResponseErr(dealList, "batchUpdateDevice", "UpdateClient"));
+                res.AddRange(SocketResponseErr(dealList, UrlMappings.batchUpdateDevice, "UpdateClient"));
             }
 
             return res;
@@ -235,7 +237,7 @@ namespace GateProxyLinkServer.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(SocketResponseErr(dealList, "batchSetStorage", "SetStorage"));
+                res.AddRange(SocketResponseErr(dealList, UrlMappings.batchSetStorage, "SetStorage"));
             }
 
             return res;
@@ -251,7 +253,7 @@ namespace GateProxyLinkServer.Base.Logic
             var res = new List<DeviceErr>();
             if (dealList.Any())
             {
-                res.AddRange(SocketResponseErr(dealList, "batchSetFrequency", "SetFrequency"));
+                res.AddRange(SocketResponseErr(dealList, UrlMappings.batchSetFrequency, "SetFrequency"));
             }
 
             return res;
@@ -276,9 +278,24 @@ namespace GateProxyLinkServer.Base.Logic
 
             if (dealList.Any())
             {
-                res.AddRange(SocketResponseStr(dealList, "batchSendBack", "SendMessageBack"));
+                res.AddRange(SocketResponseStr(dealList, UrlMappings.batchSendBack, "SendMessageBack"));
             }
 
+            return res;
+        }
+
+        /// <summary>
+        /// 升级设备 根据deviceId
+        /// </summary>
+        /// <param name="upgradeInfos">待处理列表</param>
+        /// <returns></returns>
+        public IEnumerable<DeviceErr> UpgradeClient(UpgradeInfos upgradeInfos)
+        {
+            var res = new List<DeviceErr>();
+            if (upgradeInfos.Infos.Any())
+            {
+                res.AddRange(SocketResponseErr(upgradeInfos));
+            }
             return res;
         }
         #endregion
@@ -426,6 +443,81 @@ namespace GateProxyLinkServer.Base.Logic
             return res;
         }
 
+        private static IEnumerable<DeviceErr> SocketResponseErr(UpgradeInfos upgradeInfos)
+        {
+            var res = new List<DeviceErr>();
+            //不存在设备列表
+            res.AddRange(upgradeInfos.Infos.Where(x => !_clients.ContainsKey(x.DeviceId)).Select(y => new DeviceErr(y.DeviceId, Error.DeviceNotExist)));
+            var leftInfos = upgradeInfos.Infos.Where(x => _clients.ContainsKey(x.DeviceId));
+            if (leftInfos.Any())
+            {
+                var devicesList = _clients.Values.Where(x => leftInfos.Any(y => y.DeviceId == x.DeviceId));
+                var clientSockets = _clientSockets.Where(x => x.SocketState == SocketState.Connected).GroupBy(x => x.ServerId)
+                    .ToDictionary(x => x.Key, x => x.First());
+                //根据serverId分组
+                foreach (var deviceGroup in devicesList.GroupBy(x => x.ServerId))
+                {
+                    var serverId = deviceGroup.Key;
+                    var devices = devicesList.Where(x => x.ServerId == serverId);
+                    //检查serverId是否存在
+                    if (!clientSockets.ContainsKey(serverId))
+                    {
+                        res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.NpcServerNotExist)));
+                        continue;
+                    }
+
+                    var serverClientInfo = leftInfos.Where(x => devices.Any(y => x.DeviceId == y.DeviceId));
+                    var clientSocket = clientSockets[serverId];
+                    var guid = StringHelper.CreateGuid();
+                    var msgType = NpcSocketMsgType.UpgradeClient;
+                    var funName = msgType.ToString();
+                    var msg = new NpcSocketMsg
+                    {
+                        Guid = guid,
+                        MsgType = msgType,
+                        Body = new UpgradeInfos { Type = upgradeInfos.Type, Infos = serverClientInfo.ToList() }.ToJSON()
+                    };
+                    clientSocket.Send(msg);
+                    var t = 0;
+                    var sw = Stopwatch.StartNew();
+                    NpcSocketMsg npcSocketMsg = null;
+                    while (sw.ElapsedMilliseconds < _tryCount)
+                    {
+                        if (NpcSocketMsgs.ContainsKey(guid))
+                        {
+                            npcSocketMsg = NpcSocketMsgs[guid];
+                            NpcSocketMsgs.Remove(guid);
+                            break;
+                        }
+                        //if (t > _tryCount)
+                        //{
+                        //    break;
+                        //}
+                        //t++;
+                        Thread.Sleep(1);
+                    }
+
+                    if (npcSocketMsg != null)
+                    {
+                        try
+                        {
+                            var result = JsonConvert.DeserializeObject<DataErrResult>(npcSocketMsg.Body);
+                            res.AddRange(result.datas);
+                        }
+                        catch (Exception e)
+                        {
+                            res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.AnalysisFail)));
+                            Log.ErrorFormat("{0} Res:{1}, Error:{2}", funName, npcSocketMsg.Body, e.Message);
+                        }
+                    }
+                    else
+                    {
+                        res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.Fail)));
+                    }
+                }
+            }
+            return res;
+        }
         private static IEnumerable<Tuple<int, string>> SocketResponseStr(IEnumerable<DeviceInfo> dealList, string urlKey, string funName)
         {
             var res = new List<Tuple<int, string>>();

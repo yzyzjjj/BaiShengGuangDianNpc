@@ -89,7 +89,8 @@ namespace NpcProxyLinkClient.Base.Helper
 
             ServerConfig.ApiDb.ExecuteTrans(
                "INSERT npc_monitoring_analysis (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
-               "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
+               "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum) " +
+               "ON DUPLICATE KEY UPDATE `DeviceId` = @DeviceId;"
                , socketMessages.OrderBy(x => x.ReceiveTime));
         }
     }

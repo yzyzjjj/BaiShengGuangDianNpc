@@ -2,6 +2,7 @@
 using ModelBase.Base.EnumConfig;
 using ModelBase.Base.Logger;
 using ModelBase.Base.Utils;
+using ModelBase.Models.Control;
 using ModelBase.Models.Device;
 using NpcProxyLinkClient.Base.Helper;
 using NpcProxyLinkClient.Base.Server;
@@ -80,7 +81,7 @@ namespace NpcProxyLinkClient.Base.Logic
         /// <summary>
         /// 连接事件
         /// </summary>
-        private SocketAsyncEventArgs _connectArgs;
+        //private SocketAsyncEventArgs _connectArgs;
         /// <summary>
         /// 发送事件
         /// </summary>
@@ -110,14 +111,13 @@ namespace NpcProxyLinkClient.Base.Logic
             if (IPAddress.TryParse(DeviceInfo.Ip, out var ipAddress))
             {
                 _endPoint = new IPEndPoint(ipAddress, DeviceInfo.Port);
-                if (_connectArgs == null)
-                {
-                    _connectArgs = new SocketAsyncEventArgs { RemoteEndPoint = _endPoint, UserToken = _socket };
-                    _connectArgs.Completed += OnConnectedCompleted;
-                }
+                //if (_connectArgs == null)
+                //{
+                //    _connectArgs = new SocketAsyncEventArgs { RemoteEndPoint = _endPoint, UserToken = _socket };
+                //    _connectArgs.Completed += OnConnectedCompleted;
+                //}
 
                 DeviceInfo.State = SocketState.Connecting;
-                _isTrying = true;
                 //Log.Debug($"Ip:{DeviceInfo.Ip} Start Connect");
                 ConnectAsync();
             }
@@ -132,6 +132,12 @@ namespace NpcProxyLinkClient.Base.Logic
         /// </summary>
         private void ConnectAsync()
         {
+            if (_isTrying)
+            {
+                return;
+            }
+            _isTrying = true;
+
             //Console.WriteLine($"当前:{DateTime.Now:yyyy-MM-dd HH:mm:ss fff}, Id：{DeviceInfo.DeviceId}, Ip:{ DeviceInfo.Ip}, 开始重连---------");
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             {
@@ -139,8 +145,9 @@ namespace NpcProxyLinkClient.Base.Logic
                 //ReceiveTimeout = 1000,
                 //Blocking = true,
             };
-
-            _socket.ConnectAsync(_connectArgs);
+            var connectArgs = new SocketAsyncEventArgs { RemoteEndPoint = _endPoint, UserToken = _socket };
+            connectArgs.Completed += OnConnectedCompleted;
+            _socket.ConnectAsync(connectArgs);
         }
 
         public void UpdateInfo(DeviceInfo deviceInfo)
@@ -183,7 +190,6 @@ namespace NpcProxyLinkClient.Base.Logic
                 {
                     _tryTime = 0;
                 }
-                _isTrying = true;
                 Disconnect();
                 DeviceInfo.State = SocketState.Connecting;
                 ConnectAsync();
@@ -196,16 +202,14 @@ namespace NpcProxyLinkClient.Base.Logic
                     return;
                 }
 
-                if (Monitoring)
+                if (_sending)
                 {
                     _hearting = true;
                     return;
                 }
 
-                if (Heart())
-                {
-                    _hearting = true;
-                }
+                _hearting = true;
+                Heart();
             }
         }
 
@@ -414,7 +418,7 @@ namespace NpcProxyLinkClient.Base.Logic
                         _sendArgs.Completed += OnSendCompleted;
                     }
                     _sendArgs.SetBuffer(messageBytes, 0, messageBytes.Length);
-                    _socketMessage.SendTime = DateTime.Now;;
+                    _socketMessage.SendTime = DateTime.Now; ;
                     _socket.SendAsync(_sendArgs);
                     _stopwatch.Start();
                     //Console.WriteLine($"当前{_stopwatch.ElapsedMilliseconds}: {_socketMessage.SendTime:yyyy-MM-dd HH:mm:ss fff}, Id：{DeviceInfo.DeviceId}, Ip:{ DeviceInfo.Ip}, Count：{ _socketMessage.DataList.Count}Send=======");
@@ -456,6 +460,9 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             if (e.SocketError == SocketError.OperationAborted)
             {
+                DeviceInfo.State = SocketState.Connecting;
+                Disconnect();
+                ConnectAsync();
                 return;
             }
 
@@ -552,7 +559,7 @@ namespace NpcProxyLinkClient.Base.Logic
                 backSocket.Send(messageBytes);
                 sw.Start();
                 var bTryReceive = 0;
-                while (true)
+                while (sw.ElapsedMilliseconds < _maxTryReceive)
                 {
                     bTryReceive++;
                     var len = backSocket.Available;
@@ -574,11 +581,6 @@ namespace NpcProxyLinkClient.Base.Logic
                             socketMessage.ReceiveTime = DateTime.Now;
                             break;
                         }
-                    }
-                    if (sw.ElapsedMilliseconds >= _maxTryReceive)
-                    {
-                        sw.Stop();
-                        break;
                     }
                     Thread.Sleep(_sleep);
                 }
@@ -621,6 +623,127 @@ namespace NpcProxyLinkClient.Base.Logic
             {
                 Log.Debug($"Ip:{DeviceInfo.Ip} SendMessage InstructionError ERROR, Instruction：{messageStr}");
                 return data;
+            }
+        }
+
+        #endregion
+
+        #region 升级
+        /// <summary>
+        /// 升级流程
+        /// </summary>
+        /// <param name="upgradeInfo"></param>
+        /// <returns></returns>
+        public Error UpgradeScript(UpgradeInfo upgradeInfo)
+        {
+            if (upgradeInfo.UpgradeFile.IsNullOrEmpty())
+            {
+                return Error.FileNotExist;
+            }
+
+            var maxTryReceive = 10000;
+            var backSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+            {
+                //响应超时设置
+                //SendTimeout = 500,
+                //ReceiveTimeout = 500,
+            };
+            try
+            {
+                backSocket.Connect(DeviceInfo.Ip, DeviceInfo.Port);
+                var socketMessage = new SocketMessage
+                {
+                    SendTime = DateTime.Now,
+                    UserSend = true,
+                    DeviceId = DeviceInfo.DeviceId,
+                    Ip = DeviceInfo.Ip,
+                    Port = DeviceInfo.Port,
+                    ScriptId = DeviceInfo.ScriptId,
+                    ValNum = ValNum,
+                    InNum = InNum,
+                    OutNum = OutNum
+                };
+                var scriptDataLength = upgradeInfo.UpgradeFile.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToByte(x, 16)).Count();
+                var startMsg = new UpgradeScriptMessagePacket(scriptDataLength);
+                var sendData = startMsg.Serialize().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToByte(x, 16)).ToArray();
+                var sw = new Stopwatch();
+                backSocket.Send(sendData);
+                sw.Start();
+                var bTryReceive = 0;
+                var isIn = false;
+                while (sw.ElapsedMilliseconds < maxTryReceive)
+                {
+                    bTryReceive++;
+                    var len = backSocket.Available;
+                    if (len > 0)
+                    {
+                        var receiveData = new byte[len];
+                        backSocket.Receive(receiveData);
+                        socketMessage.DataList.AddRange(receiveData);
+                        if (startMsg.Deserialize(socketMessage.Data) == 0)
+                        {
+                            sw.Stop();
+                            isIn = true;
+                            Console.WriteLine($"DeviceId:{DeviceInfo.DeviceId} 次数:{bTryReceive} 耗时: {sw.ElapsedMilliseconds} 进入流程脚本升级状态");
+                            socketMessage.ReceiveTime = DateTime.Now;
+                            break;
+                        }
+                    }
+                    Thread.Sleep(_sleep);
+                }
+
+                if (isIn)
+                {
+                    if (DeviceInfo.Storage)
+                    {
+                        MonitoringDataHelper.Add(socketMessage);
+                    }
+
+                    var dataMessage = new SocketMessage
+                    {
+                        SendTime = DateTime.Now,
+                        UserSend = true,
+                        DeviceId = DeviceInfo.DeviceId,
+                        Ip = DeviceInfo.Ip,
+                        Port = DeviceInfo.Port,
+                        ScriptId = DeviceInfo.ScriptId,
+                        ValNum = ValNum,
+                        InNum = InNum,
+                        OutNum = OutNum
+                    };
+                    var scriptData = upgradeInfo.UpgradeFileCrc.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToByte(x, 16)).ToArray();
+                    backSocket.Send(scriptData);
+                    sw.Restart();
+                    bTryReceive = 0;
+                    while (sw.ElapsedMilliseconds < maxTryReceive)
+                    {
+                        bTryReceive++;
+                        var len = backSocket.Available;
+                        if (len > 0)
+                        {
+                            var receiveData = new byte[len];
+                            backSocket.Receive(receiveData);
+                            dataMessage.DataList.AddRange(receiveData);
+                            var r = startMsg.DeserializeData(dataMessage.Data);
+                            if (r != -1)
+                            {
+                                sw.Stop();
+                                Console.WriteLine($"DeviceId:{DeviceInfo.DeviceId} 次数:{bTryReceive} 耗时: {sw.ElapsedMilliseconds} 流程脚本升级回复 结果:{r}");
+                                dataMessage.ReceiveTime = DateTime.Now;
+                                backSocket.Shutdown(SocketShutdown.Both);
+                                backSocket.Close();
+                                return r == 0 ? Error.Success : Error.UpgradeScriptError;
+                            }
+                        }
+                        Thread.Sleep(_sleep);
+                    }
+                }
+                return Error.UpgradeScriptStateError;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Ip:{DeviceInfo.Ip} SendMessage ERROR2, ErrMsg：{e.Message}, StackTrace：{e.StackTrace}");
+                return Error.Fail;
             }
         }
 

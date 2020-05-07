@@ -4,23 +4,22 @@ using ServiceStack;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using ModelBase.Base.Logger;
 
 namespace NpcProxyLink.Base.Helper
 {
     public class MonitoringDataHelper
     {
         private static Timer _checkTimer = new Timer(SaveData, null, 5000, 2000);
+        private static bool _insert;
 #if DEBUG
         /// <summary>
         /// 日志上限  1s采集 * 200台 * 2s间隔
         /// </summary>
-        private const int LogMaxLength = 10;
-        private static bool _insert;
+        private const int LogMaxLength = 20 * 2 * 2;
 #else
-/// <summary>
-/// 日志上限  1s采集 * 200台 * 2s间隔
-/// </summary>
+        /// <summary>
+        /// 日志上限  1s采集 * 200台 * 2s间隔
+        /// </summary>
         private const int LogMaxLength = 500;
 #endif
         /// <summary>

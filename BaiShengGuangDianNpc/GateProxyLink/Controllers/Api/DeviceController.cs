@@ -7,6 +7,7 @@ using ModelBase.Base.Utils;
 using ModelBase.Models.Device;
 using ModelBase.Models.Result;
 using Newtonsoft.Json;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Linq;
 namespace GateProxyLink.Controllers.Api
 {
     // npc/Device
-    [Route("gate/device")]
+    [Microsoft.AspNetCore.Mvc.Route("gate/device")]
     [ApiController]
     public class DeviceController : ControllerBase
     {
@@ -23,10 +24,18 @@ namespace GateProxyLink.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet("list")]
-        public DeviceResult GetDevices()
+        public DeviceResult GetDevices([FromQuery]string ids)
         {
             var result = new DeviceResult();
-            result.datas.AddRange(ServerConfig.ServerManager.GetDevices());
+            if (ids.IsNullOrEmpty())
+            {
+                result.datas.AddRange(ServerConfig.ServerManager.GetDevices());
+            }
+            else
+            {
+                var idList = ids.Split(",").Select(int.Parse);
+                result.datas.AddRange(ServerConfig.ServerManager.GetDevices(idList));
+            }
             return result;
         }
 
@@ -303,5 +312,18 @@ namespace GateProxyLink.Controllers.Api
             return result;
         }
 
+        // POST: api/DeviceLibrary/Upgrade
+        [HttpPost("batchUpgrade")]
+        public UpgradeResult Upgrade([FromBody] UpgradeInfos upgradeInfos)
+        {
+            if (upgradeInfos == null || !upgradeInfos.Infos.Any())
+            {
+                return Result.GenError<UpgradeResult>(Error.ParamError);
+            }
+
+            var result = new UpgradeResult { Type = upgradeInfos.Type };
+            result.datas.AddRange(ServerConfig.ServerManager.UpgradeClient(upgradeInfos));
+            return result;
+        }
     }
 }

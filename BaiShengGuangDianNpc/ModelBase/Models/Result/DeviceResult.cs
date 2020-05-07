@@ -1,6 +1,5 @@
-﻿using System;
+﻿using ModelBase.Models.Device;
 using System.Collections.Generic;
-using ModelBase.Models.Device;
 
 namespace ModelBase.Models.Result
 {

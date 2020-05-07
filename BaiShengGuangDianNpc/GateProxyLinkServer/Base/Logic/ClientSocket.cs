@@ -126,16 +126,15 @@ namespace GateProxyLinkServer.Base.Logic
                                         {
                                             ServerId = DeviceInfos.First().ServerId;
                                         }
-
                                         break;
-                                    case NpcSocketMsgType.Add:
-                                    case NpcSocketMsgType.Delete:
-                                    case NpcSocketMsgType.Storage:
-                                    case NpcSocketMsgType.Frequency:
-                                    case NpcSocketMsgType.SendBack:
-                                        ServerManager.NpcSocketMsgs.Add(msg.Guid, msg);
-                                        break;
+                                    //case NpcSocketMsgType.Add:
+                                    //case NpcSocketMsgType.Delete:
+                                    //case NpcSocketMsgType.Storage:
+                                    //case NpcSocketMsgType.Frequency:
+                                    //case NpcSocketMsgType.SendBack:
+                                    //    break;
                                     default:
+                                        ServerManager.NpcSocketMsgs.Add(msg.Guid, msg);
                                         break;
                                 }
                                 if (responseMsg != null)

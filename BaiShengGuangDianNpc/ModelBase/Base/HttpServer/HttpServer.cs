@@ -275,7 +275,7 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Log.ErrorFormat("请求服务器异常 Post:{0}", url);
                 return "fail";
@@ -291,7 +291,7 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Log.ErrorFormat("请求服务器异常 Post:{0}", url);
                 return "fail";

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ModelBase.Base.EnumConfig
+﻿namespace ModelBase.Base.EnumConfig
 {
     public enum NpcSocketMsgType
     {
@@ -54,5 +50,9 @@ namespace ModelBase.Base.EnumConfig
         /// 心跳返回
         /// </summary>
         HeartSuccess,
+        /// <summary>
+        /// 升级NPC
+        /// </summary>
+        UpgradeClient,
     }
 }

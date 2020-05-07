@@ -4,7 +4,10 @@ using NpcProxyLinkClient.Base.Logic;
 using NpcProxyLinkClient.Base.Server;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NpcProxyLinkClient
 {
@@ -12,6 +15,36 @@ namespace NpcProxyLinkClient
     {
         private static void Main(string[] args)
         {
+
+            //var data = new List<string>();
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    data.Add(i.ToString());
+            //}
+            //var sw = new Stopwatch();
+            //sw.Start();
+            //var res = new List<int>();
+
+            ////Parallel.ForEach<string>(data, (str, state, i) =>
+            ////{
+            ////    Console.WriteLine("迭代次数2：{0},{1}", i, str);
+            ////    Thread.Sleep(2000);
+            ////    res.Add((int)i);
+            ////});
+            ////Console.WriteLine("最低迭代:{0}", res.Count);
+            ////Console.WriteLine("耗时:{0}", sw.ElapsedMilliseconds);
+            ////res.Clear();
+            ////sw.Restart();
+            //ParallelLoopResult result = Parallel.ForEach<string>(data, (str, state, i) =>
+            //{
+            //    Console.WriteLine("迭代次数1：{0},{1}", i, str);
+            //    Thread.Sleep(2000);
+            //    res.Add((int)i);
+            //});
+            //Console.WriteLine("是否完成:{0}", result.IsCompleted);
+            //Console.WriteLine("最低迭代:{0}", result.LowestBreakIteration);
+            //Console.WriteLine("最低迭代:{0}", res.Count);
+            //Console.WriteLine("耗时:{0}", sw.ElapsedMilliseconds);
             var configuration = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory)
                 .AddJsonFile("appsettings.json")
                 .Build();
