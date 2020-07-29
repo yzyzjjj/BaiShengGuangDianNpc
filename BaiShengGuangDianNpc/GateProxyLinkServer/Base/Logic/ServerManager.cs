@@ -22,7 +22,7 @@ namespace GateProxyLinkServer.Base.Logic
 {
     public class ServerManager : IManager
     {
-        public static Dictionary<string, NpcSocketMsg> NpcSocketMsgs = new Dictionary<string, NpcSocketMsg>();
+        public static ConcurrentDictionary<string, NpcSocketMsg> NpcSocketMsgs = new ConcurrentDictionary<string, NpcSocketMsg>();
 
         // deviceId, client
         private static ConcurrentDictionary<int, DeviceInfo> _clients = new ConcurrentDictionary<int, DeviceInfo>();
@@ -76,7 +76,13 @@ namespace GateProxyLinkServer.Base.Logic
 
         private static void GetFromServer(object state)
         {
-            for (var index = _clientSockets.Count - 1; index >= 0; index--)
+            GetFromServer();
+        }
+
+        private static void GetFromServer(IEnumerable<int> serverList = null)
+        {
+            var clientSockets = serverList != null && serverList.Any() ? _clientSockets.Where(x => serverList.Contains(x.ServerId)) : _clientSockets;
+            for (var index = clientSockets.Count() - 1; index >= 0; index--)
             {
                 var clientSocket = _clientSockets[index];
                 var successMsg = new NpcSocketMsg
@@ -302,7 +308,7 @@ namespace GateProxyLinkServer.Base.Logic
 
         #region socket
 
-        private static readonly int _tryCount = 10000;
+        private static readonly int _tryCount = 60000;
         private static IEnumerable<DeviceErr> SocketResponseErr(IEnumerable<DeviceInfo> dealList, string urlKey, string funName, bool isAdd = false)
         {
             var res = new List<DeviceErr>();
@@ -409,7 +415,7 @@ namespace GateProxyLinkServer.Base.Logic
                         if (NpcSocketMsgs.ContainsKey(guid))
                         {
                             npcSocketMsg = NpcSocketMsgs[guid];
-                            NpcSocketMsgs.Remove(guid);
+                            NpcSocketMsgs.Remove(guid, out _);
                             break;
                         }
                         if (t > _tryCount)
@@ -477,6 +483,7 @@ namespace GateProxyLinkServer.Base.Logic
                         MsgType = msgType,
                         Body = new UpgradeInfos { Type = upgradeInfos.Type, Infos = serverClientInfo.ToList() }.ToJSON()
                     };
+                    Console.WriteLine($"{DateTime.Now} {msg.MsgType} {(serverClientInfo.Select(x => x.DeviceId).ToJSON())} -----------{serverId} Send");
                     clientSocket.Send(msg);
                     var t = 0;
                     var sw = Stopwatch.StartNew();
@@ -486,7 +493,7 @@ namespace GateProxyLinkServer.Base.Logic
                         if (NpcSocketMsgs.ContainsKey(guid))
                         {
                             npcSocketMsg = NpcSocketMsgs[guid];
-                            NpcSocketMsgs.Remove(guid);
+                            NpcSocketMsgs.TryRemove(guid, out _);
                             break;
                         }
                         //if (t > _tryCount)
@@ -515,6 +522,33 @@ namespace GateProxyLinkServer.Base.Logic
                         res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.Fail)));
                     }
                 }
+                if (res.Any(x => x.errno == Error.Success))
+                {
+                    GetFromServer(clientSockets.Keys);
+                }
+
+                //if (res.Any(x => x.errno == Error.Success))
+                //{
+                //    switch (upgradeInfos.Type)
+                //    {
+                //        case 1:
+                //            foreach (var r in res)
+                //            {
+                //                _clients[r.DeviceId].DeviceState = DeviceState.UpgradeScript;
+                //            }
+                //            break;
+                //        case 2:
+                //            foreach (var r in res)
+                //            {
+                //                _clients[r.DeviceId].DeviceState = DeviceState.UpgradeFirmware;
+                //            }
+                //            break;
+                //        case 3:
+                //            break;
+                //        default:
+                //            break;
+                //    }
+                //}
             }
             return res;
         }
@@ -576,7 +610,7 @@ namespace GateProxyLinkServer.Base.Logic
                     if (NpcSocketMsgs.ContainsKey(guid))
                     {
                         npcSocketMsg = NpcSocketMsgs[guid];
-                        NpcSocketMsgs.Remove(guid);
+                        NpcSocketMsgs.Remove(guid, out _);
                         break;
                     }
                     if (t > _tryCount)

@@ -7,6 +7,10 @@
         /// </summary>
         Default = 0,
         /// <summary>
+        /// 成功收到
+        /// </summary>
+        ReceiveSuccess,
+        /// <summary>
         /// 设备列表
         /// </summary>
         List,
@@ -54,5 +58,9 @@
         /// 升级NPC
         /// </summary>
         UpgradeClient,
+        /// <summary>
+        /// 升级NPC返回
+        /// </summary>
+        UpgradeClientBack,
     }
 }

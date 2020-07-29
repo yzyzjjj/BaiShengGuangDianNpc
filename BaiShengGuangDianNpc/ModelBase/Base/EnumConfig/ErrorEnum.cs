@@ -312,12 +312,12 @@ namespace ModelBase.Base.EnumConfig
         [Description("常用变量类型已存在")]
         UsuallyDictionaryTypeIsExist = 1052,
         /// <summary>
-        /// 常用变量类型不存在
+        /// 常用变量不存在
         /// </summary>
         [Description("常用变量不存在")]
         UsuallyDictionaryNotExist = 1053,
         /// <summary>
-        /// 常用变量类型已存在
+        /// 常用变量已存在
         /// </summary>
         [Description("常用变量已存在")]
         UsuallyDictionaryIsExist = 1054,
@@ -822,21 +822,21 @@ namespace ModelBase.Base.EnumConfig
         ManufactureCheckItemNoRelation = 1146,
 
         /// <summary>
-        /// 计划配置单已存在
+        /// 计划已存在
         /// </summary>
-        [Description("计划配置单已存在")]
+        [Description("计划已存在")]
         ManufacturePlanIsExist = 1147,
 
         /// <summary>
-        /// 计划配置单不存在
+        /// 计划不存在
         /// </summary>
-        [Description("计划配置单不存在")]
+        [Description("计划不存在")]
         ManufacturePlanNotExist = 1148,
 
         /// <summary>
-        /// 计划已下发
+        /// 计划任务已下发
         /// </summary>
-        [Description("计划已下发")]
+        [Description("计划任务已下发")]
         ManufacturePlaneAssignState = 1149,
 
         /// <summary>
@@ -1029,10 +1029,244 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("流程脚本数据发送失败")]
         UpgradeScriptError = 1183,
+        /// <summary>
+        /// 升级设备重复
+        /// </summary>
+        [Description("升级设备重复")]
+        UpgradeDeviceDuplicate = 1184,
 
+        /// <summary>
+        /// 任务顺序错误
+        /// </summary>
+        [Description("任务顺序错误")]
+        ManufactureTaskItemOrderError = 1185,
+        /// <summary>
+        /// 进入固件升级状态失败
+        /// </summary>
+        [Description("进入固件升级状态失败")]
+        UpgradeFirmwareStateError = 1186,
+        /// <summary>
+        /// 固件数据发送失败
+        /// </summary>
+        [Description("固件数据发送失败")]
+        UpgradeFirmwareError = 1187,
 
+        /// <summary>
+        /// 需先下发或同时下发关联任务
+        /// </summary>
+        [Description("需先下发或同时下发关联任务")]
+        ManufactureTaskItemAssignAfterRelation = 1188,
 
+        /// <summary>
+        /// 无法上移至已下发任务前
+        /// </summary>
+        [Description("无法上移至已下发任务前")]
+        ManufacturePlaneTaskAfterAssign = 1189,
+        /// <summary>
+        /// 看板设置已存在
+        /// </summary>
+        [Description("看板设置已存在")]
+        MonitoringKanBanSetIsExist = 1190,
+        /// <summary>
+        /// 看板设置不存在
+        /// </summary>
+        [Description("看板设置不存在")]
+        MonitoringKanBanSetNotExist = 1191,
 
+        /// <summary>
+        /// 请购部门已存在
+        /// </summary>
+        [Description("请购部门已存在")]
+        MaterialDepartmentIsExist = 1192,
+        /// <summary>
+        /// 请购部门不存在
+        /// </summary>
+        [Description("请购部门不存在")]
+        MaterialDepartmentNotExist = 1193,
+        /// <summary>
+        /// 请购部门名不能为空
+        /// </summary>
+        [Description("请购部门名不能为空")]
+        MaterialDepartmentNotEmpty = 1194,
+        /// <summary>
+        /// 请购部门名重复
+        /// </summary>
+        [Description("请购部门名重复")]
+        MaterialDepartmentDuplicate = 1195,
+
+        /// <summary>
+        /// 请购单已存在
+        /// </summary>
+        [Description("请购单已存在")]
+        MaterialPurchaseIsExist = 1196,
+        /// <summary>
+        /// 请购单不存在
+        /// </summary>
+        [Description("请购单不存在")]
+        MaterialPurchaseNotExist = 1197,
+        /// <summary>
+        /// 请购单不能为空
+        /// </summary>
+        [Description("请购单不能为空")]
+        MaterialPurchaseNotEmpty = 1198,
+        /// <summary>
+        /// 请购单重复
+        /// </summary>
+        [Description("请购单重复")]
+        MaterialPurchaseDuplicate = 1199,
+
+        /// <summary>
+        /// 部门员工已存在
+        /// </summary>
+        [Description("部门员工已存在")]
+        MaterialDepartmentMemberIsExist = 1200,
+        /// <summary>
+        /// 部门员工不存在
+        /// </summary>
+        [Description("部门员工不存在")]
+        MaterialDepartmentMemberNotExist = 1201,
+        /// <summary>
+        /// 部门员工不能为空
+        /// </summary>
+        [Description("部门员工不能为空")]
+        MaterialDepartmentMemberNotEmpty = 1202,
+        /// <summary>
+        /// 部门员工重复
+        /// </summary>
+        [Description("部门员工重复")]
+        MaterialDepartmentMemberDuplicate = 1203,
+
+        /// <summary>
+        /// 请购物料已存在
+        /// </summary>
+        [Description("请购物料已存在")]
+        MaterialPurchaseItemIsExist = 1204,
+        /// <summary>
+        /// 请购物料不存在
+        /// </summary>
+        [Description("请购物料不存在")]
+        MaterialPurchaseItemNotExist = 1205,
+        /// <summary>
+        /// 请购物料不能为空
+        /// </summary>
+        [Description("请购物料不能为空")]
+        MaterialPurchaseItemNotEmpty = 1206,
+        /// <summary>
+        /// 请购物料重复
+        /// </summary>
+        [Description("请购物料重复")]
+        MaterialPurchaseItemDuplicate = 1207,
+
+        /// <summary>
+        /// 核价人已存在
+        /// </summary>
+        [Description("核价人已存在")]
+        MaterialValuerIsExist = 1208,
+        /// <summary>
+        /// 核价人不存在
+        /// </summary>
+        [Description("核价人不存在")]
+        MaterialValuerNotExist = 1209,
+        /// <summary>
+        /// 核价人不能为空
+        /// </summary>
+        [Description("核价人不能为空")]
+        MaterialValuerNotEmpty = 1210,
+        /// <summary>
+        /// 核价人重复
+        /// </summary>
+        [Description("核价人重复")]
+        MaterialValuerDuplicate = 1211,
+        /// <summary>
+        /// 当前请购单状态不能入库
+        /// </summary>
+        [Description("当前请购单状态不能入库")]
+        MaterialPurchaseIncreaseSateError = 1212,
+        /// <summary>
+        /// 物料未开始采购
+        /// </summary>
+        [Description("物料未开始采购")]
+        MaterialPurchaseItemNotBuy = 1213,
+        /// <summary>
+        /// 设备分类不存在
+        /// </summary>
+        [Description("设备分类不存在")]
+        DeviceClassNotExist = 1214,
+        /// <summary>
+        /// 设备分类已存在
+        /// </summary>
+        [Description("设备分类已存在")]
+        DeviceClassIsExist = 1215,
+        /// <summary>
+        /// 设备分类不能为空
+        /// </summary>
+        [Description("设备分类不能为空")]
+        DeviceClassNotEmpty = 1216,
+        /// <summary>
+        /// 设备使用该分类中,无法删除
+        /// </summary>
+        [Description("设备使用该分类中,无法删除")]
+        DeviceModelUseDeviceClass = 1217,
+        /// <summary>
+        /// 入库单已存在
+        /// </summary>
+        [Description("入库单已存在")]
+        MaterialPurchaseQuoteIsExist = 1218,
+        /// <summary>
+        /// 入库单不存在
+        /// </summary>
+        [Description("入库单不存在")]
+        MaterialPurchaseQuoteNotExist = 1219,
+        /// <summary>
+        /// 信息不能为空
+        /// </summary>
+        [Description("信息不能为空")]
+        MaterialPurchaseQuoteNotEmpty = 1220,
+        /// <summary>
+        /// 预警设置已存在
+        /// </summary>
+        [Description("预警设置已存在")]
+        WarningSetIsExist = 1221,
+        /// <summary>
+        /// 预警设置不存在
+        /// </summary>
+        [Description("预警设置不存在")]
+        WarningSetNotExist = 1222,
+        /// <summary>
+        /// 预警名称不能为空
+        /// </summary>
+        [Description("预警名称不能为空")]
+        WarningSetNotEmpty = 1223,
+        /// <summary>
+        /// 预警设置项已存在
+        /// </summary>
+        [Description("预警设置项已存在")]
+        WarningSetItemIsExist = 1224,
+        /// <summary>
+        /// 预警设置项不存在
+        /// </summary>
+        [Description("预警设置项不存在")]
+        WarningSetItemNotExist = 1225,
+        /// <summary>
+        /// 预警设置项不能为空
+        /// </summary>
+        [Description("预警设置项不能为空")]
+        WarningSetItemNotEmpty = 1226,
+        /// <summary>
+        /// 数据类型错误
+        /// </summary>
+        [Description("数据类型错误")]
+        WarningSetItemDataTypeError = 1227,
+        /// <summary>
+        /// 条件设置错误
+        /// </summary>
+        [Description("条件设置错误")]
+        WarningSetItemConditionError = 1228,
+        /// <summary>
+        /// 频率设置错误
+        /// </summary>
+        [Description("频率设置错误")]
+        WarningSetItemFrequencyError = 1229,
 
 
 
@@ -1197,7 +1431,6 @@ namespace ModelBase.Base.EnumConfig
         FileSingle = 3026,
 
         #endregion
-
 
     }
 }

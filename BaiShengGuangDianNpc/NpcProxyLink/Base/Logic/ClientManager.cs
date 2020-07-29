@@ -437,10 +437,14 @@ namespace NpcProxyLink.Base.Logic
             {
                 switch (upgradeInfos.Type)
                 {
-                    case 0:
-                        res.AddRange(UpgradeScript(upgradeInfos.Infos)); break;
                     case 1:
-                        //res.AddRange(UpgradeScript(upgradeInfos.Infos));
+                        res.AddRange(UpgradeScript(upgradeInfos.Infos));
+                        break;
+                    case 2:
+                        res.AddRange(UpgradeFirmware(upgradeInfos.Infos));
+                        break;
+                    case 3:
+                        res.AddRange(upgradeInfos.Infos.Select(x => new DeviceErr(x.DeviceId, Error.ParamError)));
                         break;
                     default:
                         res.AddRange(upgradeInfos.Infos.Select(x => new DeviceErr(x.DeviceId, Error.ParamError)));
@@ -489,6 +493,48 @@ namespace NpcProxyLink.Base.Logic
                 return res;
             }
             Console.WriteLine($"UpgradeScript2 Done {asw.ElapsedMilliseconds}");
+            return res;
+        }
+
+        /// <summary>
+        /// 设备升级固件
+        /// </summary>
+        /// <param name="upgradeInfos"></param>
+        /// <returns></returns>
+        public static IEnumerable<DeviceErr> UpgradeFirmware(IEnumerable<UpgradeInfo> upgradeInfos)
+        {
+            var res = new List<DeviceErr>();
+            var canDeviceList = new List<UpgradeInfo>();
+            foreach (var device in upgradeInfos)
+            {
+                var deviceId = device.DeviceId;
+                if (!_clients.ContainsKey(deviceId))
+                {
+                    res.Add(new DeviceErr(deviceId, Error.DeviceNotExist));
+                    continue;
+                }
+                if (_clients[deviceId].DeviceInfo.DeviceState != DeviceState.Waiting)
+                {
+                    res.Add(new DeviceErr(deviceId, Error.UpgradeDeviceStateError));
+                    continue;
+                }
+                canDeviceList.Add(device);
+            }
+            var asw = Stopwatch.StartNew();
+            var result = Parallel.ForEach(canDeviceList, (device) =>
+            {
+                var sw = Stopwatch.StartNew();
+                var err = _clients[device.DeviceId].Socket.UpgradeFirmware(device);
+                res.Add(new DeviceErr(device.DeviceId, err));
+                sw.Stop();
+                Console.WriteLine($"DeviceId {device.DeviceId} Done {sw.ElapsedMilliseconds} Err {err.ToString()}");
+            });
+            if (result.IsCompleted)
+            {
+                Console.WriteLine($"UpgradeFirmware1 Done {asw.ElapsedMilliseconds}");
+                return res;
+            }
+            Console.WriteLine($"UpgradeFirmware2 Done {asw.ElapsedMilliseconds}");
             return res;
         }
         #endregion

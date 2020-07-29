@@ -46,9 +46,10 @@ namespace GateProxyLink.Base.Logic
         /// <summary>
         /// 加载服务器连接的客户端
         /// </summary>
-        public static void LoadClients()
+        public static void LoadClients(IEnumerable<int> serverList = null)
         {
-            foreach (var server in _serversUrl)
+            var serversUrl = serverList != null && serverList.Any() ? _serversUrl.Where(x => serverList.Contains(x.Key)) : _serversUrl;
+            foreach (var server in serversUrl)
             {
                 server.Value.Normal = false;
                 if (!_doneList.ContainsKey(server.Key))
@@ -513,6 +514,7 @@ namespace GateProxyLink.Base.Logic
             if (leftInfos.Any())
             {
                 var devicesList = _clients.Values.Where(x => leftInfos.Any(y => y.DeviceId == x.DeviceId));
+                var serverList = devicesList.GroupBy(x => x.ServerId).Select(y => y.Key);
                 //根据serverId分组
                 foreach (var deviceGroup in devicesList.GroupBy(x => x.ServerId))
                 {
@@ -547,6 +549,10 @@ namespace GateProxyLink.Base.Logic
                         res.AddRange(devices.Select(device => new DeviceErr(device.DeviceId, Error.AnalysisFail)));
                         Log.ErrorFormat("{0} Res:{1}, Error:{2}", funName, resp, e.Message);
                     }
+                }
+                if (res.Any(x => x.errno == Error.Success))
+                {
+                    LoadClients(serverList);
                 }
             }
             return res;

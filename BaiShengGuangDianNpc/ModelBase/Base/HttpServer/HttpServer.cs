@@ -103,9 +103,9 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
+                Log.Error($"请求服务器异常:{url},Verb:{verb},Message:{e}");
                 return "fail";
             }
         }

@@ -4,7 +4,9 @@ using ModelBase.Models.Device;
 using ModelBase.Models.Socket;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -25,6 +27,11 @@ namespace GateProxyLinkServer.Base.Logic
         public List<DeviceInfo> DeviceInfos = new List<DeviceInfo>();
         private readonly object _lockObj = new object();
         public DateTime LastReceiveTime;
+        private static List<NpcSocketMsgType> _ignoreList = new List<NpcSocketMsgType>
+        {
+            NpcSocketMsgType.List, NpcSocketMsgType.Heart, NpcSocketMsgType.HeartSuccess
+        };
+        private ConcurrentQueue<NpcSocketMsg> _msgQueue = new ConcurrentQueue<NpcSocketMsg>();
         public ClientSocket(Socket socket)
         {
             _socket = socket;
@@ -34,19 +41,16 @@ namespace GateProxyLinkServer.Base.Logic
             var log = $"客户端{_socket.RemoteEndPoint}成功连接";
             Log.Info(log);
             Console.WriteLine(log);
-            var thread = new Thread(ReceiveData)
-            {
-                IsBackground = true
-            };
-            thread.Start();
+            Task.Run(() => { ReceiveData(); });
+            //Task.Run(() => { KeepSend(); });
             //ReceiveData();
-            //Task.Run(() =>
-            //{
-            //    if (!_cancellationToken.IsCancellationRequested)
-            //    {
-            //        ReceiveData(Socket);
-            //    }
-            //}, _cancellationToken.Token);
+            Task.Run(() =>
+            {
+                if (!_cancellationToken.IsCancellationRequested)
+                {
+                    KeepSend();
+                }
+            }, _cancellationToken.Token);
         }
 
         private void ReceiveData()
@@ -100,16 +104,19 @@ namespace GateProxyLinkServer.Base.Logic
                             Task.Run(() =>
                             {
                                 var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
-                                if (msg.MsgType != NpcSocketMsgType.Heart)
+                                if (!_ignoreList.Contains(msg.MsgType))
                                 {
-                                    if (DateTime.Now.Minute % 5 == 0)
-                                    {
-                                        Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} receive");
-                                    }
+                                    Console.WriteLine($"{DateTime.Now} {msg.Guid} {msg.MsgType} -----------{ServerId} Receive");
                                 }
                                 NpcSocketMsg responseMsg = null;
                                 switch (msg.MsgType)
                                 {
+                                    case NpcSocketMsgType.ReceiveSuccess:
+                                        if (_msgQueue.TryPeek(out var firstMsg) && firstMsg.Guid == msg.Guid)
+                                        {
+                                            _msgQueue.TryDequeue(out _);
+                                        }
+                                        break;
                                     case NpcSocketMsgType.Heart:
                                         responseMsg = new NpcSocketMsg
                                         {
@@ -134,14 +141,14 @@ namespace GateProxyLinkServer.Base.Logic
                                     //case NpcSocketMsgType.SendBack:
                                     //    break;
                                     default:
-                                        ServerManager.NpcSocketMsgs.Add(msg.Guid, msg);
+                                        ServerManager.NpcSocketMsgs.TryAdd(msg.Guid, msg);
                                         break;
                                 }
                                 if (responseMsg != null)
                                 {
-                                    if (responseMsg.MsgType != NpcSocketMsgType.HeartSuccess)
+                                    if (!_ignoreList.Contains(msg.MsgType))
                                     {
-                                        Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} send");
+                                        Console.WriteLine($"{DateTime.Now} {msg.Guid} {msg.MsgType} -----------{ServerId} Send");
                                     }
 
                                     Send(responseMsg);
@@ -182,14 +189,63 @@ namespace GateProxyLinkServer.Base.Logic
             }
         }
 
+        private int timeOut = 1000;
+        private readonly Stopwatch _sendStopwatch = new Stopwatch();
+        public void KeepSend()
+        {
+            _sendStopwatch.Start();
+            while (true)
+            {
+                if (_msgQueue.TryPeek(out var msg) && _sendStopwatch.ElapsedMilliseconds > timeOut)
+                {
+                    if (SocketState == SocketState.Connected)
+                    {
+                        var writer = new SocketBufferWriter();
+                        writer.WriteString(msg);
+                        Send(writer.Finish());
+                        _sendStopwatch.Restart();
+                        if (!_ignoreList.Contains(msg.MsgType))
+                        {
+                            Console.WriteLine($"{DateTime.Now} {msg.Guid} {msg.MsgType} -----------{ServerId} Send Finish");
+                        }
+                    }
+                }
+                Thread.Sleep(10);
+            }
+        }
+
         public void Send(NpcSocketMsg msg)
         {
             if (SocketState == SocketState.Connected)
             {
-                var writer = new SocketBufferWriter();
-                writer.WriteString(msg);
-                Send(writer.Finish());
+                if (!_ignoreList.Contains(msg.MsgType))
+                {
+                    _msgQueue.Enqueue(msg);
+                    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} Send Wait");
+                }
+                else
+                {
+                    var writer = new SocketBufferWriter();
+                    writer.WriteString(msg);
+                    Send(writer.Finish());
+                }
             }
+
+            //if (SocketState == SocketState.Connected)
+            //{
+            //    if (!_ignoreList.Contains(msg.MsgType))
+            //    {
+            //        _msgQueue.Enqueue(msg);
+            //    }
+
+            //    var writer = new SocketBufferWriter();
+            //    writer.WriteString(msg);
+            //    Send(writer.Finish());
+            //    if (!_ignoreList.Contains(msg.MsgType))
+            //    {
+            //        Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} Send Finish");
+            //    }
+            //}
         }
 
         public void Send(string data)

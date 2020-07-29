@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ModelBase.Base.Utils
 {
@@ -58,7 +61,20 @@ namespace ModelBase.Base.Utils
             try
             {
                 //创建根据网络地址的请求对象
-                var httpWebRequest = (System.Net.HttpWebRequest)System.Net.WebRequest.CreateDefault(new Uri(url));
+                HttpWebRequest httpWebRequest = null;
+                //如果是发送HTTPS请求 
+                if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Ssl3;
+                    httpWebRequest = WebRequest.Create(url) as HttpWebRequest;
+                    httpWebRequest.ProtocolVersion = HttpVersion.Version10;
+
+                }
+                else
+                {
+                    httpWebRequest = WebRequest.Create(url) as HttpWebRequest;
+                }
                 var response = httpWebRequest.GetResponse();
                 var count = (int)response.ContentLength;
                 var r = ((System.Net.HttpWebResponse)response).StatusCode == System.Net.HttpStatusCode.OK && count > 0;
@@ -87,12 +103,15 @@ namespace ModelBase.Base.Utils
                 //返回响应状态是否是成功比较的布尔值
                 return r;
             }
-            catch
+            catch (Exception e)
             {
                 return false;
             }
         }
-
+        private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        {
+            return true; //总是接受 
+        }
         /// <summary>
         /// 将本地文件转换为16进制string数组
         /// </summary>

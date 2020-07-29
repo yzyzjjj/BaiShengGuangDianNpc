@@ -16,6 +16,10 @@ namespace ModelBase.Models.Device
         /// </summary>
         public int Type { get; set; }
         /// <summary>
+        /// 1 升级流程脚本Id  2 升级固件Id  3 升级应用层Id
+        /// </summary>
+        public int FileId { get; set; }
+        /// <summary>
         ///  脚本路径
         /// </summary>
         public string FileUrl { get; set; }
