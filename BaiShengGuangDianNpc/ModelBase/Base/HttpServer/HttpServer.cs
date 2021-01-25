@@ -22,7 +22,7 @@ namespace ModelBase.Base.HttpServer
             {
                 if (!EnumHelper.TryParseStr(verb, out HttpVerb httpVerb))
                 {
-                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
+                    Log.Error($"请求服务器异常:{url},Verb:{verb}");
                     return "fail";
                 }
 
@@ -39,9 +39,9 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
+                Log.Error($"请求服务器异常:{url},Verb:{verb},{e}");
                 return "fail";
             }
         }
@@ -51,7 +51,7 @@ namespace ModelBase.Base.HttpServer
             {
                 if (!EnumHelper.TryParseStr(verb, out HttpVerb httpVerb))
                 {
-                    Log.ErrorFormat("请求服务器异常:{0},verb:{1}", url, verb);
+                    Log.Error($"请求服务器异常:{url},Verb:{verb}");
                     return "fail";
                 }
 
@@ -103,9 +103,9 @@ namespace ModelBase.Base.HttpServer
 
                 return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
+                Log.Error($"请求服务器异常:{url},Verb:{verb},{e}");
                 return "fail";
             }
         }
@@ -137,7 +137,7 @@ namespace ModelBase.Base.HttpServer
                 {
                     ss = "fail";
                     callBack?.Invoke(ss, e);
-                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
+                    Log.Error($"请求服务器异常:{url},Verb:{verb},{e}");
                 }
             });
         }
@@ -202,7 +202,7 @@ namespace ModelBase.Base.HttpServer
                 {
                     ss = "fail";
                     callBack?.Invoke(ss, e);
-                    Log.ErrorFormat("请求服务器异常:{0},Verb:{1}", url, verb);
+                    Log.Error($"请求服务器异常:{url},Verb:{verb},{e}");
                 }
             });
         }
@@ -227,9 +227,9 @@ namespace ModelBase.Base.HttpServer
                 return result;
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常 Get:{0}", url);
+                Log.Error($"请求服务器异常 Get:{url},{e}");
                 return "fail";
             }
         }
@@ -257,7 +257,7 @@ namespace ModelBase.Base.HttpServer
                 {
                     ss = "fail";
                     callBack?.Invoke(ss, e);
-                    Log.ErrorFormat("请求服务器异常 GetAsync:{0}", url);
+                    Log.Error($"请求服务器异常 GetAsync:{url},{e}");
                 }
             });
         }
@@ -277,7 +277,7 @@ namespace ModelBase.Base.HttpServer
             }
             catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常 Post:{0}", url);
+                Log.Error($"请求服务器异常 Post Form:{url},{e}");
                 return "fail";
             }
         }
@@ -285,15 +285,14 @@ namespace ModelBase.Base.HttpServer
         {
             try
             {
-                var httpClient = new HttpClient(url) { Verb = HttpVerb.POST };
-                httpClient.RawData = rawData;
+                var httpClient = new HttpClient(url) { Verb = HttpVerb.POST, RawData = rawData };
                 var result = httpClient.GetString();
 
                 return result;
             }
             catch (Exception e)
             {
-                Log.ErrorFormat("请求服务器异常 Post:{0}", url);
+                Log.Error($"请求服务器异常 Post RawData:{url},{e}");
                 return "fail";
             }
         }
@@ -316,14 +315,13 @@ namespace ModelBase.Base.HttpServer
                 {
                     ss = "fail";
                     callBack?.Invoke(ss, e);
-                    Log.ErrorFormat("请求服务器异常 PostAsync:{0}", url);
+                    Log.Error($"请求服务器异常 PostAsync Form:{url},{e}");
                 }
             });
         }
         public static void PostAsync(string url, string rawData, PostCallBack callBack = null)
         {
-            var httpClient = new HttpClient(url) { Verb = HttpVerb.POST };
-            httpClient.RawData = rawData;
+            var httpClient = new HttpClient(url) { Verb = HttpVerb.POST, RawData = rawData };
             httpClient.AsyncGetString((ss, e) =>
             {
                 if (e == null)
@@ -334,7 +332,7 @@ namespace ModelBase.Base.HttpServer
                 {
                     ss = "fail";
                     callBack?.Invoke(ss, e);
-                    Log.ErrorFormat("请求服务器异常 PostAsync:{0}", url);
+                    Log.Error($"请求服务器异常 PostAsync RawData:{url},{e}");
                 }
             });
         }
