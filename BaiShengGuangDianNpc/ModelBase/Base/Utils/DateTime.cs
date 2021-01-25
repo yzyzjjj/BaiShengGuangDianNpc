@@ -275,6 +275,28 @@ namespace ModelBase.Base.Utils
         }
 
         /// <summary>
+        /// 获得本年第一天
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="interval">0 表示本年  -1 表示上年  1表示 下年</param>
+        /// <returns></returns>
+        public static DateTime StartOfYear(this DateTime date, int interval = 0)
+        {
+            return new DateTime(date.Year + interval, 1, 1);
+        }
+
+        /// <summary>
+        /// 获得本年最后一天
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="interval">0 表示本年  -1 表示上年  1表示 下年</param>
+        /// <returns></returns>
+        public static DateTime EndOfYear(this DateTime date, int interval = 0)
+        {
+            return new DateTime(date.Year + interval, 12, 31);
+        }
+
+        /// <summary>
         /// 去除 小时
         /// </summary>
         /// <param name="date"></param>
@@ -329,6 +351,10 @@ namespace ModelBase.Base.Utils
         public static string ToStrFile(this DateTime date)
         {
             return date.ToString("yyMMddHHmmss");
+        }
+        public static string ToStrShort(this DateTime date)
+        {
+            return date.ToString("yyMMdd");
         }
 
         /// <summary>

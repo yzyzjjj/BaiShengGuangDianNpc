@@ -6,4 +6,8 @@ namespace ModelBase.Base.Logic
     {
 
     }
+    public class CompareChangeAttribute : Attribute
+    {
+
+    }
 }

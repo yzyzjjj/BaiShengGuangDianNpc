@@ -1,10 +1,12 @@
-﻿using System;
+﻿using ModelBase.Base.Logger;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using static System.Net.SecurityProtocolType;
 
 namespace ModelBase.Base.Utils
 {
@@ -65,8 +67,8 @@ namespace ModelBase.Base.Utils
                 //如果是发送HTTPS请求 
                 if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
                 {
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Ssl3;
+                    ServicePointManager.ServerCertificateValidationCallback = CheckValidationResult;
+                    ServicePointManager.SecurityProtocol = Tls12 | Tls | Tls11 | Ssl3;
                     httpWebRequest = WebRequest.Create(url) as HttpWebRequest;
                     httpWebRequest.ProtocolVersion = HttpVersion.Version10;
 
@@ -105,6 +107,7 @@ namespace ModelBase.Base.Utils
             }
             catch (Exception e)
             {
+                Log.Error(e);
                 return false;
             }
         }

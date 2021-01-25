@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -50,10 +51,12 @@ namespace ModelBase.Base.Dapper
             using (var con = new MySqlConnection(_connectionString))
             {
                 con.Open();
-                var trans = con.BeginTransaction();
-                var r = con.Execute(sql, param, trans);
-                trans.Commit();
-                return r;
+                using (var trans = con.BeginTransaction())
+                {
+                    var r = con.Execute(sql, param, trans);
+                    trans.Commit();
+                    return r;
+                }
             }
         }
 
@@ -62,10 +65,12 @@ namespace ModelBase.Base.Dapper
             using (var con = new MySqlConnection(_connectionString))
             {
                 con.Open();
-                var trans = con.BeginTransaction();
-                var r = con.ExecuteAsync(sql, param, trans);
-                trans.Commit();
-                return await r;
+                using (var trans = await con.BeginTransactionAsync())
+                {
+                    var r = await con.ExecuteAsync(sql, param, trans);
+                    trans.Commit();
+                    return r;
+                }
             }
         }
     }
