@@ -312,12 +312,12 @@ namespace ModelBase.Base.EnumConfig
         [Description("常用变量类型已存在")]
         UsuallyDictionaryTypeIsExist = 1052,
         /// <summary>
-        /// 常用变量类型不存在
+        /// 常用变量不存在
         /// </summary>
         [Description("常用变量不存在")]
         UsuallyDictionaryNotExist = 1053,
         /// <summary>
-        /// 常用变量类型已存在
+        /// 常用变量已存在
         /// </summary>
         [Description("常用变量已存在")]
         UsuallyDictionaryIsExist = 1054,
@@ -822,21 +822,21 @@ namespace ModelBase.Base.EnumConfig
         ManufactureCheckItemNoRelation = 1146,
 
         /// <summary>
-        /// 计划配置单已存在
+        /// 计划已存在
         /// </summary>
-        [Description("计划配置单已存在")]
+        [Description("计划已存在")]
         ManufacturePlanIsExist = 1147,
 
         /// <summary>
-        /// 计划配置单不存在
+        /// 计划不存在
         /// </summary>
-        [Description("计划配置单不存在")]
+        [Description("计划不存在")]
         ManufacturePlanNotExist = 1148,
 
         /// <summary>
-        /// 计划已下发
+        /// 计划任务已下发
         /// </summary>
-        [Description("计划已下发")]
+        [Description("计划任务已下发")]
         ManufacturePlaneAssignState = 1149,
 
         /// <summary>
@@ -1029,13 +1029,277 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("流程脚本数据发送失败")]
         UpgradeScriptError = 1183,
+        /// <summary>
+        /// 升级设备重复
+        /// </summary>
+        [Description("升级设备重复")]
+        UpgradeDeviceDuplicate = 1184,
+
+        /// <summary>
+        /// 任务顺序错误
+        /// </summary>
+        [Description("任务顺序错误")]
+        ManufactureTaskItemOrderError = 1185,
+        /// <summary>
+        /// 进入固件升级状态失败
+        /// </summary>
+        [Description("进入固件升级状态失败")]
+        UpgradeFirmwareStateError = 1186,
+        /// <summary>
+        /// 固件数据发送失败
+        /// </summary>
+        [Description("固件数据发送失败")]
+        UpgradeFirmwareError = 1187,
+
+        /// <summary>
+        /// 需先下发或同时下发关联任务
+        /// </summary>
+        [Description("需先下发或同时下发关联任务")]
+        ManufactureTaskItemAssignAfterRelation = 1188,
+
+        /// <summary>
+        /// 无法上移至已下发任务前
+        /// </summary>
+        [Description("无法上移至已下发任务前")]
+        ManufacturePlaneTaskAfterAssign = 1189,
+        /// <summary>
+        /// 看板设置已存在
+        /// </summary>
+        [Description("看板设置已存在")]
+        MonitoringKanBanSetIsExist = 1190,
+        /// <summary>
+        /// 看板设置不存在
+        /// </summary>
+        [Description("看板设置不存在")]
+        MonitoringKanBanSetNotExist = 1191,
+
+        /// <summary>
+        /// 请购部门已存在
+        /// </summary>
+        [Description("请购部门已存在")]
+        MaterialDepartmentIsExist = 1192,
+        /// <summary>
+        /// 请购部门不存在
+        /// </summary>
+        [Description("请购部门不存在")]
+        MaterialDepartmentNotExist = 1193,
+        /// <summary>
+        /// 请购部门名不能为空
+        /// </summary>
+        [Description("请购部门名不能为空")]
+        MaterialDepartmentNotEmpty = 1194,
+        /// <summary>
+        /// 请购部门名重复
+        /// </summary>
+        [Description("请购部门名重复")]
+        MaterialDepartmentDuplicate = 1195,
+
+        /// <summary>
+        /// 请购单已存在
+        /// </summary>
+        [Description("请购单已存在")]
+        MaterialPurchaseIsExist = 1196,
+        /// <summary>
+        /// 请购单不存在
+        /// </summary>
+        [Description("请购单不存在")]
+        MaterialPurchaseNotExist = 1197,
+        /// <summary>
+        /// 请购单不能为空
+        /// </summary>
+        [Description("请购单不能为空")]
+        MaterialPurchaseNotEmpty = 1198,
+        /// <summary>
+        /// 请购单重复
+        /// </summary>
+        [Description("请购单重复")]
+        MaterialPurchaseDuplicate = 1199,
+
+        /// <summary>
+        /// 部门员工已存在
+        /// </summary>
+        [Description("部门员工已存在")]
+        MaterialDepartmentMemberIsExist = 1200,
+        /// <summary>
+        /// 部门员工不存在
+        /// </summary>
+        [Description("部门员工不存在")]
+        MaterialDepartmentMemberNotExist = 1201,
+        /// <summary>
+        /// 部门员工不能为空
+        /// </summary>
+        [Description("部门员工不能为空")]
+        MaterialDepartmentMemberNotEmpty = 1202,
+        /// <summary>
+        /// 部门员工重复
+        /// </summary>
+        [Description("部门员工重复")]
+        MaterialDepartmentMemberDuplicate = 1203,
+
+        /// <summary>
+        /// 请购物料已存在
+        /// </summary>
+        [Description("请购物料已存在")]
+        MaterialPurchaseItemIsExist = 1204,
+        /// <summary>
+        /// 请购物料不存在
+        /// </summary>
+        [Description("请购物料不存在")]
+        MaterialPurchaseItemNotExist = 1205,
+        /// <summary>
+        /// 请购物料不能为空
+        /// </summary>
+        [Description("请购物料编码不能为空")]
+        MaterialPurchaseItemCodeNotEmpty = 1206,
+        /// <summary>
+        /// 请购物料重复
+        /// </summary>
+        [Description("请购物料重复")]
+        MaterialPurchaseItemDuplicate = 1207,
+
+        /// <summary>
+        /// 核价人已存在
+        /// </summary>
+        [Description("核价人已存在")]
+        MaterialValuerIsExist = 1208,
+        /// <summary>
+        /// 核价人不存在
+        /// </summary>
+        [Description("核价人不存在")]
+        MaterialValuerNotExist = 1209,
+        /// <summary>
+        /// 核价人不能为空
+        /// </summary>
+        [Description("核价人不能为空")]
+        MaterialValuerNotEmpty = 1210,
+        /// <summary>
+        /// 请购单非完成状态不能修改
+        /// </summary>
+        [Description("请购单非完成状态不能修改")]
+        MaterialPurchaseSateError = 1211,
+        /// <summary>
+        /// 当前请购单状态不能入库
+        /// </summary>
+        [Description("当前请购单状态不能入库")]
+        MaterialPurchaseIncreaseSateError = 1212,
+        /// <summary>
+        /// 物料未开始采购
+        /// </summary>
+        [Description("物料未开始采购")]
+        MaterialPurchaseItemNotBuy = 1213,
+        /// <summary>
+        /// 设备分类不存在
+        /// </summary>
+        [Description("设备分类不存在")]
+        DeviceClassNotExist = 1214,
+        /// <summary>
+        /// 设备分类已存在
+        /// </summary>
+        [Description("设备分类已存在")]
+        DeviceClassIsExist = 1215,
+        /// <summary>
+        /// 设备分类不能为空
+        /// </summary>
+        [Description("设备分类不能为空")]
+        DeviceClassNotEmpty = 1216,
+        /// <summary>
+        /// 设备使用该分类中,无法删除
+        /// </summary>
+        [Description("设备使用该分类中,无法删除")]
+        DeviceModelUseDeviceClass = 1217,
+        /// <summary>
+        /// 入库单已存在
+        /// </summary>
+        [Description("入库单已存在")]
+        MaterialPurchaseQuoteIsExist = 1218,
+        /// <summary>
+        /// 入库单不存在
+        /// </summary>
+        [Description("入库单不存在")]
+        MaterialPurchaseQuoteNotExist = 1219,
+        /// <summary>
+        /// 信息不能为空
+        /// </summary>
+        [Description("信息不能为空")]
+        MaterialPurchaseQuoteNotEmpty = 1220,
+        /// <summary>
+        /// 预警设置已存在
+        /// </summary>
+        [Description("预警设置已存在")]
+        WarningSetIsExist = 1221,
+        /// <summary>
+        /// 预警设置不存在
+        /// </summary>
+        [Description("预警设置不存在")]
+        WarningSetNotExist = 1222,
+        /// <summary>
+        /// 预警名称不能为空
+        /// </summary>
+        [Description("预警名称不能为空")]
+        WarningSetNotEmpty = 1223,
+        /// <summary>
+        /// 预警设置项已存在
+        /// </summary>
+        [Description("预警设置项已存在")]
+        WarningSetItemIsExist = 1224,
+        /// <summary>
+        /// 预警设置项不存在
+        /// </summary>
+        [Description("预警设置项不存在")]
+        WarningSetItemNotExist = 1225,
+        /// <summary>
+        /// 预警设置项不能为空
+        /// </summary>
+        [Description("预警设置项不能为空")]
+        WarningSetItemNotEmpty = 1226,
+        /// <summary>
+        /// 数据类型错误
+        /// </summary>
+        [Description("数据类型错误")]
+        WarningSetItemDataTypeError = 1227,
+        /// <summary>
+        /// 条件设置错误
+        /// </summary>
+        [Description("条件设置错误")]
+        WarningSetItemConditionError = 1228,
+        /// <summary>
+        /// 频率设置错误
+        /// </summary>
+        [Description("频率设置错误")]
+        WarningSetItemFrequencyError = 1229,
+        /// <summary>
+        /// 日志不存在
+        /// </summary>
+        [Description("日志不存在")]
+        MaterialLogNotExist = 1230,
+        /// <summary>
+        /// 后续库存领用数量异常
+        /// </summary>
+        [Description("后续领用数量异常")]
+        MaterialLogConsumeLaterError = 1231,
+        /// <summary>
+        /// 日志类型必须一致
+        /// </summary>
+        [Description("日志类型必须一致")]
+        MaterialLogTypeDifferent = 1232,
+        /// <summary>
+        /// 数量不能为负数
+        /// </summary>
+        [Description("数量不能为负数")]
+        NumberCannotBeNegative = 1233,
+        /// <summary>
+        /// 非本周排班
+        /// </summary>
+        [Description("非本周排班")]
+        OldMaintainerSchedule = 1234,
 
 
 
-
-
-
-
+        /// <summary>
+        /// 计划相同
+        /// </summary>
+        [Description("计划相同")]
+        ProductionPlanSame = 1235,
         ///// <summary>
         ///// 请输入货品清单
         ///// </summary>
@@ -1197,6 +1461,495 @@ namespace ModelBase.Base.EnumConfig
         FileSingle = 3026,
 
         #endregion
+
+        #region 智慧工厂 10000-19999
+
+        /// <summary>
+        /// 人员不存在
+        /// </summary>
+        [Description("人员不存在")]
+        SmartUserNotExist = 10000,
+        /// <summary>
+        /// 人员已存在
+        /// </summary>
+        [Description("人员已存在")]
+        SmartUserIsExist = 10001,
+        /// <summary>
+        /// 人员重复
+        /// </summary>
+        [Description("人员重复")]
+        SmartUserDuplicate = 10002,
+        /// <summary>
+        /// 人员不能为空
+        /// </summary>
+        [Description("人员不能为空")]
+        SmartUserNotEmpty = 10003,
+
+        /// <summary>
+        /// 设备不存在
+        /// </summary>
+        [Description("设备不存在")]
+        SmartDeviceNotExist = 10004,
+        /// <summary>
+        /// 设备已存在
+        /// </summary>
+        [Description("设备已存在")]
+        SmartDeviceIsExist = 10005,
+        /// <summary>
+        /// 设备重复
+        /// </summary>
+        [Description("设备重复")]
+        SmartDeviceDuplicate = 10006,
+        /// <summary>
+        /// 设备不能为空
+        /// </summary>
+        [Description("设备不能为空")]
+        SmartDeviceNotEmpty = 10007,
+
+        /// <summary>
+        /// 设备类型不存在
+        /// </summary>
+        [Description("设备类型不存在")]
+        SmartDeviceCategoryNotExist = 10008,
+        /// <summary>
+        /// 设备已存在
+        /// </summary>
+        [Description("设备类型已存在")]
+        SmartDeviceCategoryIsExist = 10009,
+        /// <summary>
+        /// 设备类型重复
+        /// </summary>
+        [Description("设备类型重复")]
+        SmartDeviceCategoryDuplicate = 10010,
+        /// <summary>
+        /// 设备类型不能为空
+        /// </summary>
+        [Description("设备类型不能为空")]
+        SmartDeviceCategoryNotEmpty = 10011,
+
+        /// <summary>
+        /// 计划号不存在
+        /// </summary>
+        [Description("计划号不存在")]
+        SmartProductNotExist = 10012,
+        /// <summary>
+        /// 计划号已存在
+        /// </summary>
+        [Description("计划号已存在")]
+        SmartProductIsExist = 10013,
+        /// <summary>
+        /// 计划号重复
+        /// </summary>
+        [Description("计划号重复")]
+        SmartProductDuplicate = 10014,
+        /// <summary>
+        /// 计划号不能为空
+        /// </summary>
+        [Description("计划号不能为空")]
+        SmartProductNotEmpty = 10015,
+
+        /// <summary>
+        /// 流程不存在
+        /// </summary>
+        [Description("流程不存在")]
+        SmartProcessNotExist = 10016,
+        /// <summary>
+        /// 流程已存在
+        /// </summary>
+        [Description("流程已存在")]
+        SmartProcessIsExist = 10017,
+        /// <summary>
+        /// 流程重复
+        /// </summary>
+        [Description("流程重复")]
+        SmartProcessDuplicate = 10018,
+        /// <summary>
+        /// 流程不能为空
+        /// </summary>
+        [Description("流程不能为空")]
+        SmartProcessNotEmpty = 10019,
+
+        /// <summary>
+        /// 流程编号类型不存在
+        /// </summary>
+        [Description("流程编号类型不存在")]
+        SmartProcessCodeCategoryNotExist = 10020,
+        /// <summary>
+        /// 流程编号类型已存在
+        /// </summary>
+        [Description("流程编号类型已存在")]
+        SmartProcessCodeCategoryIsExist = 10021,
+        /// <summary>
+        /// 流程编号类型重复
+        /// </summary>
+        [Description("流程编号类型重复")]
+        SmartProcessCodeCategoryDuplicate = 10022,
+        /// <summary>
+        /// 流程编号类型不能为空
+        /// </summary>
+        [Description("流程编号类型不能为空")]
+        SmartProcessCodeCategoryNotEmpty = 10023,
+
+        /// <summary>
+        /// 流程编号不存在
+        /// </summary>
+        [Description("流程编号不存在")]
+        SmartProcessCodeNotExist = 10024,
+        /// <summary>
+        /// 流程编号已存在
+        /// </summary>
+        [Description("流程编号已存在")]
+        SmartProcessCodeIsExist = 10025,
+        /// <summary>
+        /// 流程编号重复
+        /// </summary>
+        [Description("流程编号重复")]
+        SmartProcessCodeDuplicate = 10026,
+        /// <summary>
+        /// 流程编号不能为空
+        /// </summary>
+        [Description("流程编号不能为空")]
+        SmartProcessCodeNotEmpty = 10027,
+
+        /// <summary>
+        /// 工单不存在
+        /// </summary>
+        [Description("工单不存在")]
+        SmartWorkOrderNotExist = 10028,
+        /// <summary>
+        /// 工单已存在
+        /// </summary>
+        [Description("工单已存在")]
+        SmartWorkOrderIsExist = 10029,
+        /// <summary>
+        /// 工单重复
+        /// </summary>
+        [Description("工单重复")]
+        SmartWorkOrderDuplicate = 10030,
+        /// <summary>
+        /// 工单不能为空
+        /// </summary>
+        [Description("工单不能为空")]
+        SmartWorkOrderNotEmpty = 10031,
+
+        /// <summary>
+        /// 任务单不存在
+        /// </summary>
+        [Description("任务单不存在")]
+        SmartTaskOrderNotExist = 10032,
+        /// <summary>
+        /// 任务单已存在
+        /// </summary>
+        [Description("任务单已存在")]
+        SmartTaskOrderIsExist = 10033,
+        /// <summary>
+        /// 任务单重复
+        /// </summary>
+        [Description("任务单重复")]
+        SmartTaskOrderDuplicate = 10034,
+        /// <summary>
+        /// 任务单不能为空
+        /// </summary>
+        [Description("任务单不能为空")]
+        SmartTaskOrderNotEmpty = 10035,
+
+        /// <summary>
+        /// 流程卡不存在
+        /// </summary>
+        [Description("流程卡不存在")]
+        SmartFlowCardNotExist = 10036,
+        /// <summary>
+        /// 流程卡已存在
+        /// </summary>
+        [Description("流程卡已存在")]
+        SmartFlowCardIsExist = 10037,
+        /// <summary>
+        /// 流程卡重复
+        /// </summary>
+        [Description("流程卡重复")]
+        SmartFlowCardDuplicate = 10038,
+        /// <summary>
+        /// 流程卡不能为空
+        /// </summary>
+        [Description("流程卡不能为空")]
+        SmartFlowCardNotEmpty = 10039,
+        /// <summary>
+        /// 流程卡加工数量错误
+        /// </summary>
+        [Description("流程卡加工数量错误")]
+        SmartFlowCardNumberError = 10040,
+        /// <summary>
+        /// 产量已达标
+        /// </summary>
+        [Description("产量已达标")]
+        SmartFlowCardNumberLimit = 10041,
+
+        /// <summary>
+        /// 标准流程不存在
+        /// </summary>
+        [Description("标准流程不存在")]
+        SmartProcessCodeCategoryProcessNotExist = 10042,
+        /// <summary>
+        /// 标准流程已存在
+        /// </summary>
+        [Description("标准流程已存在")]
+        SmartProcessCodeCategoryProcessIsExist = 10043,
+        /// <summary>
+        /// 标准流程重复
+        /// </summary>
+        [Description("标准流程重复")]
+        SmartProcessCodeCategoryProcessDuplicate = 10044,
+        /// <summary>
+        /// 标准流程不能为空
+        /// </summary>
+        [Description("标准流程不能为空")]
+        SmartProcessCodeCategoryProcessNotEmpty = 10045,
+
+        /// <summary>
+        /// 工序不存在
+        /// </summary>
+        [Description("工序不存在")]
+        SmartFlowCardProcessNotExist = 10046,
+        /// <summary>
+        /// 工序已存在
+        /// </summary>
+        [Description("工序已存在")]
+        SmartFlowCardProcessIsExist = 10047,
+        /// <summary>
+        /// 工序重复
+        /// </summary>
+        [Description("工序重复")]
+        SmartFlowCardProcessDuplicate = 10048,
+        /// <summary>
+        /// 工序不能为空
+        /// </summary>
+        [Description("工序不能为空")]
+        SmartFlowCardProcessNotEmpty = 10049,
+
+        /// <summary>
+        /// 流程编号类型应相同
+        /// </summary>
+        [Description("流程编号类型应相同")]
+        SmartProductProcessCodeCategoryMustBeSame = 10050,
+
+        /// <summary>
+        /// 工序异常不存在
+        /// </summary>
+        [Description("工序异常不存在")]
+        SmartProcessFaultNotExist = 10051,
+        /// <summary>
+        /// 工序异常已存在
+        /// </summary>
+        [Description("工序异常已存在")]
+        SmartProcessFaultIsExist = 10052,
+
+        /// <summary>
+        /// 操作工不存在
+        /// </summary>
+        [Description("操作工不存在")]
+        SmartOperatorNotExist = 10053,
+        /// <summary>
+        /// 操作工已存在
+        /// </summary>
+        [Description("操作工已存在")]
+        SmartOperatorIsExist = 10054,
+        /// <summary>
+        /// 操作工重复
+        /// </summary>
+        [Description("操作工重复")]
+        SmartOperatorDuplicate = 10055,
+        /// <summary>
+        /// 操作工不能为空
+        /// </summary>
+        [Description("操作工不能为空")]
+        SmartOperatorNotEmpty = 10056,
+
+        /// <summary>
+        /// 员工等级不存在
+        /// </summary>
+        [Description("员工等级不存在")]
+        SmartOperatorLevelNotExist = 10057,
+        /// <summary>
+        /// 员工等级已存在
+        /// </summary>
+        [Description("员工等级已存在")]
+        SmartOperatorLevelIsExist = 10058,
+        /// <summary>
+        /// 员工等级重复
+        /// </summary>
+        [Description("员工等级重复")]
+        SmartOperatorLevelDuplicate = 10059,
+        /// <summary>
+        /// 员工等级不能为空
+        /// </summary>
+        [Description("员工等级不能为空")]
+        SmartOperatorLevelNotEmpty = 10060,
+
+        /// <summary>
+        /// 设备型号不存在
+        /// </summary>
+        [Description("设备型号不存在")]
+        SmartDeviceModelNotExist = 10061,
+        /// <summary>
+        /// 设备型号已存在
+        /// </summary>
+        [Description("设备型号已存在")]
+        SmartDeviceModelIsExist = 10062,
+        /// <summary>
+        /// 设备型号重复
+        /// </summary>
+        [Description("设备型号重复")]
+        SmartDeviceModelDuplicate = 10063,
+        /// <summary>
+        /// 设备型号不能为空
+        /// </summary>
+        [Description("设备型号不能为空")]
+        SmartDeviceModelNotEmpty = 10064,
+
+        /// <summary>
+        /// 产能类型不存在
+        /// </summary>
+        [Description("产能类型不存在")]
+        SmartCapacityNotExist = 10065,
+        /// <summary>
+        /// 产能类型已存在
+        /// </summary>
+        [Description("产能类型已存在")]
+        SmartCapacityIsExist = 10066,
+        /// <summary>
+        /// 产能类型重复
+        /// </summary>
+        [Description("产能类型重复")]
+        SmartCapacityDuplicate = 10067,
+        /// <summary>
+        /// 产能类型不能为空
+        /// </summary>
+        [Description("产能类型不能为空")]
+        SmartCapacityNotEmpty = 10068,
+
+        /// <summary>
+        /// 产能类型设置不存在
+        /// </summary>
+        [Description("产能类型设置不存在")]
+        SmartCapacityListNotExist = 10069,
+        /// <summary>
+        /// 产能类型设置已存在
+        /// </summary>
+        [Description("产能类型设置已存在")]
+        SmartCapacityListIsExist = 10070,
+        /// <summary>
+        /// 产能类型设置重复
+        /// </summary>
+        [Description("产能类型设置重复")]
+        SmartCapacityListDuplicate = 10071,
+        /// <summary>
+        /// 产能类型设置不能为空
+        /// </summary>
+        [Description("产能类型设置不能为空")]
+        SmartCapacityListNotEmpty = 10072,
+        /// <summary>
+        /// 设置数量与标准流程数量不符
+        /// </summary>
+        [Description("设置数量与标准流程数量不符")]
+        SmartCapacityListCountError = 10073,
+
+        /// <summary>
+        /// 计划号产能不存在
+        /// </summary>
+        [Description("计划号产能不存在")]
+        SmartProductCapacityNotExist = 10074,
+        /// <summary>
+        /// 计划号产能已存在
+        /// </summary>
+        [Description("计划号产能已存在")]
+        SmartProductCapacityIsExist = 10075,
+        /// <summary>
+        /// 计划号产能重复
+        /// </summary>
+        [Description("计划号产能重复")]
+        SmartProductCapacityDuplicate = 10076,
+        /// <summary>
+        /// 计划号产能不能为空
+        /// </summary>
+        [Description("计划号产能不能为空")]
+        SmartProductCapacityNotEmpty = 10077,
+
+        /// <summary>
+        /// 任务单等级不存在
+        /// </summary>
+        [Description("任务单等级不存在")]
+        SmartTaskOrderLevelNotExist = 10078,
+        /// <summary>
+        /// 任务单等级已存在
+        /// </summary>
+        [Description("任务单等级已存在")]
+        SmartTaskOrderLevelIsExist = 10079,
+        /// <summary>
+        /// 任务单等级重复
+        /// </summary>
+        [Description("任务单等级重复")]
+        SmartTaskOrderLevelDuplicate = 10080,
+        /// <summary>
+        /// 任务单等级不能为空
+        /// </summary>
+        [Description("任务单等级不能为空")]
+        SmartTaskOrderLevelNotEmpty = 10081,
+
+        /// <summary>
+        /// 任务单重复排产
+        /// </summary>
+        [Description("任务单重复排产")]
+        SmartTaskOrderArranged = 10082,
+        /// <summary>
+        /// 任务单未排产
+        /// </summary>
+        [Description("任务单未排产")]
+        SmartTaskOrderNotArranged = 10083,
+
+        /// <summary>
+        /// 已有数量不应大于目标量
+        /// </summary>
+        [Description("已有数量不应大于目标量")]
+        SmartTaskOrderNeedStockLarge = 10084,
+        /// <summary>
+        /// 工序产能未设置
+        /// </summary>
+        [Description("工序产能未设置")]
+        SmartCapacityListNotSet = 10085,
+        /// <summary>
+        /// 合格率错误
+        /// </summary>
+        [Description("合格率错误")]
+        SmartCapacityRateError = 10086,
+
+        /// <summary>
+        /// 任务单缺少工序
+        /// </summary>
+        [Description("任务单缺少工序")]
+        SmartScheduleNeedLost = 10087,
+
+        /// <summary>
+        /// 任务单等级不存在
+        /// </summary>
+        [Description("车间不存在")]
+        SmartWorkshopNotExist = 10090,
+        /// <summary>
+        /// 任务单等级已存在
+        /// </summary>
+        [Description("车间已存在")]
+        SmartWorkshopIsExist = 10091,
+        /// <summary>
+        /// 车间重复
+        /// </summary>
+        [Description("车间重复")]
+        SmartWorkshopDuplicate = 10092,
+        /// <summary>
+        /// 车间名称不能为空
+        /// </summary>
+        [Description("车间名称不能为空")]
+        SmartWorkshopNotEmpty = 10093,
+        #endregion
+
 
 
     }

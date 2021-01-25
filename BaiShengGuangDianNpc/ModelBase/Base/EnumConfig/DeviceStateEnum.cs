@@ -15,16 +15,16 @@
         /// </summary>
         Processing,
         /// <summary>
-        /// 升级状态1 引导层
-        /// </summary>
-        Upgrade1,
-        /// <summary>
-        /// 升级状态2 
-        /// </summary>
-        Upgrade2,
-        /// <summary>
         /// 升级流程中
         /// </summary>
         UpgradeScript,
+        /// <summary>
+        /// 升级固件中
+        /// </summary>
+        UpgradeFirmware,
+        /// <summary>
+        /// 重启中
+        /// </summary>
+        Restart,
     }
 }

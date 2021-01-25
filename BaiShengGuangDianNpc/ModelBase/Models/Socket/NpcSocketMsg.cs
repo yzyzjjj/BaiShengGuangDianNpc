@@ -1,5 +1,6 @@
 ﻿using ModelBase.Base.EnumConfig;
 using System;
+using ModelBase.Base.Utils;
 
 namespace ModelBase.Models.Socket
 {

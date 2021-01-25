@@ -38,7 +38,7 @@ namespace ModelBase.Base.Utils
         /// <param name="expireSecond">有效时间，单位秒</param>
         public static void SetCookie(string key, string value, HttpResponse resp, int expireSecond = 0)
         {
-            DelCookie(key, resp);
+            //DelCookie(key, resp);
 
             if (expireSecond > 0)
             {

@@ -6,7 +6,9 @@ using ModelBase.Models.Result;
 using ModelBase.Models.Socket;
 using Newtonsoft.Json;
 using NpcProxyLinkClient.Base.Server;
+using ServiceStack;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -39,6 +41,11 @@ namespace NpcProxyLinkClient.Base.Logic
         private readonly object _lockObj = new object();
         private bool _isNormal = false;
         private DateTime _lastTime;
+
+        private static List<NpcSocketMsgType> _ignoreList = new List<NpcSocketMsgType>
+            {
+                NpcSocketMsgType.List, NpcSocketMsgType.Heart, NpcSocketMsgType.HeartSuccess
+            };
         public void Init(IPAddress ip, int port)
         {
             _ip = ip;
@@ -87,11 +94,7 @@ namespace NpcProxyLinkClient.Base.Logic
                 SocketState = SocketState.Connected;
                 _cancellationToken = new CancellationTokenSource();
 
-                var thread = new Thread(ReceiveData)
-                {
-                    IsBackground = true
-                };
-                thread.Start();
+                Task.Run(() => { ReceiveData(); });
                 //ReceiveData();
                 //Task.Run(() =>
                 //{
@@ -213,10 +216,16 @@ namespace NpcProxyLinkClient.Base.Logic
                             Task.Run(() =>
                             {
                                 var msg = JsonConvert.DeserializeObject<NpcSocketMsg>(data);
-                                //if (msg.MsgType != NpcSocketMsgType.HeartSuccess)
-                                //{
-                                //    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------receive done");
-                                //}
+                                if (!_ignoreList.Contains(msg.MsgType))
+                                {
+                                    Send(new NpcSocketMsg
+                                    {
+                                        Guid = msg.Guid,
+                                        MsgType = NpcSocketMsgType.ReceiveSuccess
+                                    });
+                                    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------Receive Done");
+                                }
+
                                 NpcSocketMsg responseMsg = null;
                                 List<DeviceInfo> devicesList;
                                 var dataErrResult = new DataErrResult();
@@ -307,12 +316,17 @@ namespace NpcProxyLinkClient.Base.Logic
                                         break;
                                     case NpcSocketMsgType.UpgradeClient:
                                         var upgradeInfos = JsonConvert.DeserializeObject<UpgradeInfos>(msg.Body);
+                                        Console.WriteLine($"{DateTime.Now} {msg.MsgType} {upgradeInfos.Infos.Select(x => x.DeviceId).ToJSON()} -----------{ServerId} Deal");
                                         switch (upgradeInfos.Type)
                                         {
-                                            case 0:
-                                                dataErrResult.datas.AddRange(ClientManager.UpgradeScript(upgradeInfos.Infos)); break;
                                             case 1:
-                                                //dataErrResult.datas.AddRange(ClientManager.UpgradeScript(upgradeInfos.Infos));
+                                                dataErrResult.datas.AddRange(ClientManager.UpgradeScript(upgradeInfos.Infos));
+                                                break;
+                                            case 2:
+                                                dataErrResult.datas.AddRange(ClientManager.UpgradeFirmware(upgradeInfos.Infos));
+                                                break;
+                                            case 3:
+                                                dataErrResult.datas.AddRange(upgradeInfos.Infos.Select(x => new DeviceErr(x.DeviceId, Error.ParamError)));
                                                 break;
                                             default:
                                                 dataErrResult.datas.AddRange(upgradeInfos.Infos.Select(x => new DeviceErr(x.DeviceId, Error.ParamError)));
@@ -321,7 +335,7 @@ namespace NpcProxyLinkClient.Base.Logic
                                         responseMsg = new NpcSocketMsg
                                         {
                                             Guid = msg.Guid,
-                                            MsgType = msg.MsgType,
+                                            MsgType = NpcSocketMsgType.UpgradeClientBack,
                                             Body = dataErrResult.ToJSON()
                                         };
                                         break;
@@ -370,13 +384,17 @@ namespace NpcProxyLinkClient.Base.Logic
             }
         }
 
-        private void Send(NpcSocketMsg msg)
+        public void Send(NpcSocketMsg msg)
         {
             if (SocketState == SocketState.Connected)
             {
                 var writer = new SocketBufferWriter();
                 writer.WriteString(msg);
                 Send(writer.Finish());
+                if (!_ignoreList.Contains(msg.MsgType))
+                {
+                    Console.WriteLine($"{DateTime.Now} {msg.MsgType} -----------{ServerId} Send Finish");
+                }
             }
         }
 
