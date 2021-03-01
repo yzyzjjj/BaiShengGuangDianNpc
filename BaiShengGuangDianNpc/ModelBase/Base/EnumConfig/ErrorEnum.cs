@@ -1300,6 +1300,33 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("计划相同")]
         ProductionPlanSame = 1235,
+
+        /// <summary>
+        /// 显示条数设置错误
+        /// </summary>
+        [Description("显示条数设置错误")]
+        MonitoringKanBanSetLengthError = 1236,
+        /// <summary>
+        /// 变量等设置错误
+        /// </summary>
+        [Description("变量等设置错误")]
+        MonitoringKanBanSetVariableError = 1237,
+
+        /// <summary>
+        /// 行数设置错误
+        /// </summary>
+        [Description("行数设置错误")]
+        MonitoringKanBanSetRowError = 1238,
+        /// <summary>
+        /// 列数设置错误
+        /// </summary>
+        [Description("列数设置错误")]
+        MonitoringKanBanSetColError = 1239,
+        /// <summary>
+        /// 刷新时间设置错误
+        /// </summary>
+        [Description("刷新时间设置错误")]
+        MonitoringKanBanSetSecondError = 1240,
         ///// <summary>
         ///// 请输入货品清单
         ///// </summary>
@@ -1809,43 +1836,43 @@ namespace ModelBase.Base.EnumConfig
         /// <summary>
         /// 产能类型不存在
         /// </summary>
-        [Description("产能类型不存在")]
+        [Description("产能配置不存在")]
         SmartCapacityNotExist = 10065,
         /// <summary>
-        /// 产能类型已存在
+        /// 产能配置已存在
         /// </summary>
-        [Description("产能类型已存在")]
+        [Description("产能配置已存在")]
         SmartCapacityIsExist = 10066,
         /// <summary>
-        /// 产能类型重复
+        /// 产能配置重复
         /// </summary>
-        [Description("产能类型重复")]
+        [Description("产能配置重复")]
         SmartCapacityDuplicate = 10067,
         /// <summary>
-        /// 产能类型不能为空
+        /// 产能配置不能为空
         /// </summary>
-        [Description("产能类型不能为空")]
+        [Description("产能配置不能为空")]
         SmartCapacityNotEmpty = 10068,
 
         /// <summary>
-        /// 产能类型设置不存在
+        /// 产能配置项不存在
         /// </summary>
-        [Description("产能类型设置不存在")]
+        [Description("产能配置项不存在")]
         SmartCapacityListNotExist = 10069,
         /// <summary>
-        /// 产能类型设置已存在
+        /// 产能配置项已存在
         /// </summary>
-        [Description("产能类型设置已存在")]
+        [Description("产能配置项已存在")]
         SmartCapacityListIsExist = 10070,
         /// <summary>
-        /// 产能类型设置重复
+        /// 产能配置项重复
         /// </summary>
-        [Description("产能类型设置重复")]
+        [Description("产能配置项重复")]
         SmartCapacityListDuplicate = 10071,
         /// <summary>
-        /// 产能类型设置不能为空
+        /// 产能配置项不能为空
         /// </summary>
-        [Description("产能类型设置不能为空")]
+        [Description("产能配置项不能为空")]
         SmartCapacityListNotEmpty = 10072,
         /// <summary>
         /// 设置数量与标准流程数量不符
@@ -1929,12 +1956,12 @@ namespace ModelBase.Base.EnumConfig
         SmartScheduleNeedLost = 10087,
 
         /// <summary>
-        /// 任务单等级不存在
+        /// 车间不存在
         /// </summary>
         [Description("车间不存在")]
         SmartWorkshopNotExist = 10090,
         /// <summary>
-        /// 任务单等级已存在
+        /// 车间已存在
         /// </summary>
         [Description("车间已存在")]
         SmartWorkshopIsExist = 10091,
@@ -1944,10 +1971,15 @@ namespace ModelBase.Base.EnumConfig
         [Description("车间重复")]
         SmartWorkshopDuplicate = 10092,
         /// <summary>
-        /// 车间名称不能为空
+        /// 车间不能为空
         /// </summary>
-        [Description("车间名称不能为空")]
+        [Description("车间不能为空")]
         SmartWorkshopNotEmpty = 10093,
+        /// <summary>
+        /// 频率必须大于零
+        /// </summary>
+        [Description("频率必须大于零")]
+        SmartWorkshopFrequency0 = 10094,
         #endregion
 
 

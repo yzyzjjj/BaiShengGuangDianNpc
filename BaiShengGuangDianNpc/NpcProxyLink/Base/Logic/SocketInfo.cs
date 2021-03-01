@@ -289,44 +289,76 @@ namespace NpcProxyLink.Base.Logic
         {
             try
             {
-                var data = socketMessage.DataStrList.Skip(10).ToArray();
-                var start = (_stateDictionaryId - 1) * 4;
-
-                if (data.Length >= start + 4)
+                if (socketMessage.Data.IsNullOrEmpty())
                 {
-                    var str = data.Skip(start).Take(4).Reverse().Join("");
-                    var v = Convert.ToInt32(str, 16);
-                    DeviceInfo.DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
+                    DeviceInfo.Init();
                 }
 
-                start = (_processTimeDictionaryId - 1) * 4;
-                if (data.Length >= start + 4)
+                DeviceInfo.DeviceData = socketMessage.DeviceData;
+                var start = _stateDictionaryId - 1;
+                var v = DeviceInfo.DeviceData.vals.Count > start ? DeviceInfo.DeviceData.vals.ElementAt(start) : 0;
+                DeviceInfo.DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
+
+                start = _processTimeDictionaryId - 1;
+                var vs = DeviceInfo.DeviceData.vals.Count > start ? DeviceInfo.DeviceData.vals.ElementAt(start).ToString() : "";
+                DeviceInfo.ProcessTime = vs;
+
+                start = _leftTimeDictionaryId - 1;
+                vs = DeviceInfo.DeviceData.vals.Count > start ? DeviceInfo.DeviceData.vals.ElementAt(start).ToString() : "";
+                DeviceInfo.LeftTime = vs;
+
+                start = _flowCardDictionaryId - 1;
+                v = DeviceInfo.DeviceData.vals.Count > start ? DeviceInfo.DeviceData.vals.ElementAt(start) : 0;
+                if (v == 0)
                 {
-                    var str = data.Skip(start).Take(4).Reverse().Join("");
-                    DeviceInfo.ProcessTime = Convert.ToInt32(str, 16).ToString();
+                    return;
                 }
 
-                start = (_leftTimeDictionaryId - 1) * 4;
-                if (data.Length >= start + 4)
+                var flowCardName =
+                    ServerConfig.ApiDb.Query<string>("SELECT FlowCardName FROM `flowcard_library` WHERE Id = @Id;", new { Id = v }).FirstOrDefault();
+                if (flowCardName != null)
                 {
-                    var str = data.Skip(start).Take(4).Reverse().Join("");
-                    DeviceInfo.LeftTime = Convert.ToInt32(str, 16).ToString();
+                    DeviceInfo.FlowCard = flowCardName;
                 }
 
-                start = (_flowCardDictionaryId - 1) * 4;
-                if (data.Length >= start + 4)
-                {
-                    var str = data.Skip(start).Take(4).Reverse().Join("");
-                    var fid = Convert.ToInt32(str, 16);
+                //var data = socketMessage.DataStrList.Skip(10).ToArray();
+                //var start = (_stateDictionaryId - 1) * 4;
 
-                    var flowCardName =
-                        ServerConfig.ApiDb.Query<string>("SELECT FlowCardName FROM `flowcard_library` WHERE Id = @Id;", new { Id = fid }).FirstOrDefault();
+                //if (data.Length >= start + 4)
+                //{
+                //    var str = data.Skip(start).Take(4).Reverse().Join("");
+                //    var v = Convert.ToInt32(str, 16);
+                //    DeviceInfo.DeviceState = v == 0 ? DeviceState.Waiting : DeviceState.Processing;
+                //}
 
-                    if (flowCardName != null)
-                    {
-                        DeviceInfo.FlowCard = flowCardName;
-                    }
-                }
+                //start = (_processTimeDictionaryId - 1) * 4;
+                //if (data.Length >= start + 4)
+                //{
+                //    var str = data.Skip(start).Take(4).Reverse().Join("");
+                //    DeviceInfo.ProcessTime = Convert.ToInt32(str, 16).ToString();
+                //}
+
+                //start = (_leftTimeDictionaryId - 1) * 4;
+                //if (data.Length >= start + 4)
+                //{
+                //    var str = data.Skip(start).Take(4).Reverse().Join("");
+                //    DeviceInfo.LeftTime = Convert.ToInt32(str, 16).ToString();
+                //}
+
+                //start = (_flowCardDictionaryId - 1) * 4;
+                //if (data.Length >= start + 4)
+                //{
+                //    var str = data.Skip(start).Take(4).Reverse().Join("");
+                //    var fid = Convert.ToInt32(str, 16);
+
+                //    var flowCardName =
+                //        ServerConfig.ApiDb.Query<string>("SELECT FlowCardName FROM `flowcard_library` WHERE Id = @Id;", new { Id = fid }).FirstOrDefault();
+
+                //    if (flowCardName != null)
+                //    {
+                //        DeviceInfo.FlowCard = flowCardName;
+                //    }
+                //}
             }
             catch (Exception e)
             {

@@ -1,4 +1,5 @@
 ﻿using ModelBase.Base.Utils;
+using ModelBase.Models.Device;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace NpcProxyLinkClient.Base.Logic
         public bool UserSend { get; set; }
         public List<byte> DataList { get; set; } = new List<byte>();
         public IEnumerable<string> DataStrList => DataList.Select(t => Convert.ToString(t, 16).PadLeft(2, '0'));
+        public DeviceData DeviceData { get; set; }
         public string Data => Deserialize();
         public int DeviceId { get; set; }
         public string Ip { get; set; }
@@ -60,13 +62,13 @@ namespace NpcProxyLinkClient.Base.Logic
                 //变量2
                 //…
                 //变量N
-                var vals = new List<int>();
+                DeviceData = new DeviceData();
                 var i = 0;
                 for (i = 0; i < ValNum; i++)
                 {
                     var str = trueData.Skip(i * 4).Take(4).Reverse().Join("");
                     var v = Convert.ToInt32(str, 16);
-                    vals.Add(v);
+                    DeviceData.vals.Add(v);
                 }
                 //I口数据    
                 //I1~I8(1bytes)
@@ -74,10 +76,9 @@ namespace NpcProxyLinkClient.Base.Logic
                 //…
                 //IN~I(N + 8)
                 trueData = trueData.Skip(i * 4);
-                var ins = new List<int>();
                 for (i = 0; i < trueData.Count(); i++)
                 {
-                    if (ins.Count >= InNum)
+                    if (DeviceData.ins.Count >= InNum)
                     {
                         break;
                     }
@@ -85,13 +86,13 @@ namespace NpcProxyLinkClient.Base.Logic
                     var v = Convert.ToInt32(str, 16);
                     for (var j = 0; j < 8; j++)
                     {
-                        if (ins.Count >= InNum)
+                        if (DeviceData.ins.Count >= InNum)
                         {
                             break;
                         }
                         var temp1 = (byte)((v & 0xff) << (7 - j));
                         var temp2 = (byte)((temp1 >> 7) & 0x01);
-                        ins.Add(temp2);
+                        DeviceData.ins.Add(temp2);
                     }
                 }
                 //O口数据 
@@ -100,10 +101,9 @@ namespace NpcProxyLinkClient.Base.Logic
                 //…
                 //ON~O(N + 8)
                 trueData = trueData.Skip(i);
-                var outs = new List<int>();
                 for (i = 0; i < trueData.Count(); i++)
                 {
-                    if (outs.Count >= OutNum)
+                    if (DeviceData.outs.Count >= OutNum)
                     {
                         break;
                     }
@@ -111,26 +111,20 @@ namespace NpcProxyLinkClient.Base.Logic
                     var v = Convert.ToInt32(str, 16);
                     for (var j = 0; j < 8; j++)
                     {
-                        if (outs.Count >= OutNum)
+                        if (DeviceData.outs.Count >= OutNum)
                         {
                             break;
                         }
                         var temp1 = (byte)((v & 0xff) << (7 - j));
                         var temp2 = (byte)((temp1 >> 7) & 0x01);
-                        outs.Add(temp2);
+                        DeviceData.outs.Add(temp2);
                     }
                 }
                 //CRC校验   2bytes
 
                 //trueData = trueData.Skip(i);
                 //var crc = CrcHelper.GetCrc16(datas.Take(datas.Length - 2));
-
-                return new
-                {
-                    vals,
-                    ins,
-                    outs
-                }.ToJSON();
+                return DeviceData.ToJSON();
             }
             catch (Exception e)
             {

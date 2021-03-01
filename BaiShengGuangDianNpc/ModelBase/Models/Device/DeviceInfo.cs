@@ -47,6 +47,14 @@ namespace ModelBase.Models.Device
         /// 剩余加工时间
         /// </summary>
         public string LeftTime { get; set; } = string.Empty;
+        public DeviceData DeviceData { get; set; }
+        public void Init()
+        {
+            DeviceState = DeviceState.UnInit;
+            FlowCard = "";
+            ProcessTime = "";
+            LeftTime = "";
+            DeviceData = null;
+        }
     }
-
 }

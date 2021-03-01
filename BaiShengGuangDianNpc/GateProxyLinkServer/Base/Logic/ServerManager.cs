@@ -552,6 +552,7 @@ namespace GateProxyLinkServer.Base.Logic
             }
             return res;
         }
+
         private static IEnumerable<Tuple<int, string>> SocketResponseStr(IEnumerable<DeviceInfo> dealList, string urlKey, string funName)
         {
             var res = new List<Tuple<int, string>>();
