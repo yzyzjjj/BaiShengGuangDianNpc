@@ -7,7 +7,7 @@
         /// </summary>
         UnInit = 0,
         /// <summary>
-        /// 待加工
+        /// 待机
         /// </summary>
         Waiting,
         /// <summary>

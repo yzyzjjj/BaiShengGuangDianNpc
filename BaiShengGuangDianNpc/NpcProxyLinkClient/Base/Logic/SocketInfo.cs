@@ -108,6 +108,7 @@ namespace NpcProxyLinkClient.Base.Logic
         {
             DeviceInfo = deviceInfo;
             UpdateInfo(deviceInfo);
+            DeviceInfo.Init();
             if (IPAddress.TryParse(DeviceInfo.Ip, out var ipAddress))
             {
                 _endPoint = new IPEndPoint(ipAddress, DeviceInfo.Port);
@@ -118,6 +119,7 @@ namespace NpcProxyLinkClient.Base.Logic
                 //}
 
                 DeviceInfo.State = SocketState.Connecting;
+
                 //Log.Debug($"Ip:{DeviceInfo.Ip} Start Connect");
                 ConnectAsync();
             }

@@ -44,7 +44,12 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("Gate服务器异常")]
         GateExceptionHappen,
-        #region 设备相关 1000 - 1999
+        #region 设备相关 999 - 1999
+        /// <summary>
+        /// 设备机台号不能为空
+        /// </summary>
+        [Description("设备机台号不能为空")]
+        DeviceCodeNotEmpty = 999,
         /// <summary>
         /// 设备不存在
         /// </summary>

@@ -108,6 +108,7 @@ namespace NpcProxyLink.Base.Logic
         {
             DeviceInfo = deviceInfo;
             UpdateInfo(deviceInfo);
+            DeviceInfo.Init();
             if (IPAddress.TryParse(DeviceInfo.Ip, out var ipAddress))
             {
                 _endPoint = new IPEndPoint(ipAddress, DeviceInfo.Port);
