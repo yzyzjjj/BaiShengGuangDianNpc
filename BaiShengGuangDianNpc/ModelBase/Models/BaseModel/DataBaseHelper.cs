@@ -1,13 +1,11 @@
-﻿using ApiManagement.Base.Server;
-using Dapper;
-using ServiceStack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dapper;
 using ModelBase.Base.Dapper;
-using ModelBase.Models.BaseModel;
+using ServiceStack;
 
-namespace ApiManagement.Models.BaseModel
+namespace ModelBase.Models.BaseModel
 {
     public interface IDataHelper
     {
@@ -19,7 +17,7 @@ namespace ApiManagement.Models.BaseModel
         int GetCountByIds(IEnumerable<int> ids, string querySql = "");
         int GetCountAll(string querySql = "");
     }
-    public abstract class DataHelper : IDataHelper
+    public abstract class DataBaseHelper : IDataHelper
     {
         public Dictionary<string,string> Op = new Dictionary<string, string>
         {
