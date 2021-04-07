@@ -71,10 +71,10 @@ namespace NpcProxyLink.Base.Helper
             //   "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
             //   , socketMessages.OrderBy(x => x.SendTime));
 
-            await ServerConfig.ApiDb.ExecuteAsync(
+            await ServerConfig.DataWriteDb.ExecuteAsync(
                 "INSERT npc_monitoring_analysis (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
                 "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
-                , socketMessages.OrderBy(x => x.ReceiveTime));
+                , socketMessages.OrderBy(x => x.SendTime));
         }
         private static void InsertSocketMessage(IEnumerable<SocketMessage> socketMessages)
         {
@@ -83,10 +83,10 @@ namespace NpcProxyLink.Base.Helper
             //   "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
             //   , socketMessages.OrderBy(x => x.SendTime));
 
-            ServerConfig.ApiDb.ExecuteTrans(
+            ServerConfig.DataWriteDb.ExecuteTrans(
                 "INSERT npc_monitoring_analysis (`SendTime`, `ReceiveTime`, `DealTime`, `DeviceId`, `Ip`, `Port`, `Data`, `UserSend`, `ScriptId`, `ValNum`, `InNum`, `OutNum`) " +
                 "VALUES (@SendTime, @ReceiveTime, @DealTime, @DeviceId, @Ip, @Port, @Data, @UserSend, @ScriptId, @ValNum, @InNum, @OutNum);"
-                , socketMessages.OrderBy(x => x.ReceiveTime));
+                , socketMessages.OrderBy(x => x.SendTime));
         }
     }
 }

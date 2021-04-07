@@ -89,13 +89,30 @@ namespace ModelBase.Base.Utils
         public static bool InSameDay(this DateTime date, DateTime targetDay, DateTime beginTimeOfDay)
         {
             return (int)((date - beginTimeOfDay).TotalDays) == (int)((targetDay - beginTimeOfDay).TotalDays);
-
         }
         public static bool InSameDay(this DateTime dte, DateTime targetDay)
         {
             return dte.Date == targetDay.Date;
         }
 
+        /// <summary>
+        /// DateTime扩展方法，判断是否是凌晨 0 点
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns>是否是凌晨 0 点</returns>
+        public static bool InZeroTime(this DateTime date)
+        {
+            return date.Second + date.Minute + date.Hour == 0;
+        }
+        /// <summary>
+        /// DateTime扩展方法，判断是否是每日23:59:59
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns>是否是半夜 23:59:59</returns>
+        public static bool InLastTime(this DateTime date)
+        {
+            return date.Second == 59 && date.Minute == 59 && date.Hour == 23;
+        }
         /// <summary>
         /// DateTime扩展方法，根据周起始时间，判断两个DateTime是否属于同一周。
         /// </summary>
@@ -332,31 +349,91 @@ namespace ModelBase.Base.Utils
         {
             return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second);
         }
+        /// <summary>
+        /// 取小
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime Min(this DateTime date1, DateTime date2)
+        {
+            return date1 < date2 ? date1 : date2;
+        }
+
+        /// <summary>
+        /// 取大
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime Max(this DateTime date1, DateTime date2)
+        {
+            return date1 > date2 ? date1 : date2;
+        }
+
+
+
+
+        /// <summary>
+        /// yyyy-MM-dd HH:mm:ss
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static string ToStr(this DateTime date)
         {
             return date.ToString("yyyy-MM-dd HH:mm:ss");
         }
+        /// <summary>
+        /// yyyy/MM/dd HH:mm:ss
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static string ToStrx(this DateTime date)
         {
             return date.ToString("yyyy/MM/dd HH:mm:ss");
         }
+        /// <summary>
+        /// yyyy-MM-dd
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static string ToDateStr(this DateTime date)
         {
             return date.ToString("yyyy-MM-dd");
         }
+        /// <summary>
+        /// yyyy/MM/dd
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static string ToDateStrx(this DateTime date)
         {
             return date.ToString("yyyy/MM/dd");
         }
+        /// <summary>
+        /// yyMMddHHmmss
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static string ToStrFile(this DateTime date)
         {
             return date.ToString("yyMMddHHmmss");
         }
+        /// <summary>
+        /// yyMMdd
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static string ToStrShort(this DateTime date)
         {
             return date.ToString("yyMMdd");
         }
-
+        /// <summary>
+        /// yyMMddHHmmssffff
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static string ToStrFull(this DateTime date)
+        {
+            return date.ToString("yyMMddHHmmssffff");
+        }
         /// <summary>
         /// 秒转化为天小时分秒
         /// </summary>
@@ -411,5 +488,7 @@ namespace ModelBase.Base.Utils
 
             return str;
         }
+
+
     }
 }

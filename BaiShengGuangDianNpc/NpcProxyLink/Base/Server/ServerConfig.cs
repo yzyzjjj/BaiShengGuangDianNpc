@@ -15,6 +15,7 @@ namespace NpcProxyLink.Base.Server
     public class ServerConfig
     {
         public static DataBase ApiDb;
+        public static DataBase DataWriteDb;
         public static ClientManager ClientManager;
         public static int ServerId;
         public static RedisCacheHelper RedisHelper;
@@ -24,7 +25,6 @@ namespace NpcProxyLink.Base.Server
         {
             ApiDb = new DataBase(configuration.GetConnectionString("ApiDb"));
             ServerId = configuration.GetAppSettings<int>("ServerId");
-
             RedisHelper = new RedisCacheHelper(configuration);
             Loads = new Dictionary<string, Action>
             {
@@ -38,9 +38,6 @@ namespace NpcProxyLink.Base.Server
             }
             ClientManager = new ClientManager();
             ClientManager.LoadConfig();
-
-
-
             Log.InfoFormat("ServerConfig Done, Count:{0}", ClientManager.GetDevices().Count());
         }
 

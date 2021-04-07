@@ -13,12 +13,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using ModelBase.Models.Server;
 
 namespace NpcProxyLinkClient.Base.Server
 {
     public class ServerConfig
     {
         public static DataBase ApiDb;
+        public static DataBase DataWriteDb;
         public static ClientManager ClientManager;
         public static int ServerId;
         public static RedisCacheHelper RedisHelper;
@@ -35,12 +37,13 @@ namespace NpcProxyLinkClient.Base.Server
             ServerPort = configuration.GetAppSettings<int>("ServerPort");
             GateIp = configuration.GetAppSettings<string>("GateIp");
             GatePort = configuration.GetAppSettings<int>("GatePort");
-
             RedisHelper = new RedisCacheHelper(configuration);
+
             Loads = new Dictionary<string, Action>
             {
                 {UsuallyDictionaryHelper.TableName, UsuallyDictionaryHelper.LoadConfig},
                 {ScriptVersionHelper.TableName, ScriptVersionHelper.LoadConfig},
+                {"ReadDB", LoadDateBase},
             };
 
             foreach (var action in Loads.Values)
@@ -75,6 +78,18 @@ namespace NpcProxyLinkClient.Base.Server
                     Loads[tableName]();
                 }
             }
+        }
+
+        private static void LoadDateBase()
+        {
+            var dbs = ApiDb.Query<ServerDataBase>("SELECT * FROM `management_database`;");
+            var dataWrite = dbs.Where(x => x.Type == DataBaseType.Data && x.Write);
+            if (dataWrite.Count() != 1)
+            {
+                throw new Exception($"LoadDateBase Write DataBase, {dataWrite.Count()}!!!");
+            }
+
+            DataWriteDb = new DataBase(dataWrite.First().DataBase);
         }
     }
 }

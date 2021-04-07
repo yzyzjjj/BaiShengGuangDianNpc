@@ -1,5 +1,4 @@
-﻿using System;
-using Dapper;
+﻿using Dapper;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +7,7 @@ namespace ModelBase.Base.Dapper
 {
     public class DataBase
     {
+        private static bool _closeWrite = false;
         private readonly string _connectionString;
         public DataBase(string connectionString)
         {
@@ -32,6 +32,15 @@ namespace ModelBase.Base.Dapper
 
         public int Execute(string sql, object param = null, int? second = null)
         {
+            //if (!sql.Contains("management_database") && !sql.Contains("npc_proxy_lin2k"))
+            //{
+            //    return 0;
+            //}
+            if (_closeWrite)
+            {
+                return 0;
+            }
+
             using (var con = new MySqlConnection(_connectionString))
             {
                 return con.Execute(sql, param, null, second);
@@ -40,6 +49,11 @@ namespace ModelBase.Base.Dapper
 
         public async Task<int> ExecuteAsync(string sql, object param = null, int? second = null)
         {
+            if (_closeWrite)
+            {
+                return 0;
+            }
+
             using (var con = new MySqlConnection(_connectionString))
             {
                 return await con.ExecuteAsync(sql, param, null, second);
@@ -48,6 +62,11 @@ namespace ModelBase.Base.Dapper
 
         public int ExecuteTrans(string sql, object param = null, int? second = null)
         {
+            if (_closeWrite)
+            {
+                return 0;
+            }
+
             using (var con = new MySqlConnection(_connectionString))
             {
                 con.Open();
@@ -62,6 +81,11 @@ namespace ModelBase.Base.Dapper
 
         public async Task<int> ExecuteTransAsync(string sql, object param = null, int? second = null)
         {
+            if (_closeWrite)
+            {
+                return 0;
+            }
+
             using (var con = new MySqlConnection(_connectionString))
             {
                 con.Open();

@@ -40,6 +40,11 @@ namespace ModelBase.Base.EnumConfig
         [Description("请求超时")]
         TimeOut,
         /// <summary>
+        /// 接口不存在
+        /// </summary>
+        [Description("接口不存在")]
+        ApiDelete,
+        /// <summary>
         /// Gate服务器异常
         /// </summary>
         [Description("Gate服务器异常")]
@@ -1258,9 +1263,9 @@ namespace ModelBase.Base.EnumConfig
         [Description("预警设置项不能为空")]
         WarningSetItemNotEmpty = 1226,
         /// <summary>
-        /// 数据类型错误
+        /// 请选择设备数据预警
         /// </summary>
-        [Description("数据类型错误")]
+        [Description("请选择设备数据预警")]
         WarningSetItemDataTypeError = 1227,
         /// <summary>
         /// 条件设置错误
@@ -1332,6 +1337,11 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("刷新时间设置错误")]
         MonitoringKanBanSetSecondError = 1240,
+        /// <summary>
+        /// 变量顺序重复
+        /// </summary>
+        [Description("变量顺序重复")]
+        MonitoringKanBanSetVariableOrderDuplicate = 1241,
         ///// <summary>
         ///// 请输入货品清单
         ///// </summary>
@@ -1491,7 +1501,26 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("只支持单文件上传")]
         FileSingle = 3026,
-
+        /// <summary>
+        /// 权限已存在
+        /// </summary>
+        [Description("权限已存在")]
+        PermissionIsExist = 3027,
+        /// <summary>
+        /// 权限不存在
+        /// </summary>
+        [Description("权限不存在")]
+        PermissionNotExist = 3028,
+        /// <summary>
+        /// 权限名称不能为空
+        /// </summary>
+        [Description("权限名称不能为空")]
+        PermissionNotEmpty = 3029,
+        /// <summary>
+        /// 权限重复
+        /// </summary>
+        [Description("权限重复")]
+        PermissionDuplicate = 3030,
         #endregion
 
         #region 智慧工厂 10000-19999

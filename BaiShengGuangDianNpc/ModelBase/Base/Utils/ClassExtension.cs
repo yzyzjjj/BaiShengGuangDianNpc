@@ -24,6 +24,25 @@ namespace ModelBase.Base.Utils
             return child;
         }
 
+        public static TTargetClass CopyTo<TFromClass, TTargetClass>(TFromClass from)
+            where TFromClass : class, new()
+            where TTargetClass : class, new()
+        {
+            var target = new TTargetClass();
+            var fromProperties = typeof(TFromClass).GetProperties();
+            var targetProperties = typeof(TTargetClass).GetProperties();
+            foreach (var property in fromProperties)
+            {
+                var targetProperty = targetProperties.FirstOrDefault(x =>
+                    x.Name == property.Name && x.PropertyType == property.PropertyType);
+                if (targetProperty != null && property.CanRead && property.CanWrite)
+                {
+                    targetProperty.SetValue(target, property.GetValue(from, null), null);
+                }
+            }
+            return target;
+        }
+
         public static bool HaveChange<TClass>(TClass oldObj, TClass newObj) where TClass : class
         {
             var thisProperties = oldObj.GetType().GetProperties();

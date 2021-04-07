@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
-using Newtonsoft.Json;
 
 namespace ModelBase.Base.Utils
 {
@@ -57,48 +54,44 @@ namespace ModelBase.Base.Utils
         }
         private static string Get4(string userid)
         {
-            long a = 0;
-            long.TryParse(userid, out a);
-            if (a > 0)
+            long.TryParse(userid, out var a);
+            if (a <= 0)
             {
-                if (a >= 10000)
-                {
-                    var str = a.ToString();
-                    return str.Substring(str.Length - 4);
-                }
-                else
-                {
-                    return a.ToString("D4");
-                }
+                return CreateRandomNum(4);
             }
-            return CreateRandomNum(4);
+
+            if (a >= 10000)
+            {
+                var str = a.ToString();
+                return str.Substring(str.Length - 4);
+            }
+            else
+            {
+                return a.ToString("D4");
+            }
         }
 
         public static string CreateRandomNum(int n)
         {
-            string str = "0123456789";
-
-            StringBuilder SB = new StringBuilder();
-
-            for (int i = 0; i < n; i++)
+            var str = "0123456789";
+            var sb = new StringBuilder();
+            for (var i = 0; i < n; i++)
             {
-                SB.Append(str.Substring(_Seed.Next(0, str.Length), 1));
+                sb.Append(str.Substring(_Seed.Next(0, str.Length), 1));
             }
-            return SB.ToString();
+            return sb.ToString();
 
         }
 
         public static string CreateRandomNum2(int n)
         {
-            string str = "0123456789abcdefghijklmopqrstuvwxyz";
-
-            StringBuilder SB = new StringBuilder();
-
-            for (int i = 0; i < n; i++)
+            const string str = "0123456789abcdefghijklmopqrstuvwxyz";
+            var sb = new StringBuilder();
+            for (var i = 0; i < n; i++)
             {
-                SB.Append(str.Substring(_Seed.Next(0, str.Length), 1));
+                sb.Append(str.Substring(_Seed.Next(0, str.Length), 1));
             }
-            return SB.ToString();
+            return sb.ToString();
         }
 
         public static string ToJSON<T>(this T obj)
@@ -106,6 +99,10 @@ namespace ModelBase.Base.Utils
             return JsonConvert.SerializeObject(obj);
         }
 
+        public static T ToClass<T>(this string obj)
+        {
+            return JsonConvert.DeserializeObject<T>(obj);
+        }
         /// <summary>
         /// 比较版本号，若v1>v2 返回true,否则返回false
         /// </summary>
@@ -173,7 +170,9 @@ namespace ModelBase.Base.Utils
             foreach (var s in strs)
             {
                 if (s != "")
+                {
                     res.Add(byte.Parse(s));
+                }
             }
             return res.ToArray();
         }
@@ -205,18 +204,30 @@ namespace ModelBase.Base.Utils
         public static string ConcatUrl(this string url, string newUrl)
         {
             if (string.IsNullOrEmpty(url))
+            {
                 return newUrl;
+            }
+
             if (string.IsNullOrEmpty(newUrl))
+            {
                 return url;
+            }
+
             return string.Concat(url, ",", newUrl);
         }
 
         public static string SubUrl(this string url, int index)
         {
-            if (string.IsNullOrEmpty(url)) return url;
+            if (string.IsNullOrEmpty(url))
+            {
+                return url;
+            }
+
             var list = url.Split(',').ToList();
-            if (list.Count > index && index >=0)
+            if (list.Count > index && index >= 0)
+            {
                 list.RemoveAt(index);
+            }
             else
             {
                 return url;
@@ -224,11 +235,11 @@ namespace ModelBase.Base.Utils
             return string.Join(",", list);
         }
 
-        private static readonly char[] Constant =   
-        {   
-            '0','1','2','3','4','5','6','7','8','9',  
-            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',   
-            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'   
+        private static readonly char[] Constant =
+        {
+            '0','1','2','3','4','5','6','7','8','9',
+            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
         };
         /// <summary>
         /// 生成随机字符串
@@ -237,9 +248,9 @@ namespace ModelBase.Base.Utils
         /// <returns></returns>
         public static string GenerateRandomNumber(int length)
         {
-            StringBuilder newRandom = new StringBuilder(length);
-            Random rd = new Random();
-            for (int i = 0; i < length; i++)
+            var newRandom = new StringBuilder(length);
+            var rd = new Random();
+            for (var i = 0; i < length; i++)
             {
                 newRandom.Append(Constant[rd.Next(Constant.Length)]);
             }
