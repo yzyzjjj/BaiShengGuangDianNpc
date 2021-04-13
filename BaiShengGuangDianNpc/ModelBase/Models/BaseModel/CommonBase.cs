@@ -14,7 +14,7 @@ namespace ModelBase.Models.BaseModel
         [IgnoreChange]
         public DateTime MarkedDateTime { get; set; }
         [IgnoreChange]
-        [JsonIgnore]
+        //[JsonIgnore]
         public bool MarkedDelete { get; set; } = false;
         [IgnoreChange]
         [JsonIgnore]

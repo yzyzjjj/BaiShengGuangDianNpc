@@ -1386,76 +1386,112 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("密码错误")]
         PasswordError = 3002,
-        /// <summary>
-        /// 页面不存在
-        /// </summary>
-        [Description("页面不存在")]
-        PageNotExist = 3003,
-        /// <summary>
-        /// Api不存在
-        /// </summary>
-        [Description("Api不存在")]
-        ApiNotExist = 3004,
+        ///// <summary>
+        ///// 页面不存在
+        ///// </summary>
+        //[Description("页面不存在")]
+        ////PageNotExist = 3003,
+        ///// <summary>
+        ///// Api不存在
+        ///// </summary>
+        //[Description("Api不存在")]
+        //ApiNotExist = 3004,
         /// <summary>
         /// 没有权限
         /// </summary>
         [Description("没有权限")]
-        NoAuth = 3005,
+        NoAuth = 3003,
+
         /// <summary>
         /// 上级不存在
         /// </summary>
         [Description("上级不存在")]
-        ParentNotExist = 3006,
-        /// <summary>
-        /// 组织结构不存在
-        /// </summary>
-        [Description("组织结构不存在")]
-        OrganizationUnitNotExist = 3007,
-        /// <summary>
-        /// 角色不存在
-        /// </summary>
-        [Description("角色不存在")]
-        RoleNotExist = 3008,
-        /// <summary>
-        /// API配置错误
-        /// </summary>
-        [Description("API配置错误")]
-        ApiHostError = 3009,
-        /// <summary>
-        /// 系统角色无法操作
-        /// </summary>
-        [Description("系统角色无法操作")]
-        RoleNotOperate = 3010,
-        /// <summary>
-        /// 系统账号无法操作
-        /// </summary>
-        [Description("系统账号无法操作")]
-        AccountNotOperate = 3011,
-        /// <summary>
-        /// 非法操作
-        /// </summary>
-        [Description("非法操作")]
-        OperateNotSafe = 3013,
-        /// <summary>
-        /// 成员已存在
-        /// </summary>
-        [Description("成员已存在")]
-        MemberIsExist = 3014,
-        /// <summary>
-        /// 姓名重复
-        /// </summary>
-        [Description("姓名重复")]
-        NameIsExist = 3015,
+        ParentNotExist = 3004,
+
         /// <summary>
         /// 部门已存在
         /// </summary>
         [Description("部门已存在")]
-        OrganizationUnitIsExist = 3016,
+        OrganizationUnitIsExist = 3005,
+        /// <summary>
+        /// 部门不存在
+        /// </summary>
+        [Description("部门不存在")]
+        OrganizationUnitNotExist = 3006,
+        /// <summary>
+        /// 部门名称不能为空
+        /// </summary>
+        [Description("部门名称不能为空")]
+        OrganizationUnitNotEmpty = 3007,
+        /// <summary>
+        /// 部门重复
+        /// </summary>
+        [Description("部门重复")]
+        OrganizationUnitDuplicate = 3008,
+
+        ///// <summary>
+        ///// 上级不存在
+        ///// </summary>
+        //[Description("上级不存在")]
+        //ParentNotExist = 3004,
+        ///// <summary>
+        ///// 组织结构不存在
+        ///// </summary>
+        //[Description("组织结构不存在")]
+        //OrganizationUnitNotExist = 3007,
+        ///// <summary>
+        ///// 部门已存在
+        ///// </summary>
+        //[Description("部门已存在")]
+        //OrganizationUnitIsExist = 3008,
+
         /// <summary>
         /// 角色已存在
         /// </summary>
         [Description("角色已存在")]
-        RoleIsExist = 3017,
+        RoleIsExist = 3009,
+        /// <summary>
+        /// 角色不存在
+        /// </summary>
+        [Description("角色不存在")]
+        RoleNotExist = 3010,
+        /// <summary>
+        /// 角色名称不能为空
+        /// </summary>
+        [Description("角色名称不能为空")]
+        RoleNotEmpty = 3011,
+        /// <summary>
+        /// 角色重复
+        /// </summary>
+        [Description("角色重复")]
+        RoleDuplicate = 3012,
+        /// <summary>
+        /// 系统角色无法操作
+        /// </summary>
+        [Description("系统角色无法操作")]
+        RoleNotOperate = 3013,
+
+        /// <summary>
+        /// 系统账号无法操作
+        /// </summary>
+        [Description("系统账号无法操作")]
+        AccountNotOperate = 3014,
+        /// <summary>
+        /// 非法操作
+        /// </summary>
+        [Description("非法操作")]
+        OperateNotSafe = 3015,
+        /// <summary>
+        /// 成员已存在
+        /// </summary>
+        [Description("成员已存在")]
+        MemberIsExist = 3016,
+        /// <summary>
+        /// 姓名重复
+        /// </summary>
+        [Description("姓名重复")]
+        NameIsExist = 3017,
+
         /// <summary>
         /// 文件类型不符
         /// </summary>
@@ -1521,6 +1557,48 @@ namespace ModelBase.Base.EnumConfig
         /// </summary>
         [Description("权限重复")]
         PermissionDuplicate = 3030,
+
+        /// <summary>
+        /// 权限组已存在
+        /// </summary>
+        [Description("权限组已存在")]
+        PermissionGroupIsExist = 3031,
+        /// <summary>
+        /// 权限组不存在
+        /// </summary>
+        [Description("权限组不存在")]
+        PermissionGroupNotExist = 3032,
+        /// <summary>
+        /// 权限组名称不能为空
+        /// </summary>
+        [Description("权限组名称不能为空")]
+        PermissionGroupNotEmpty = 3033,
+        /// <summary>
+        /// 权限组重复
+        /// </summary>
+        [Description("权限组重复")]
+        PermissionGroupDuplicate = 3034,
+        /// <summary>
+        /// 成员不存在
+        /// </summary>
+        [Description("成员不存在")]
+        MemberNotExist = 3035,
+
+        /// <summary>
+        /// 姓名不能为空
+        /// </summary>
+        [Description("姓名不能为空")]
+        AccountNameNotEmpty = 3036,
+        /// <summary>
+        /// 账号重复
+        /// </summary>
+        [Description("账号重复")]
+        AccountDuplicate = 3037,
+        /// <summary>
+        /// 账号不能为空
+        /// </summary>
+        [Description("账号不能为空")]
+        AccountNotEmpty = 3038,
         #endregion
 
         #region 智慧工厂 10000-19999
